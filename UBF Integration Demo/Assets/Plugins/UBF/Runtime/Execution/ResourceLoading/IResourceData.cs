@@ -1,0 +1,21 @@
+// Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
+
+namespace Futureverse.UBF.Runtime.Resources
+{
+	/// <summary>
+	/// Represents a cacheable remote resource that can be accessed via a URI.
+	/// </summary>
+	public interface IResourceData
+	{
+		/// <summary>
+		/// Used for caching. If a cached resource exists with the given hash, the resource is not downloaded
+		/// again, and the cached version is used. It is recommended to change the resource hash whenever the
+		/// resource is updated, so that new versions are always downloaded and re-cached.
+		/// </summary>
+		string Hash { get; }
+		/// <summary>
+		/// Either a URL or local path that points to the target resource.
+		/// </summary>
+		string Uri { get; }
+	}
+}
