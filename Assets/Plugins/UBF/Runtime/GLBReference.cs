@@ -22,22 +22,30 @@ namespace Futureverse.UBF.Runtime
 		[Serializable]
 		public class PlayableClipDebug
 		{
-			public AnimationClipPlayable Playable;
-			public AnimationClip Clip;
-			public bool IsDone;
-			public bool IsNull;
-			public bool IsValid;
-			public PlayState PlayState;
-			public float Time;
-			public float ClipLength;
+			public readonly AnimationClipPlayable Playable;
+			
+			[SerializeField] private AnimationClip _clip;
+			[SerializeField] private bool _isDone;
+			[SerializeField] private bool _isNull;
+			[SerializeField] private bool _isValid;
+			[SerializeField] private PlayState _playState;
+			[SerializeField] private float _time;
+			[SerializeField] private float _clipLength;
 
+			public PlayableClipDebug(AnimationClipPlayable playable, AnimationClip clip)
+			{
+				Playable = playable;
+				_clip = clip;
+				_clipLength = clip.length;
+			}
+			
 			public void Update()
 			{
-				IsDone = Playable.IsDone();
-				IsNull = Playable.IsNull();
-				IsValid = Playable.IsValid();
-				PlayState = Playable.GetPlayState();
-				Time = (float)Playable.GetTime();
+				_isDone = Playable.IsDone();
+				_isNull = Playable.IsNull();
+				_isValid = Playable.IsValid();
+				_playState = Playable.GetPlayState();
+				_time = (float)Playable.GetTime();
 			}
 		}
 
@@ -80,12 +88,7 @@ namespace Futureverse.UBF.Runtime
 
 				var pClip = AnimationClipPlayable.Create(playableGraph, clip);
 				PlayableClips.Add(
-					new PlayableClipDebug
-					{
-						Playable = pClip,
-						Clip = clip,
-						ClipLength = clip.length,
-					}
+					new PlayableClipDebug(pClip, clip)
 				);
 			}
 		}

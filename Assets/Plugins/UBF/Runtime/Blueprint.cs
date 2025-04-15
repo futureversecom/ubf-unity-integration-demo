@@ -16,6 +16,9 @@ namespace Futureverse.UBF.Runtime
 	/// </summary>
 	public unsafe class Blueprint
 	{
+		// well-known root scope id; see execution_context.rs
+		private const uint RootScope = 0;
+
 		private readonly GraphInstance* _nativePtr;
 		private readonly Dictionary<string, object> _variables = new();
 		internal readonly string InstanceId;
@@ -28,7 +31,10 @@ namespace Futureverse.UBF.Runtime
 
 		private List<BindingInfo> _cachedInputs;
 
-		internal List<BindingInfo> Inputs
+		/// <summary>
+		/// 
+		/// </summary>
+		public List<BindingInfo> Inputs
 		{
 			get
 			{
@@ -48,7 +54,10 @@ namespace Futureverse.UBF.Runtime
 
 		private List<BindingInfo> _cachedOutputs;
 
-		internal List<BindingInfo> Outputs
+		/// <summary>
+		/// 
+		/// </summary>
+		public List<BindingInfo> Outputs
 		{
 			get
 			{
@@ -148,7 +157,7 @@ namespace Futureverse.UBF.Runtime
 			Calls.graph_release(_nativePtr);
 		}
 
-		internal struct BindingInfo
+		public struct BindingInfo
 		{
 			public string Id;
 			public string Type;
@@ -218,8 +227,7 @@ namespace Futureverse.UBF.Runtime
 					// TODO make this more robust (0 = initial scope = entry scope.)
 					// perhaps the rust interpreter should fire off a special event for
 					// this so that 0 can remain an implementation detail!
-					if (scope == 0)
-					{
+					if (scope == RootScope) {
 						ctxUserData.OnComplete.Invoke();
 					}
 				}

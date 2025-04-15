@@ -1,6 +1,8 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Settings;
+using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
@@ -39,10 +41,10 @@ namespace Futureverse.UBF.Runtime.Builtin
 			AddFloat(properties, "Roughness", "_Roughness");
 			AddFloat(properties, "Metallic", "_Metallic");
 		}
-
-		protected override string ShaderPath
-			=> TryRead<bool>("Use Alpha", out var property) && property ?
-				"Materials/M_PBR_Transparent_Alpha" :
-				"Materials/M_PBR_Opaque";
+		
+		protected override Material GetMaterial => 
+			TryRead<bool>("Use Alpha", out var property) && property ?
+				UBFSettings.GetOrCreateSettings().PbrTransparent :
+				UBFSettings.GetOrCreateSettings().PbrOpaque;
 	}
 }

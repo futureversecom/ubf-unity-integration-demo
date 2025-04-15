@@ -1,6 +1,8 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Settings;
+using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
@@ -44,6 +46,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 			AddFloat(properties, "Scar Normal Strength", "_ScarNormalStrength");
 		}
 
-		protected override string ShaderPath => "Materials/M_Skin_Opaque";
+		protected override Material GetMaterial
+			=> UBFSettings.GetOrCreateSettings()
+				.Skin;
 	}
 }

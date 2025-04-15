@@ -1,0 +1,16 @@
+{
+    "name": "com.futureverse.ubf.samples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a653e9db985ec4b0ca615f9c4d5706c9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

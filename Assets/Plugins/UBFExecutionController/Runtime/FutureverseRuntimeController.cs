@@ -10,6 +10,11 @@ using UnityEngine;
 
 namespace Futureverse.UBF.ExecutionController.Runtime
 {
+	/// <summary>
+	/// None - No caching.
+	/// InMemory - Uses caching that exists as long as the containing object does.
+	/// ReadThrough - Stores cached data on the users disk.
+	/// </summary>
 	public enum CacheType
 	{
 		None,
@@ -17,6 +22,9 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 		ReadThrough,
 	}
 
+	/// <summary>
+	/// Extension of UBFRuntimeController that can turns an Asset tree into ExecutionData that can be run.
+	/// </summary>
 	public class FutureverseRuntimeController : UBFRuntimeController
 	{
 		[SerializeField] private CacheType _cacheType = CacheType.None;
@@ -38,6 +46,13 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			};
 		}
 
+		/// <summary>
+		/// Turns an asset tree structure into the data required to Execute each Blueprint.
+		/// </summary>
+		/// <param name="assetTree">Tree structure containing the asset data and child links.</param>
+		/// <param name="parser">Describes how the UBF data is interpreted.</param>
+		/// <param name="onComplete">Callback containing the result of the Blueprint execution.</param>
+		/// <returns>An IEnumerator to yield on.</returns>
 		public IEnumerator ExecuteAssetTree(
 			IUbfTree assetTree,
 			IUbfDataParser parser,

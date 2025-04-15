@@ -9,15 +9,36 @@ using Newtonsoft.Json.Linq;
 
 namespace Futureverse.UBF.ExecutionController.Runtime
 {
+	/// <summary>
+	/// Contains required information about a given NFT Asset
+	/// </summary>
 	public interface IUbfAsset : IUbfData
 	{
+		/// <summary>
+		/// ID of the NFT Collection.
+		/// </summary>
 		public string CollectionId { get; }
+		/// <summary>
+		/// Metadata of the NFT in Json format.
+		/// </summary>
 		public JObject Metadata { get; }
+		/// <summary>
+		/// Token ID of the specific NFT asset.
+		/// </summary>
 		public string TokenId { get; }
 	}
 
+	/// <summary>
+	/// Describes how UbfData is turned into a set of BlueprintInstanceData and Catalog.
+	/// </summary>
 	public interface IUbfDataParser
 	{
+		/// <summary>
+		/// Turns UbfData into specific Blueprint and Catalog data required to run.
+		/// </summary>
+		/// <param name="data">The base UbfData.</param>
+		/// <param name="callback">Callback containing the BlueprintInstanceData and Catalog.</param>
+		/// <returns></returns>
 		IEnumerator GetBlueprintDefinition(IUbfData data, Action<IBlueprintInstanceData, Catalog> callback);
 	}
 

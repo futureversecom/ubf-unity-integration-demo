@@ -11,5 +11,12 @@
         "com.unity.shadergraph" : "14.0.10",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.cyanilux.shadergraph-variables": "https://github.com/Cyanilux/ShaderGraphVariables.git"
-    }
+    },
+    "samples": [
+        {
+            "displayName": "Sum Of Two Numbers",
+            "description": "Shows how to Execute a simple UBF Blueprint.",
+            "path": "Samples/SumOfTwoNumbers"
+        }
+    ]
   }

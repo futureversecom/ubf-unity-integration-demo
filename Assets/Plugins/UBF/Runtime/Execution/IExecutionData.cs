@@ -61,6 +61,11 @@ namespace Futureverse.UBF.Runtime.Execution
 					blueprint.InstanceId,
 					graph =>
 					{
+						if (graph == null)
+						{
+							return;
+						}
+						
 						foreach (var input in blueprint.Inputs)
 						{
 							graph.RegisterVariable(input.Key, input.Value);

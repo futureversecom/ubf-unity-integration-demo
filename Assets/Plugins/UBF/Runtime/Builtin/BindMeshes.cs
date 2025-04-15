@@ -64,10 +64,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 						newBones[i] = newBone;
 					}
 				}
-				
-				skin.bones = newBones;
-				skin.rootBone = rootBone;
 
+				skin.bones = newBones;
 			}
 		}
 	}

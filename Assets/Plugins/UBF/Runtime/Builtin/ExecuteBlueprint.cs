@@ -50,12 +50,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				if (execTask.ExecutionContext.TryReadOutput(output.Id, out var value))
 				{
-					Debug.Log($"Forwarding Output; binding-id={output.Id}; value={value}");
 					WriteOutput(output.Id, value);
 				}
 			}
-
-			//WriteOutput("Success", Dynamic.Bool(true));
 
 			TriggerNext();
 		}

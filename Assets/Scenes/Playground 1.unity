@@ -969,7 +969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83fce2c35041d1f4e9b16ec0491f4b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disableWhileExecuting: 0
+  _disableWhileExecuting: 1
   _destroyPreviousOnExecute: 1
   _onExecutionComplete:
     m_PersistentCalls:
@@ -1513,6 +1513,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
       propertyPath: m_Name
       value: SK_PB_Rig
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}

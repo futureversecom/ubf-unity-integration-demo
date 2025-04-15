@@ -79,7 +79,7 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 				.Where(v => v != null && v.IsSupported())
 				.ToList();
 			validVersions.Sort((a, b) => b.CompareTo(a));
-			var version = validVersions.First()
+			var version = validVersions.FirstOrDefault()
 					?.ToString() ??
 				"";
 

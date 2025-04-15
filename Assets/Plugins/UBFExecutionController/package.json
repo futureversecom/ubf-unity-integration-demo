@@ -8,5 +8,12 @@
   },
   "dependencies": {
     "com.futureverse.ubf": "0.1.0"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Load From Asset Profile",
+      "description": "Shows how to use the ExecutionController to load a UBF Blueprint from an Asset Profile",
+      "path": "Samples/LoadFromAssetProfile"
+    }
+  ]
 }

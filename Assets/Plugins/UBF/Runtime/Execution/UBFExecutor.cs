@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Execution
 {
@@ -27,6 +28,12 @@ namespace Futureverse.UBF.Runtime.Execution
 				},
 				g => rootBlueprint = g
 			);
+
+			if (rootBlueprint == null)
+			{
+				Debug.LogWarning("No root blueprint instance found.");
+				yield break;
+			}
 
 			var task = new BlueprintExecutionTask(rootBlueprint, executionConfig);
 			yield return task;

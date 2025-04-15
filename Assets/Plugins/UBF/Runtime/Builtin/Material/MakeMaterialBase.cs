@@ -19,10 +19,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			var properties = new Dictionary<string, object>();
 			AddProperties(properties);
-			var mat = UnityEngine.Resources.Load(ShaderPath) as Material;
 			var shader = new MaterialValue
 			{
-				Material = mat,
+				Material = GetMaterial,
 				Properties = properties,
 			};
 
@@ -32,7 +31,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 		/// <returns>The resources path of the shader to load</returns>
 		protected abstract void AddProperties(Dictionary<string, object> dictionary);
 
-		protected abstract string ShaderPath { get; }
+		protected abstract Material GetMaterial { get; }
 
 		protected void AddRenderMode(
 			Dictionary<string, object> propertiesDictionary,
