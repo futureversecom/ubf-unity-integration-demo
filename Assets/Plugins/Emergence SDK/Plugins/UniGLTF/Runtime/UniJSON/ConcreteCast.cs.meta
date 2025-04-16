@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 7c7697929e4510048a5238dd9d227b2e
+timeCreated: 1549025672
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/UniJSON/ConcreteCast.cs
+  uploadId: 688051

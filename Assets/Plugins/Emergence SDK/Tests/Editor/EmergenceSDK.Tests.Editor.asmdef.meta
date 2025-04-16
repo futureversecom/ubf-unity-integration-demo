@@ -1,0 +1,14 @@
+﻿fileFormatVersion: 2
+guid: 5ca94adfa9183594caf5f88982c2b15e
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Tests/Editor/EmergenceSDK.Tests.Editor.asmdef
+  uploadId: 688051

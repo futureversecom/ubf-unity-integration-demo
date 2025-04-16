@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 65fdfff6cc4b1e14a882259e903fc830
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRMShaders/GLTF/IO/Runtime/Texture/Exporter/TextureExporter.cs
+  uploadId: 688051

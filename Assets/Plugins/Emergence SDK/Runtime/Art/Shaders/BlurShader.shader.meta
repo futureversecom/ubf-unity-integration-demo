@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 822a708572697b444aa74ef13111f071
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Art/Shaders/BlurShader.shader
+  uploadId: 688051

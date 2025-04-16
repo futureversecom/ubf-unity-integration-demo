@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 21abfd2840d42461cbf4dd64229d3364
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Tests/Runtime/InternalTest/DownloadImageTesting/Texture
+    test.unity
+  uploadId: 688051

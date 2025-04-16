@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b1b992b7266d6d8429b8aeac90efa6a5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Editor/Components/SpringBone/VRM10SpringBoneColliderEditor.cs
+  uploadId: 688051

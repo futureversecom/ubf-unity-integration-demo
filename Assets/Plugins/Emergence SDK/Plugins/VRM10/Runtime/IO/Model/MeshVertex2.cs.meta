@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 9f359472cfd14db28982f4db837a7aaf
+timeCreated: 1663140985
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Runtime/IO/Model/MeshVertex2.cs
+  uploadId: 688051

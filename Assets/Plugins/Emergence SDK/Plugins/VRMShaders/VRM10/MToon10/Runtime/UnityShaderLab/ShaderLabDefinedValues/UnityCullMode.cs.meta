@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 03ac85ab52a547019ff7e377f1778225
+timeCreated: 1623308821
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRMShaders/VRM10/MToon10/Runtime/UnityShaderLab/ShaderLabDefinedValues/UnityCullMode.cs
+  uploadId: 688051

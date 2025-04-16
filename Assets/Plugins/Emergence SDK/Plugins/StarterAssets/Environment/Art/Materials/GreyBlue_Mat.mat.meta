@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 556f9fc69c6a7de48b39c2cec2811b49
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/StarterAssets/Environment/Art/Materials/GreyBlue_Mat.mat
+  uploadId: 688051

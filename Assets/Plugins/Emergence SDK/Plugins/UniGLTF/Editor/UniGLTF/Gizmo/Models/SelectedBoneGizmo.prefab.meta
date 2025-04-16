@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 65aed222118a19e46a4d35c654cd818e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Editor/UniGLTF/Gizmo/Models/SelectedBoneGizmo.prefab
+  uploadId: 688051

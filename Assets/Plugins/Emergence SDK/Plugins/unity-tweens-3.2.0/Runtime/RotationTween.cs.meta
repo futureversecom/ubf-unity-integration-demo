@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b41646e508c0c473b8c10e24d0c869a9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/unity-tweens-3.2.0/Runtime/RotationTween.cs
+  uploadId: 688051

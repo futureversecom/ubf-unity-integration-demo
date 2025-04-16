@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6bcc6164cd229c942b95c80f002df2be
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Runtime/Format/SpringBone/Format.g.cs
+  uploadId: 688051

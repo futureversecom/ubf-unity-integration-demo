@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a58a7b833682a409c97b550ca697c9d9
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Tests/Runtime/InternalTest/VRMTesting/VRMLoaderScene.unity
+  uploadId: 688051

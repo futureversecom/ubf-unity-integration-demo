@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ba58ca06ae09c4a6aa3e97091484dab4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Tests/Runtime/InternalTest/DownloadImageTesting/TestMat.mat
+  uploadId: 688051

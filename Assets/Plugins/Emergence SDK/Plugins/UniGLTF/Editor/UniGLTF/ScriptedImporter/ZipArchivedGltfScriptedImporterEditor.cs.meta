@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4d2f9772e8a290e47812172c7fa6f34d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Editor/UniGLTF/ScriptedImporter/ZipArchivedGltfScriptedImporterEditor.cs
+  uploadId: 688051

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7358e51cea88f4331934bad75aed58ed
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Samples~/CoreSamples/Art/Meshes/SM_Button.prefab
+  uploadId: 688051

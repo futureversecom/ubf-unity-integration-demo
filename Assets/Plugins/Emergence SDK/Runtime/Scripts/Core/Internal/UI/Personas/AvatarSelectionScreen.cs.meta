@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: a95510ec1a1746de8a7bef12f5c8fd9b
+timeCreated: 1696255219
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Internal/UI/Personas/AvatarSelectionScreen.cs
+  uploadId: 688051

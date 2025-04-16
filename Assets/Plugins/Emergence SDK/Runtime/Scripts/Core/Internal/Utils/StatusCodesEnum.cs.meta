@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 65d3a46fbcf8f6e40a9b2d82631b40af
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Internal/Utils/StatusCodesEnum.cs
+  uploadId: 688051

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fa54b987b1d1f054fa97b78e33a04ebb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Prefabs/Overlay/Persona Scroll
+    Item.prefab
+  uploadId: 688051

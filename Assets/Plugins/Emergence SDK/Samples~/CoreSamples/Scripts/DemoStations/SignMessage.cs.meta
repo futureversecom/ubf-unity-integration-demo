@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e53a37895212b4b1190019e787307aeb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Samples~/CoreSamples/Scripts/DemoStations/SignMessage.cs
+  uploadId: 688051

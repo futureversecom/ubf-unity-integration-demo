@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: f613907c8a91aa049809fe1f754776de
+timeCreated: 1544060764
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/UniJSON/Utf8String/Utf8StringExtensions.cs
+  uploadId: 688051

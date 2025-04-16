@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: ec22998490984df4a7f04d03174fc3e0
+timeCreated: 1667803769
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Runtime/Migration/Materials/MigrationPbrMaterial.cs
+  uploadId: 688051

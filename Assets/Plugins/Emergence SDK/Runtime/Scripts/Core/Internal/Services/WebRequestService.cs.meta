@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 3cd5960fb4904fd287dfb31fcf025b6c
+timeCreated: 1687435588
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Internal/Services/WebRequestService.cs
+  uploadId: 688051

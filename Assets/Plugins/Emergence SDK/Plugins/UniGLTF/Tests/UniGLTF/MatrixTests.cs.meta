@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c6f1c95a9487fb44fb4a366eda22bd02
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Tests/UniGLTF/MatrixTests.cs
+  uploadId: 688051

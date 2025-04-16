@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 46c79f621d3838c47b2e3622fc2b3c13
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Resources/RootPorcini.asset
+  uploadId: 688051

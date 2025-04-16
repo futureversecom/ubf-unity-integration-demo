@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 91164ac9f5daf5e48a006dfee1d20e7a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Resources/Root.asset
+  uploadId: 688051

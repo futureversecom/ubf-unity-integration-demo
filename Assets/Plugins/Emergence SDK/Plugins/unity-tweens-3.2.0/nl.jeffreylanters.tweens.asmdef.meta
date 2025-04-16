@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6f0786a5bbd4d44b992c72105d6500fe
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/unity-tweens-3.2.0/nl.jeffreylanters.tweens.asmdef
+  uploadId: 688051

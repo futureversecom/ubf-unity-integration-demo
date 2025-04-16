@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: c3c422f6c0ac416bbcd70ee3203bca6a
+timeCreated: 1623135734
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRMShaders/VRM10/MToon10/Runtime/UnityShaderLab/MToonDefinedValues/MToon10DoubleSidedMode.cs
+  uploadId: 688051

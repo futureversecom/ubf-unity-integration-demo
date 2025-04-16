@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 39e41ff133b545d43a1dfb6eb98cdf60
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/UniGLTF/IO/MeshIO/MeshExporter_DividedVertexBuffer.cs
+  uploadId: 688051

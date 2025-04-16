@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 92cbb1b9f5255824da58de282d5aecce
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/Scenes/LookDev/cubemap/lilienstein_1k.mat
+  uploadId: 688051

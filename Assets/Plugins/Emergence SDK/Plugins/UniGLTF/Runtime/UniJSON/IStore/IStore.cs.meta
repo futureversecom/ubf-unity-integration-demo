@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 558419bba2d829e4884fca9c2046fc3c
+timeCreated: 1495517075
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/UniJSON/IStore/IStore.cs
+  uploadId: 688051

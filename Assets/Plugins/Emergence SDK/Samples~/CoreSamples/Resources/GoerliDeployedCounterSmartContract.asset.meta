@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 13c96721cb4026d4e82c51c431856e08
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Samples~/CoreSamples/Resources/GoerliDeployedCounterSmartContract.asset
+  uploadId: 688051

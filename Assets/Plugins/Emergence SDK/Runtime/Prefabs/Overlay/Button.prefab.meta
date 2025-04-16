@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9f600a28fa650434d81fd4ac09fb0a93
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Prefabs/Overlay/Button.prefab
+  uploadId: 688051

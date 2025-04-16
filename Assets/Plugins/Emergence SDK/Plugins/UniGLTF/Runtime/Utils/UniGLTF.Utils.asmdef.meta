@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1cd941934d098654fa21a13f28346412
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/Utils/UniGLTF.Utils.asmdef
+  uploadId: 688051

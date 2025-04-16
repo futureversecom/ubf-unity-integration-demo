@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a7f7fc3e5f5302d41b1b597d7d2e75dd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Types/Responses/GetTransactionStatusResponse.cs
+  uploadId: 688051

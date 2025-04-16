@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 109f6ffe44824dfbaf852373a40dd1af
+timeCreated: 1681829629
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Samples~/CoreSamples/Scripts/Examples/WritingContracts.cs
+  uploadId: 688051

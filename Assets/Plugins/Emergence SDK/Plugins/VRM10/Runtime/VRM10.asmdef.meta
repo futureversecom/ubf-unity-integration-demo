@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e47c917724578cc43b5506c17a27e9a0
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Runtime/VRM10.asmdef
+  uploadId: 688051

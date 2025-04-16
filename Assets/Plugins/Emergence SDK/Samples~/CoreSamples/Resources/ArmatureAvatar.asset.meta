@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 54f27cb6892d15d428dabc9c692276c1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Samples~/CoreSamples/Resources/ArmatureAvatar.asset
+  uploadId: 688051

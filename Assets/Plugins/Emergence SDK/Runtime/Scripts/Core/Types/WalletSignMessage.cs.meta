@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 836cbd920bf84b168525458223fcc690
+timeCreated: 1680181210
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Types/WalletSignMessage.cs
+  uploadId: 688051

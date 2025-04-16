@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 5fb858fc98e29c54d87df97ead98608e
+timeCreated: 1540812551
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Runtime/UniJSON/IFormatter.cs
+  uploadId: 688051

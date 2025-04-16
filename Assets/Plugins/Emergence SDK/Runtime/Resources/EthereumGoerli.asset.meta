@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f83c7faeb452eab4c83051e3d97f008c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Resources/EthereumGoerli.asset
+  uploadId: 688051

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c67877b42343a6a4bbdd171816b6c57f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Resources/PolygonMumbai.asset
+  uploadId: 688051

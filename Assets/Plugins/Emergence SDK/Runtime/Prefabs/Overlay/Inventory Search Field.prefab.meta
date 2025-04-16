@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6eff6e101be526841bb6a0a132295202
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Prefabs/Overlay/Inventory Search
+    Field.prefab
+  uploadId: 688051

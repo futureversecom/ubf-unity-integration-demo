@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: f2f5525c3a83426abbf18239615608e5
+timeCreated: 1713275380
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Internal/Services/IPersonaServiceInternal.cs
+  uploadId: 688051

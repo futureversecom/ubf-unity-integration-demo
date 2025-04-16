@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 26066181205f942baabc00001734aa5c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Prefabs/Overlay/3 - Dashboard.prefab
+  uploadId: 688051

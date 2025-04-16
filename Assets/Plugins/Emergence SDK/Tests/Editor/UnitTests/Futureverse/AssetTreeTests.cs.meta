@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 23a72a2f22fa4f9b825f956596ea42ee
+timeCreated: 1715695858
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Tests/Editor/UnitTests/Futureverse/AssetTreeTests.cs
+  uploadId: 688051

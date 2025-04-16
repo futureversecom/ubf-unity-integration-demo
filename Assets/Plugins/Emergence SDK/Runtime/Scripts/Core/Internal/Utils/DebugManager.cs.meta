@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 1e3b2fbd455f41f1b95fb2125de678d9
+timeCreated: 1718375130
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Internal/Utils/DebugManager.cs
+  uploadId: 688051

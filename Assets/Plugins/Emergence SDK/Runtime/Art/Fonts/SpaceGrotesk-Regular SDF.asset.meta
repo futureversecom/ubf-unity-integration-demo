@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 878e6ab2b9e2b7c4db7ac32d036f6cf2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Art/Fonts/SpaceGrotesk-Regular
+    SDF.asset
+  uploadId: 688051

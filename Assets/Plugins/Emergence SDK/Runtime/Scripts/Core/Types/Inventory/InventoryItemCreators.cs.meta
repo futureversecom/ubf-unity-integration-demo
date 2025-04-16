@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: d3305b67c1be48e48da61b2775464745
+timeCreated: 1680098703
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Core/Types/Inventory/InventoryItemCreators.cs
+  uploadId: 688051

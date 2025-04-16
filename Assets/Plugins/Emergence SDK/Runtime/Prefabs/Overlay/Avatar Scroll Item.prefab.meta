@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 24dcdf57f8f10a444892e0534f02ac66
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Prefabs/Overlay/Avatar Scroll
+    Item.prefab
+  uploadId: 688051

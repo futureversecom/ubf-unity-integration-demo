@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 319f54b4f10c93a4d80670e424f4fe34
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/UniGLTF/Tests/UniGLTF/MeshTests.cs
+  uploadId: 688051

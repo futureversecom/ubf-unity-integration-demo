@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0905ad83e0b774444bcc48ac9a191d51
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRMShaders/package.json
+  uploadId: 688051

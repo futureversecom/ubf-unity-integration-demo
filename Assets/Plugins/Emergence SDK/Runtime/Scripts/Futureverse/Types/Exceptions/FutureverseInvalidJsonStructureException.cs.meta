@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 7335081a96624441ae5081e3e8354d19
+timeCreated: 1712843746
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Scripts/Futureverse/Types/Exceptions/FutureverseInvalidJsonStructureException.cs
+  uploadId: 688051

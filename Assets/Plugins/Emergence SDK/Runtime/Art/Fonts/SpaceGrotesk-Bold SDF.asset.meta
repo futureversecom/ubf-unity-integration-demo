@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 031994eb5c175384ca2c4f429b24af78
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Runtime/Art/Fonts/SpaceGrotesk-Bold
+    SDF.asset
+  uploadId: 688051

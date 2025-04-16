@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: b6742aa2a6a34bd395add629c17ab952
+timeCreated: 1633066253
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252187
+  packageName: Emergence SDK
+  packageVersion: 1.3.0
+  assetPath: Packages/com.crucible.emergence/Plugins/VRM10/Runtime/FastSpringBone/InputPorts/FastSpringBoneJoint.cs
+  uploadId: 688051
