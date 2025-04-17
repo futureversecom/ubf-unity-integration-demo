@@ -52,7 +52,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			var glbReference = parent.gameObject.AddComponent<GLBReference>();
 			glbReference.GLTFImport = gltfResource;
-
+			
 			var instantiator = new GameObjectInstantiator(gltfResource, parent);
 			var renderersArray = Dynamic.Array();
 			var sceneNodesArray = Dynamic.Array();
@@ -97,6 +97,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 					Debug.Log($"Retargeting {renderer.name} with spawned config {runtimeConfig.Config.name}");
 					RigUtilities.RetargetRig(runtimeConfig.RuntimeObject.transform, renderer);
 				}
+
+				glbReference.avatar = runtimeConfig.Config.avatar;
 			}
 			WriteOutput("Renderers", renderersArray);
 			WriteOutput("Scene Nodes", sceneNodesArray);

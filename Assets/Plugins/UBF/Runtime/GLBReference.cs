@@ -54,8 +54,9 @@ namespace Futureverse.UBF.Runtime
 		public List<PlayableClipDebug> PlayableClips = new();
 		private PlayableGraph playableGraph;
 		private Animator animator;
-
 		private Coroutine loopRoutine;
+
+		public Avatar avatar;
 
 		/// <summary>
 		/// Create a basic PlayableGraph using animation clips found within the imported GLB
