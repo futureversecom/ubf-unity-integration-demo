@@ -97,8 +97,12 @@ namespace Futureverse.UBF.Runtime.Builtin
 					Debug.Log($"Retargeting {renderer.name} with spawned config {runtimeConfig.Config.name}");
 					RigUtilities.RetargetRig(runtimeConfig.RuntimeObject.transform, renderer);
 				}
-
-				glbReference.avatar = runtimeConfig.Config.avatar;
+				
+				var animator = glbReference.GetComponentInParent<Animator>(includeInactive: true);
+				if (animator != null && runtimeConfig.Config.avatar != null)
+				{
+					animator.avatar = runtimeConfig.Config.avatar;
+				}
 			}
 			WriteOutput("Renderers", renderersArray);
 			WriteOutput("Scene Nodes", sceneNodesArray);
