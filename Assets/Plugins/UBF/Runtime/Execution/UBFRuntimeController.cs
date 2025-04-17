@@ -42,6 +42,8 @@ namespace Futureverse.UBF.Runtime.Execution
 			{
 				transform.gameObject.SetActive(false);
 			}
+			
+			onComplete += (x) => _onExecutionComplete.Invoke(x);
 
 			yield return UBFExecutor.ExecuteRoutine(
 				new ExecutionData(

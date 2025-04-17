@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb194e6fc4534cfcaa140d660c6997eb, type: 3}
+  m_Name: UBF
+  m_EditorClassIdentifier: 
+  _decalOpaque: {fileID: 2100000, guid: 5b0c6c0f814a6134381f367cd816c68f, type: 2}
+  _decalTransparent: {fileID: 2100000, guid: 244149b45e9541f439a0ffccf1ab4ae2, type: 2}
+  _furOpaque: {fileID: 2100000, guid: a5defa0a3a9f4f54aa54feb3dcf1ae22, type: 2}
+  _furTransparent: {fileID: 2100000, guid: efd755a4a8ee1584085a48a1e9016a0b, type: 2}
+  _pbrOpaque: {fileID: 2100000, guid: df0715ac0f1aaec4f903e36de2b3749d, type: 2}
+  _pbrTransparent: {fileID: 2100000, guid: c3e1f2ce9c0719540bd9424c085e3e6f, type: 2}
+  _hair: {fileID: 2100000, guid: 898e0456e66e6a14ca9b41a57cb388f5, type: 2}
+  _skin: {fileID: 2100000, guid: 8bd58b2f69092b8428c72e9ec9733027, type: 2}
+  _meshConfigs:
+  - Key: PartyBear_BodyMesh
+    Config: {fileID: 11400000, guid: 44e942827f2dc1349935e6223112dc52, type: 2}

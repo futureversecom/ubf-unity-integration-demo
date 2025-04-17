@@ -5,6 +5,7 @@ using System.IO;
 using UnityEditor;
 #endif
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Settings
@@ -21,7 +22,7 @@ namespace Futureverse.UBF.Runtime.Settings
 		[SerializeField] private Material _pbrTransparent;
 		[SerializeField] private Material _hair;
 		[SerializeField] private Material _skin;
-
+		[SerializeField] private List<MeshConfigEntry> _meshConfigs;
 		public Material DecalOpaque => _decalOpaque;
 		public Material DecalTransparent => _decalTransparent;
 		public Material FurOpaque => _furOpaque;
@@ -31,6 +32,15 @@ namespace Futureverse.UBF.Runtime.Settings
 		public Material Hair => _hair;
 		public Material Skin => _skin;
 
+		[System.Serializable]
+		public class MeshConfigEntry
+		{
+			public string Key;
+			public MeshConfig Config;
+		}
+
+		public List<MeshConfigEntry> MeshConfigs => _meshConfigs;
+		
 		public static UBFSettings GetOrCreateSettings()
 		{
 #if UNITY_EDITOR
@@ -94,6 +104,10 @@ namespace Futureverse.UBF.Runtime.Settings
 			if (_skin == null)
 			{
 				_skin = UnityEngine.Resources.Load("Materials/M_Skin_Opaque") as Material;
+			}
+			if (MeshConfigs == null)
+			{
+				_meshConfigs = new List<MeshConfigEntry>();
 			}
 		}
 		
