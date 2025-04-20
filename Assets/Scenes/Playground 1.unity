@@ -919,7 +919,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1762682265}
   defaultGeometry: {fileID: 579727769}
-  renderSet: []
 --- !u!114 &1507590201
 MonoBehaviour:
   m_ObjectHideFlags: 0
