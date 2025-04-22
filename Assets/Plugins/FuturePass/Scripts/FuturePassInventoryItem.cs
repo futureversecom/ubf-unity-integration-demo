@@ -1,6 +1,11 @@
 // Placeholder Copyright Header
 
 using System.IO;
+using Cysharp.Threading.Tasks;
+using EmergenceSDK.Runtime.Types.Inventory;
+using Futureverse.UBF.ExecutionController.Runtime;
+using Futureverse.UBF.Runtime.Utils;
+using GLTFast.Schema;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -13,11 +18,14 @@ namespace Futureverse.FuturePass
 		public FuturePassInventoryItem(InventoryItem inventoryItem)
 		{
 			InventoryItem = inventoryItem;
-			UbfAssetProfile = UbfController.Config.GetProfileForInventoryItem(inventoryItem);
+			//UbfAssetProfile = UbfController.Config.GetProfileForInventoryItem(inventoryItem);
+
+			CoroutineHost.Instance.StartCoroutine(AssetProfile.FetchByAssetId(inventoryItem.ID.Replace(":"+inventoryItem.TokenId,""), inventoryItem.Meta.Name,
+				(profile) => UbfAssetProfile = profile));
 		}
 
 		public InventoryItem InventoryItem { get; }
-		public UbfAssetProfile UbfAssetProfile { get; }
+		public AssetProfile UbfAssetProfile { get; private set; }
 		public Texture2D Image { get; private set; }
 
         /// <summary>

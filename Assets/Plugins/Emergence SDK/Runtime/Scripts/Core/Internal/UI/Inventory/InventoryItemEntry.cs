@@ -78,7 +78,8 @@ namespace EmergenceSDK.Runtime.Internal.UI
         private void Instance_OnImageFailed(string error, long errorCode)
         {
             ItemThumbnail.LoadStaticImage(RequestImage.Instance.DefaultThumbnail);
-            EmergenceLogger.LogWarning(error + " " + errorCode);
+            //EmergenceLogger.LogWarning(error + " " + errorCode);
+            Debug.LogError($"InvItem failed to load image\n{error} : {errorCode}");
         }
         
         public enum ThumbnailType
