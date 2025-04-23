@@ -77,7 +77,7 @@ namespace Futureverse.FuturePass
 
 			await emergenceLoginManager.WaitUntilAvailable();
 
-			await emergenceLoginManager.StartLogin(LoginSettings.EnableFuturepass);
+			await emergenceLoginManager.StartLogin(LoginSettings.EnableCustodialLogin);
 
 			Connected.Invoke();
 		}
