@@ -23,6 +23,7 @@ namespace Futureverse.FuturePass
 		public UnityEvent Connected = new();
 
 		public UnityEvent<string> onLoginSuccess = new();
+		public UnityEvent<LoginExceptionContainer, bool> onLoginFailed = new();
 		private void Start()
 		{
 			EmergenceServiceProvider.Load(ServiceProfile.Futureverse);
@@ -56,6 +57,7 @@ namespace Futureverse.FuturePass
 			}
 
 			OnError(exceptionContainer.Exception.Message, code);
+			onLoginFailed?.Invoke(exceptionContainer, autoRetryOnError);
 		}
 
 		private void OnLoginStepUpdated(LoginManager manager, LoginStep step, StepPhase phase)

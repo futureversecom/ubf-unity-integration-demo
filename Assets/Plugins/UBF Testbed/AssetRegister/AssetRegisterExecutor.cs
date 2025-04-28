@@ -123,12 +123,10 @@ namespace Testbed.AssetRegister
 			return (assetTree, allAssets.ToArray());
 		}
 
-		public void HandleFuturepassLogin(string result)
+		public void EnterWalletAndLoad(string wallet)
 		{
-			var futureService = EmergenceServiceProvider.GetService<IFutureverseService>();
-			var address = futureService.CurrentFuturepassInformation.futurepass;
-			_walletInput.SetTextWithoutNotify(address.Split(":")[^1]);
-			_searchButton.onClick?.Invoke();
+			_walletInput.SetTextWithoutNotify(wallet);
+			OnWalletEntered();
 		}
 	}
 }
