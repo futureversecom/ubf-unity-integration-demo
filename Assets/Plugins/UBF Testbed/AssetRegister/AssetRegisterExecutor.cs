@@ -2,6 +2,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using EmergenceSDK.Runtime;
+using EmergenceSDK.Runtime.Futureverse.Services;
+using EmergenceSDK.Runtime.Services;
 using Futureverse.UBF.ExecutionController.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,6 +55,11 @@ namespace Testbed.AssetRegister
 			if (!success)
 			{
 				// TODO: Set some error text
+				Debug.LogError("Failed to load wallet");
+			}
+			else
+			{
+				Debug.Log($"Wallet loaded with {assets.Length} assets");
 			}
 
 			foreach (var asset in assets)
@@ -113,6 +121,14 @@ namespace Testbed.AssetRegister
 			}
 
 			return (assetTree, allAssets.ToArray());
+		}
+
+		public void HandleFuturepassLogin(string result)
+		{
+			var futureService = EmergenceServiceProvider.GetService<IFutureverseService>();
+			var address = futureService.CurrentFuturepassInformation.futurepass;
+			_walletInput.SetTextWithoutNotify(address.Split(":")[^1]);
+			_searchButton.onClick?.Invoke();
 		}
 	}
 }

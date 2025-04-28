@@ -3,6 +3,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using EmergenceSDK.Runtime;
+using EmergenceSDK.Runtime.Futureverse.Services;
 using EmergenceSDK.Runtime.Services;
 using EmergenceSDK.Runtime.Types;
 using UnityEngine;
@@ -16,27 +17,20 @@ namespace Futureverse.FuturePass
 
 		public bool connectOnStart;
 		public bool autoRetryOnError;
-
-		[Header("Events")]
-		public UnityEvent<Texture2D> PresentQrCode = new();
+		
 
 		public UnityEvent<FuturePassError> Error = new();
 		public UnityEvent Connected = new();
 
-		/*#if UNITY_EDITOR
-				[Header("Editor Testing")]
-				public bool simulateConnection;
-
-				public string simualtedWalletAddress;
-		#endif*/
-
+		public UnityEvent<string> onLoginSuccess = new();
 		private void Start()
 		{
 			EmergenceServiceProvider.Load(ServiceProfile.Futureverse);
 
 			emergenceLoginManager.loginStepUpdatedEvent.AddListener(OnLoginStepUpdated);
 			emergenceLoginManager.loginFailedEvent.AddListener(OnLoginFailed);
-
+			emergenceLoginManager.loginSuccessfulEvent.AddListener(OnLoginSuccess);
+			
 			if (connectOnStart)
 			{
 				Connect()
@@ -44,6 +38,14 @@ namespace Futureverse.FuturePass
 			}
 		}
 
+		private void OnLoginSuccess(LoginManager manager, string result)
+		{
+			var walletService = EmergenceServiceProvider.GetService<IWalletService>();
+			var futureService = EmergenceServiceProvider.GetService<IFutureverseService>();
+			
+			string final = walletService.WalletAddress + "\n\n" + result + "\n\n" + futureService.CurrentFuturepassInformation.futurepass;
+			onLoginSuccess?.Invoke(final);
+		}
 		private void OnLoginFailed(LoginManager manager, LoginExceptionContainer exceptionContainer)
 		{
 			var code = FuturePassError.Code.UndefinedError;
@@ -63,18 +65,14 @@ namespace Futureverse.FuturePass
 				return;
 			}
 
-			if (step != LoginStep.QrCodeRequest)
+			if (step != LoginStep.CustodialRequests)
 			{
 				return;
 			}
-
-			PresentQrCode.Invoke(emergenceLoginManager.CurrentQrCode.Texture);
 		}
 
 		public async UniTaskVoid Connect()
 		{
-			//TODO: optionally connect with spoofed connection
-
 			await emergenceLoginManager.WaitUntilAvailable();
 
 			await emergenceLoginManager.StartLogin(LoginSettings.EnableCustodialLogin);
