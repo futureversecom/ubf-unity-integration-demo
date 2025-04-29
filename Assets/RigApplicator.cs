@@ -4,10 +4,11 @@ using Futureverse.UBF.Runtime;
 using Futureverse.UBF.Runtime.Execution;
 using UnityEngine;
 
+/// <summary>
+/// This class was previously used for retargeting the rig, before MeshConfig was implemented. Now, it is used to disable the existing geometry after the graph has finished execution
+/// </summary>
 public class RigApplicator : MonoBehaviour
 {
-    public Animator animator;
-
     public GameObject defaultGeometry;
     
     public void OnRender(ExecutionResult result)
@@ -17,10 +18,7 @@ public class RigApplicator : MonoBehaviour
             return;
         }
 
-        if (result.BlueprintOutputs.ContainsKey("BodyNode") && result.BlueprintOutputs["BodyNode"] is Transform body) // The root graph contains an output with the name + type we are expecting
-        {
-            defaultGeometry?.SetActive(false);
-        }
+        defaultGeometry.SetActive(false);
     }
 }
 
