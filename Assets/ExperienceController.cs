@@ -7,6 +7,7 @@ using Futureverse.FuturePass;
 using Testbed.AssetRegister;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ExperienceController : MonoBehaviour
@@ -16,6 +17,11 @@ public class ExperienceController : MonoBehaviour
     public FuturePassLoginManager loginManager;
     public GameObject loginRoot;
     public Button loginButton;
+    public Button walletButton;
+    public Button enterWalletButton;
+    public Button resetButton;
+    public TMP_InputField enterWalletInputField;
+    
     public TMP_Text loginText;
 
     public GameObject arRoot;
@@ -25,57 +31,81 @@ public class ExperienceController : MonoBehaviour
     public TMP_Text errorText;
     
     private bool loggedIn = false;
+    private string wallet;
+
+    private void OnEnable()
+    {
+        loginButton.onClick.AddListener(OnLoginClicked);
+        walletButton.onClick.AddListener(OnWalletClicked);
+        enterWalletButton.onClick.AddListener(OnEnterWalletClicked);
+        resetButton.onClick.AddListener(DoReset);
+    }
+
+    private void OnDisable()
+    {
+        loginButton.onClick.RemoveAllListeners();
+        walletButton.onClick.RemoveAllListeners();
+        enterWalletButton.onClick.RemoveAllListeners();
+        resetButton.onClick.RemoveAllListeners();
+    }
+
     private IEnumerator Start()
     {
         backgroundFader.SetActive(true);
         loginRoot.SetActive(true);
-
+        
+        // Wait for futurepass or wallet login
+        
         while (!loggedIn)
         {
-            bool btnClicked = false;
-            loginButton.onClick.AddListener(() => btnClicked = true);
-            yield return new WaitUntil(() => btnClicked);
-
-            loginText.text = "Connecting...\n";
-            
-            loginManager.Connect()
-                .Forget();
-
-            bool loginEvent = false;
-            bool loginSuccess = false;
-            
-            loginManager.onLoginSuccess?.AddListener((_) =>
-            {
-                loginEvent = true;
-                loginSuccess = true;
-                loginText.text += "Logged in!";
-            });
-            
-            loginManager.onLoginFailed?.AddListener((errorContainer,_) =>
-            {
-                loginEvent = true;
-                loginSuccess = false;
-                loginText.text += "Failed to login!\n";
-                loginText.text += errorContainer.Exception.Message + '\n';
-            });
-            
-            while (!loginEvent)
-            {
-                yield return null;
-            }
-
-            if (loginSuccess)
-            {
-                loggedIn = true;
-            }
+            yield return null;
         }
+        
         loginRoot.SetActive(false);
         backgroundFader.SetActive(false);
         arRoot.SetActive(true);
         arUI.SetActive(true);
+        arExecutor.EnterWalletAndLoad(wallet);
+    }
+
+    void OnLoginClicked()
+    {
+        loginText.text = "Connecting...\n";
+            
+        loginManager.Connect()
+            .Forget();
         
-        var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
-        var fp = fvService.CurrentFuturepassInformation.futurepass.Split(":")[^1];
-        arExecutor.EnterWalletAndLoad(fp);
+        loginManager.onLoginSuccess?.AddListener((_) =>
+        {
+            loginText.text += "Logged in!";
+            
+            var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
+            var fp = fvService.CurrentFuturepassInformation.futurepass.Split(":")[^1];
+            wallet = fp;
+                
+            loggedIn = true;
+        });
+            
+        loginManager.onLoginFailed?.AddListener((errorContainer,_) =>
+        {
+            loginText.text += "Failed to login!\n";
+            loginText.text += errorContainer.Exception.Message + '\n';
+        });
+    }
+
+    void OnWalletClicked()
+    {
+        enterWalletInputField.gameObject.SetActive(true);
+    }
+
+    void OnEnterWalletClicked()
+    {
+        wallet = enterWalletInputField.text;
+        loggedIn = true;
+    }
+
+    void DoReset()
+    {
+        SceneManager.LoadScene(0);
     }
 }
