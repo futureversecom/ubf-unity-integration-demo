@@ -22,7 +22,8 @@ namespace Testbed.AssetRegister
 		[SerializeField] private RectTransform _assetGrid;
 
 		private Dictionary<string, InventoryNode> _inventoryNodes = new();
-		
+
+		public bool useFuturepassEnvironmentURI;
 		private void Start()
 		{
 			_searchButton.onClick.AddListener(OnWalletEntered);
@@ -41,13 +42,29 @@ namespace Testbed.AssetRegister
 			{
 				Destroy(child.gameObject);
 			}
+
+			if (useFuturepassEnvironmentURI)
+			{
+				var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
+				var uri = fvService.GetArApiUrl();
+				StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
+					_walletInput.text,
+					_collectionIds,
+					_numResults,
+					OnWalletsLoaded,
+					uri
+				));
+			}
+			else
+			{
+				StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
+					_walletInput.text,
+					_collectionIds,
+					_numResults,
+					OnWalletsLoaded
+				));
+			}
 			
-			StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
-				_walletInput.text,
-				_collectionIds,
-				_numResults,
-				OnWalletsLoaded
-			));
 		}
 
 		private void OnWalletsLoaded(bool success, InventoryNode[] assets)
