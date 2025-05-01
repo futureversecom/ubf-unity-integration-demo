@@ -17,15 +17,7 @@ namespace Testbed.AssetRegister
 	{
     private static readonly Dictionary<string, InventoryNode[]> s_walletQueryResultCache = new();
     private const string QueryUri = "https://ar-api.futureverse.app/graphq";
-    /*
-     return FutureverseSingleton.Instance.Environment switch
-      {
-          EmergenceEnvironment.Production => "https://ar-api.futureverse.app/graphql",
-          EmergenceEnvironment.Development => "https://ar-api.futureverse.dev/graphql",
-          EmergenceEnvironment.Staging => "https://ar-api.futureverse.cloud/graphql",
-          _ => throw new ArgumentOutOfRangeException()
-      };
-     */
+
     public static IEnumerator InventoryQueryRoutine(string walletAddress, string[] collectionIds, int numResults, Action<bool, InventoryNode[]> callback, string uri = QueryUri)
     {
       if (s_walletQueryResultCache.TryGetValue(walletAddress, out var nodes))

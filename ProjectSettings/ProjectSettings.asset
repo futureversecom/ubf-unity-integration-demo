@@ -738,7 +738,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: STARTER_ASSETS_PACKAGES_CHECKED;UNIGLTF_DISABLE_DEFAULT_GLTF_IMPORTER
+    Standalone: STARTER_ASSETS_PACKAGES_CHECKED;UNIGLTF_DISABLE_DEFAULT_GLTF_IMPORTER;UNIGLTF_DISABLE_DEFAULT_GLB_IMPORTER
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

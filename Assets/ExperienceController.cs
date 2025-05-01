@@ -10,82 +10,110 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Custom editor to add label to inspector
+#if UNITY_EDITOR
+using UnityEditor;
+
+[CustomEditor(typeof(ExperienceController))]
+public class ExperienceControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        EditorGUILayout.HelpBox("This script controls the UX flow for this demo, including login and rendering procedures.", MessageType.Info);
+        EditorGUILayout.Space();
+        base.OnInspectorGUI();
+    }
+}
+#endif
+
 public class ExperienceController : MonoBehaviour
 {
+    [Header("General")]
     public GameObject backgroundFader;
         
-    public FuturePassLoginManager loginManager;
-    public GameObject loginRoot;
-    public Button loginButton;
-    public Button walletButton;
-    public Button enterWalletButton;
-    public Button resetButton;
-    public TMP_InputField enterWalletInputField;
-    
-    public TMP_Text loginText;
+    [Header("Login")]
+    public FuturePassLoginManager loginManager; // Controls custodial authentication process
+    public GameObject loginRoot; // Highest object in hierarchy that contains UI resources for login (aka first screen)
+    public Button loginButton; // Starts custodial auth
+    public Button walletButton; // Opens the input field to enter futurepass wallet
+    public Button enterWalletButton; // Submits input field value as wallet
+    public Button resetButton; // Restart the scene (useful for starting fresh without restarting app)
+    public TMP_InputField enterWalletInputField; // Takes user input for wallet
+    public TMP_Text loginText; // Displays login status (aka connecting text)
 
-    public GameObject arRoot;
-    public GameObject arUI;
-    public AssetRegisterExecutor arExecutor;
+    [Header("Rendering")]
+    public GameObject arRoot; // Player controller root (aka Armature)
+    public GameObject arUI; // Root of grid UI used to render player assets
+    public AssetRegisterExecutor arExecutor; // Futureverse tool for executing UBF graphs from an asset registry query
     
-    public TMP_Text errorText;
-    
-    private bool loggedIn = false;
+    private bool loggedIn;
     private string wallet;
 
-    private void OnEnable()
-    {
-        loginButton.onClick.AddListener(OnLoginClicked);
-        walletButton.onClick.AddListener(OnWalletClicked);
-        enterWalletButton.onClick.AddListener(OnEnterWalletClicked);
-        resetButton.onClick.AddListener(DoReset);
-    }
+    #region UI Event Subscriptions
 
-    private void OnDisable()
-    {
-        loginButton.onClick.RemoveAllListeners();
-        walletButton.onClick.RemoveAllListeners();
-        enterWalletButton.onClick.RemoveAllListeners();
-        resetButton.onClick.RemoveAllListeners();
-    }
+        private void OnEnable()
+        {
+            loginButton.onClick.AddListener(OnLoginClicked);
+            walletButton.onClick.AddListener(OnWalletClicked);
+            enterWalletButton.onClick.AddListener(OnEnterWalletClicked);
+            resetButton.onClick.AddListener(DoReset);
+        }
 
+        private void OnDisable()
+        {
+            loginButton.onClick.RemoveAllListeners();
+            walletButton.onClick.RemoveAllListeners();
+            enterWalletButton.onClick.RemoveAllListeners();
+            resetButton.onClick.RemoveAllListeners();
+        }
+
+    #endregion
+    
     private IEnumerator Start()
     {
+        // Ensure that required objects are active, including buttons required to login
         backgroundFader.SetActive(true);
         loginRoot.SetActive(true);
         
         // Wait for futurepass or wallet login
-        
         while (!loggedIn)
         {
             yield return null;
         }
         
+        // Once logged in, disable login screen and enable rendering UI
         loginRoot.SetActive(false);
         backgroundFader.SetActive(false);
         arRoot.SetActive(true);
         arUI.SetActive(true);
+        
+        // Populate asset grid from wallet assets
         arExecutor.EnterWalletAndLoad(wallet);
     }
 
-    void OnLoginClicked()
+    private void OnLoginClicked()
     {
         loginText.text = "Connecting...\n";
             
+        // Start custodial authentication process
         loginManager.Connect()
             .Forget();
         
+        // If success, save wallet and flag state
         loginManager.onLoginSuccess?.AddListener((_) =>
         {
             loginText.text += "Logged in!";
             
             var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
-            var fp = fvService.CurrentFuturepassInformation.futurepass.Split(":")[^1];
+            
+            // Assume ROOT network, so discard network identifiers and just use wallet address
+            var fp = fvService.CurrentFuturepassInformation.futurepass.Split(":")[^1]; 
             wallet = fp;
                 
             loggedIn = true;
         });
             
+        // If fail, inform user, but no other action required (they can just click login again)
         loginManager.onLoginFailed?.AddListener((errorContainer,_) =>
         {
             loginText.text += "Failed to login!\n";
@@ -93,18 +121,21 @@ public class ExperienceController : MonoBehaviour
         });
     }
 
-    void OnWalletClicked()
+    // Open the wallet entry UI
+    private void OnWalletClicked()
     {
         enterWalletInputField.gameObject.SetActive(true);
     }
 
-    void OnEnterWalletClicked()
+    // Set wallet address from input field and flag state
+    private void OnEnterWalletClicked()
     {
         wallet = enterWalletInputField.text;
         loggedIn = true;
     }
 
-    void DoReset()
+    // Restart scene for fresh state
+    private void DoReset()
     {
         SceneManager.LoadScene(0);
     }
