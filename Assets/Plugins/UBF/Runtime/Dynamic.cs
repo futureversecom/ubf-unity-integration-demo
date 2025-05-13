@@ -469,7 +469,7 @@ namespace Futureverse.UBF.Runtime
 			throw new InvalidCastException();
 		}
 
-		internal static Dynamic From(object value)
+		public static Dynamic From(object value)
 		{
 			switch (value)
 			{

@@ -48,7 +48,7 @@ namespace Futureverse.UBF.Runtime
 		/// <param name="value">The retrieved value of the input.</param>
 		/// <returns>Whether the input was retrieved successfully.</returns>
 		protected bool TryRead(string key, out Dynamic value)
-			=> NodeContext.ExecutionContext.TryReadInput(NodeContext.NodeId, key, out value);
+			=> NodeContext.ExecutionContext.TryReadInput(NodeContext.NodeId, key, NodeContext.ScopeId, out value);
 
 		/// <summary>
 		/// Attempt to retrieve an input from this node and interpret the Dynamic data as a specific type.
@@ -58,7 +58,7 @@ namespace Futureverse.UBF.Runtime
 		/// <typeparam name="T">The type to try to cast the input's dynamic data to.</typeparam>
 		/// <returns>Whether the input was retrieved successfully.</returns>
 		protected bool TryRead<T>(string key, out T value)
-			=> NodeContext.ExecutionContext.TryReadInput(NodeContext.NodeId, key, out value);
+			=> NodeContext.ExecutionContext.TryReadInput(NodeContext.NodeId, key, NodeContext.ScopeId, out value);
 
 		/// <summary>
 		/// Attempt to retrieve an array input from this node and interpret the inner dynamic data as a specific type.
@@ -68,7 +68,7 @@ namespace Futureverse.UBF.Runtime
 		/// <typeparam name="T">The inner type to try to cast the array's dynamic data to.</typeparam>
 		/// <returns>Whether the input was retrieved successfully.</returns>
 		protected bool TryReadArray<T>(string key, out List<T> value)
-			=> NodeContext.ExecutionContext.TryReadArrayInput(NodeContext.NodeId, key, out value);
+			=> NodeContext.ExecutionContext.TryReadArrayInput(NodeContext.NodeId, key, NodeContext.ScopeId, out value);
 
 		/// <summary>
 		/// Assign an output for this node.

@@ -31,7 +31,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			if (!TryRead<RuntimeMeshConfig>("Config", out var runtimeConfig))
 			{
-				Debug.Log("[SpawnMesh] Failed to get input 'Config'");
+				Debug.LogError("[SpawnMesh] Failed to get input 'Config'");
 			}
 
 			GltfImport gltfResource = null;
@@ -52,7 +52,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			var glbReference = parent.gameObject.AddComponent<GLBReference>();
 			glbReference.GLTFImport = gltfResource;
-			
+
 			var instantiator = new GameObjectInstantiator(gltfResource, parent);
 			var renderersArray = Dynamic.Array();
 			var sceneNodesArray = Dynamic.Array();
@@ -90,19 +90,19 @@ namespace Futureverse.UBF.Runtime.Builtin
 			yield return null;
 			yield return null;
 
-			if (runtimeConfig != null)
+			if (runtimeConfig != null && runtimeConfig.RuntimeObject != null && skinnedMeshes.Count > 0)
 			{
-				foreach (var renderer in skinnedMeshes)
-				{
-					Debug.Log($"Retargeting {renderer.name} with spawned config {runtimeConfig.Config.name}");
-					RigUtilities.RetargetRig(runtimeConfig.RuntimeObject.transform, renderer);
-				}
-				
-				var animator = glbReference.GetComponentInParent<Animator>(includeInactive: true);
-				if (animator != null && runtimeConfig.Config.avatar != null)
-				{
-					animator.avatar = runtimeConfig.Config.avatar;
-				}
+			 	foreach (var renderer in skinnedMeshes)
+			 	{
+			 		Debug.Log($"Retargeting {renderer.name} with spawned config {runtimeConfig.Config.name}");
+			 		RigUtilities.RetargetRig(runtimeConfig.RuntimeObject.transform, renderer);
+			 	}
+			    
+			    var animator = glbReference.GetComponentInParent<Animator>(includeInactive: true);
+			    if (animator != null && runtimeConfig.Config.avatar != null)
+			    {
+				    animator.avatar = runtimeConfig.Config.avatar;
+			    }
 			}
 			WriteOutput("Renderers", renderersArray);
 			WriteOutput("Scene Nodes", sceneNodesArray);

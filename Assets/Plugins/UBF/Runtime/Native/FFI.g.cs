@@ -42,11 +42,17 @@ namespace Futureverse.UBF.Runtime.Native.FFI
         public static extern void graph_iter_outputs(GraphInstance* graph, nint context, graph_iter_outputs_iterator_delegate iterator);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void graph_execute_on_node_complete_delegate(Dynamic* arg1, uint arg2);
+        public delegate void graph_execute_on_graph_complete_delegate(Dynamic* arg1);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void graph_execute_on_node_complete_delegate(byte* arg1, int arg2, uint arg3, Dynamic* arg4);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void graph_execute_on_node_start_delegate(byte* arg1, int arg2, uint arg3, Dynamic* arg4);
 
         /// <summary>Execute the UBF Graph.</summary>
         [DllImport(__DllName, EntryPoint = "graph_execute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern ArcExecutionContext* graph_execute(GraphInstance* graph, Dynamic* inputs, Dynamic* context_data, graph_execute_on_node_complete_delegate on_node_complete);
+        public static extern ArcExecutionContext* graph_execute(GraphInstance* graph, Dynamic* inputs, Dynamic* context_data, ushort* graph_label, int graph_label_len, graph_execute_on_graph_complete_delegate on_graph_complete, graph_execute_on_node_complete_delegate on_node_complete, graph_execute_on_node_start_delegate on_node_start);
 
         /// <summary>Free graph</summary>
         [DllImport(__DllName, EntryPoint = "graph_release", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -76,7 +82,7 @@ namespace Futureverse.UBF.Runtime.Native.FFI
 
         [DllImport(__DllName, EntryPoint = "ctx_read_input", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool ctx_read_input(ArcExecutionContext* execution_context, ushort* node_id, int node_id_len, ushort* port_key, int port_key_len, Dynamic** @out);
+        public static extern bool ctx_read_input(ArcExecutionContext* execution_context, ushort* node_id, int node_id_len, ushort* port_key, int port_key_len, uint scope, Dynamic** @out);
 
         [DllImport(__DllName, EntryPoint = "ctx_get_context_data", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern Dynamic* ctx_get_context_data(ArcExecutionContext* execution_context);

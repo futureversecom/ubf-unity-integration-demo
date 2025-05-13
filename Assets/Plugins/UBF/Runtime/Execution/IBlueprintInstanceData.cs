@@ -28,7 +28,7 @@ namespace Futureverse.UBF.Runtime.Execution
 	{
 		public string ResourceId { get; }
 		public string InstanceId { get; }
-		public Dictionary<string, object> Inputs { get; } = new();
+		public Dictionary<string, object> Inputs { get; set; } = new();
 		
 		/// <summary>
 		/// Assigns a Resource ID and a new GUID as the Instance ID.
@@ -39,6 +39,12 @@ namespace Futureverse.UBF.Runtime.Execution
 			ResourceId = resourceId;
 			InstanceId = Guid.NewGuid()
 				.ToString();
+		}
+		
+		public BlueprintInstanceData(string resourceId, string instanceId)
+		{
+			ResourceId = resourceId;
+			InstanceId = instanceId;
 		}
 
 		/// <summary>

@@ -28,12 +28,19 @@ namespace Futureverse.UBF.Runtime.Resources
 	{
 		public IEnumerator DownloadBytes(string uri, Action<byte[]> onComplete)
 		{
-			var request = UnityWebRequest.Get(uri);
+			var normalizedUri = UriUtils.NormalizeUri(uri);
+			if (normalizedUri == null)
+			{
+				onComplete?.Invoke(null);
+				yield break;
+			}
+				
+			var request = UnityWebRequest.Get(normalizedUri);
 			yield return request.SendWebRequest();
 
 			if (request.result != UnityWebRequest.Result.Success)
 			{
-				Debug.LogError($"Failed to download.\nURI: {uri}\nResult: {request.responseCode} - {request.result}");
+				Debug.LogError($"Failed to download.\nURI: {normalizedUri}\nResult: {request.responseCode} - {request.result}");
 
 				onComplete?.Invoke(null);
 				yield break;

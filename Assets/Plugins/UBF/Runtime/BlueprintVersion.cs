@@ -161,7 +161,7 @@ namespace Futureverse.UBF.Runtime
 
 	internal static class GraphVersionUtils
 	{
-		public const string MinSupportedStandardVersion = "0.2.0";
+		public const string MinSupportedStandardVersion = "0.0.0";
 		public const string MaxSupportedStandardVersion = "0.2.0";
 		
 		[JsonObject]

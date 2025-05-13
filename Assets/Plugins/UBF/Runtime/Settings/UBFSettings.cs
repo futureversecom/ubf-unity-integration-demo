@@ -12,7 +12,7 @@ namespace Futureverse.UBF.Runtime.Settings
 {
 	public class UBFSettings : ScriptableObject
 	{
-		private const string MyCustomSettingsPath = "Assets/Settings/UBF.asset";
+		private const string MyCustomSettingsPath = "Assets/Resources/UBF.asset";
 
 		[SerializeField] private Material _decalOpaque;
 		[SerializeField] private Material _decalTransparent;
@@ -60,10 +60,17 @@ namespace Futureverse.UBF.Runtime.Settings
 			AssetDatabase.CreateAsset(settings, MyCustomSettingsPath);
 			AssetDatabase.SaveAssets();
 			return settings;
+#else
+			var settings = UnityEngine.Resources.Load<UBFSettings>("UBF");
+			if (settings != null)
+			{
+				return settings;
+			}
 #endif
 #pragma warning disable CS0162
 			return null;
 #pragma warning restore CS0162
+			
 		}
 
 		private void OnEnable()

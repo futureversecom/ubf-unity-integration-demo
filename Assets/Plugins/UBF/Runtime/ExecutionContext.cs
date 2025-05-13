@@ -43,13 +43,24 @@ namespace Futureverse.UBF.Runtime
 			public readonly string InstanceId;
 			public HashSet<uint> PendingScopeIDs { get; } = new();
 			public readonly IExecutionConfig ExecutionConfig;
-			public readonly Action OnComplete;
 
-			public ContextData(string instanceId, IExecutionConfig executionConfig, Action onComplete)
+			public readonly Action OnGraphComplete;
+			public readonly Action</* node id: */ string, /* scope id: */ uint> OnNodeStart;
+			public readonly Action</* node id: */ string,  /* scope id: */ uint> OnNodeComplete;
+
+			public ContextData(
+				string instanceId,
+				IExecutionConfig executionConfig,
+				Action onGraphComplete,
+				Action<string, uint> onNodeStart = null,
+				Action<string, uint> onNodeComplete = null
+			)
 			{
 				InstanceId = instanceId;
 				ExecutionConfig = executionConfig;
-				OnComplete = onComplete;
+				OnGraphComplete = onGraphComplete;
+				OnNodeStart = onNodeStart ?? ((_, _) => { });
+				OnNodeComplete = onNodeComplete ?? ((_, _) => { });
 			}
 		}
 
@@ -72,9 +83,9 @@ namespace Futureverse.UBF.Runtime
 		/// <param name="value">The resulting value retrieved from the Blueprint.</param>
 		/// <typeparam name="T">The type of the input to retrieve.</typeparam>
 		/// <returns>Whether the input was found on the node.</returns>
-		internal bool TryReadInput<T>(string nodeId, string portKey, out T value)
+		internal bool TryReadInput<T>(string nodeId, string portKey, uint scope, out T value)
 		{
-			if (TryReadInput(nodeId, portKey, out var dynamic))
+			if (TryReadInput(nodeId, portKey, scope, out var dynamic))
 			{
 				return dynamic.TryInterpretAs(out value);
 			}
@@ -91,9 +102,9 @@ namespace Futureverse.UBF.Runtime
 		/// <param name="value">The resulting list value retrieved from the Blueprint.</param>
 		/// <typeparam name="T">The type of the input to retrieve.</typeparam>
 		/// <returns>Whether the input was found on the node.</returns>
-		internal bool TryReadArrayInput<T>(string nodeId, string portKey, out List<T> value)
+		internal bool TryReadArrayInput<T>(string nodeId, string portKey, uint scope, out List<T> value)
 		{
-			if (TryReadInput(nodeId, portKey, out var dynamic))
+			if (TryReadInput(nodeId, portKey, scope, out var dynamic))
 			{
 				return dynamic.TryReadArray(out value);
 			}
@@ -129,7 +140,7 @@ namespace Futureverse.UBF.Runtime
 			return false;
 		}
 
-		internal bool TryReadInput(string nodeId, string portKey, out Dynamic value)
+		internal bool TryReadInput(string nodeId, string portKey, uint scope, out Dynamic value)
 		{
 			fixed (char* nodeIdUtf16 = nodeId, portKeyUtf16 = portKey)
 			{
@@ -140,6 +151,7 @@ namespace Futureverse.UBF.Runtime
 					nodeId.Length,
 					(ushort*)portKeyUtf16,
 					portKey.Length,
+					scope,
 					&dynamic
 				))
 				{

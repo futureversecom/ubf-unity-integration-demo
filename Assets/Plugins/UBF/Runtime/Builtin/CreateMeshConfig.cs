@@ -26,19 +26,26 @@ namespace Futureverse.UBF.Runtime.Builtin
 				return;
 			}
 
-			var configEntry = UBFSettings.GetOrCreateSettings()
-				.MeshConfigs.FirstOrDefault(x => x.Key == configKey);
+			var settings = UBFSettings.GetOrCreateSettings();
+			if (settings == null)
+			{
+				Debug.LogWarning("Unable to read UBF settings");
+				TriggerNext();
+				return;
+			}
+			var configEntry = settings
+				.MeshConfigs?.FirstOrDefault(x => x.Key == configKey);
 
 			RuntimeMeshConfig runtimeConfig = null;
-			if (configEntry != null)
+			if (configEntry != null && configEntry.Config != null && configEntry.Config.RigPrefab != null)
 			{
-				Debug.Log("Found ConfigOverrideKey: " + configEntry.Key);
-				Debug.Log("Spawning RigPrefab: " + configEntry.Config.RigPrefab.name);
+				//Debug.Log("Found ConfigOverrideKey: " + configEntry.Key);
+				//Debug.Log("Spawning RigPrefab: " + configEntry.Config.RigPrefab.name);
 				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
 				runtimeConfig = new RuntimeMeshConfig()
 				{
 					Config = configEntry.Config,
-					RuntimeObject = spawnedRig
+					RuntimeObject = spawnedRig,
 				};
 			}
 

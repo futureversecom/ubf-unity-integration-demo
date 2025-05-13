@@ -196,51 +196,122 @@ namespace Futureverse.UBF.Runtime
 			}
 		}
 
-		internal ExecutionContext Execute(IExecutionConfig executionConfig, Action onComplete = null)
+		internal ExecutionContext Execute(
+			IExecutionConfig executionConfig,
+			string graphLabel = null,
+			Action onGraphComplete = null,
+			Action<string, uint> onNodeStart = null,
+			Action<string, uint> onNodeComplete = null)
 		{
 			var dynamicInputs = Dynamic.From(_variables);
-			var contextData = new ExecutionContext.ContextData(InstanceId, executionConfig, onComplete);
-
-			return new ExecutionContext(
-				Calls.graph_execute(
-					_nativePtr,
-					dynamicInputs.NativePtr,
-					Dynamic.Foreign(contextData)
-						.NativePtr,
-					OnNodeComplete
-				),
-				contextData
+			var contextData = new ExecutionContext.ContextData(
+				InstanceId,
+				executionConfig,
+				onGraphComplete: onGraphComplete,
+				onNodeStart: onNodeStart,
+				onNodeComplete: onNodeComplete
 			);
+
+			fixed (char* p = graphLabel ?? "")
+			{
+				return new ExecutionContext(
+					Calls.graph_execute(
+						_nativePtr,
+						dynamicInputs.NativePtr,
+						Dynamic.Foreign(contextData).NativePtr,
+						(ushort*)p, graphLabel?.Length ?? 0,
+						on_graph_complete: OnGraphComplete,
+						on_node_complete: OnNodeComplete,
+						on_node_start: OnNodeStart
+					),
+					contextData
+				);
+			}
 		}
 
 		[MonoPInvokeCallback(typeof(Calls.graph_execute_on_node_complete_delegate))]
-		private static void OnNodeComplete(Native.FFI.Dynamic* userDataPtr, uint scope)
+		private static void OnGraphComplete(Native.FFI.Dynamic* userDataPtr)
 		{
 			var userDataRaw = new Dynamic(userDataPtr);
 			if (userDataRaw.TryDeref<ExecutionContext.ContextData>(out var ctxUserData))
 			{
-				ctxUserData.PendingScopeIDs.Remove(scope);
-
 				// we must try/catch here as throwing in native callbacks is undefined behavior
 				try
 				{
-					// TODO make this more robust (0 = initial scope = entry scope.)
-					// perhaps the rust interpreter should fire off a special event for
-					// this so that 0 can remain an implementation detail!
-					if (scope == RootScope) {
-						ctxUserData.OnComplete.Invoke();
-					}
+					ctxUserData.OnGraphComplete.Invoke();
 				}
 				catch (Exception e)
 				{
-					Debug.LogError("Exception in OnComplete callback: " + e);
+					Debug.LogError("Exception in OnGraphComplete callback: " + e);
 				}
 			}
 			else
 			{
 				// TODO this should never happen; report this.
 				Debug.LogError(
-					"Failed to deref user data from graph execution context. OnComplete callback will not be called."
+					"Failed to deref user data from graph execution context. OnGraphComplete callback will not be called."
+				);
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(Calls.graph_execute_on_node_complete_delegate))]
+		private static void OnNodeComplete(
+			byte* nodeIdUtf8,
+			int nodeIdLen,
+			uint scopeId,
+			Native.FFI.Dynamic* userDataPtr)
+		{
+			var userDataRaw = new Dynamic(userDataPtr);
+			if (userDataRaw.TryDeref<ExecutionContext.ContextData>(out var ctxUserData))
+			{
+				// we must try/catch here as throwing in native callbacks is undefined behavior
+				try
+				{
+					var nodeId = Encoding.UTF8.GetString(nodeIdUtf8, nodeIdLen);
+					ctxUserData.OnNodeComplete.Invoke(nodeId, scopeId);
+				}
+				catch (Exception e)
+				{
+					Debug.LogError("Exception in OnNodeComplete callback: " + e);
+				}
+			}
+			else
+			{
+				// TODO this should never happen; report this.
+				Debug.LogError(
+					"Failed to deref user data from graph execution context. OnNodeComplete callback will not be called."
+				);
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(Calls.graph_execute_on_node_start_delegate))]
+		private static void OnNodeStart(
+			byte* nodeIdUtf8,
+			int nodeIdLen,
+			uint scopeId,
+			Native.FFI.Dynamic* userDataPtr)
+		{
+			var userDataRaw = new Dynamic(userDataPtr);
+			if (userDataRaw.TryDeref<ExecutionContext.ContextData>(out var ctxUserData))
+			{
+				ctxUserData.PendingScopeIDs.Remove(scopeId);
+
+				// we must try/catch here as throwing in native callbacks is undefined behavior
+				try
+				{
+					var nodeId = Encoding.UTF8.GetString(nodeIdUtf8, nodeIdLen);
+					ctxUserData.OnNodeStart.Invoke(nodeId, scopeId);
+				}
+				catch (Exception e)
+				{
+					Debug.LogError("Exception in OnNodeStart callback: " + e);
+				}
+			}
+			else
+			{
+				// TODO this should never happen; report this.
+				Debug.LogError(
+					"Failed to deref user data from graph execution context. OnNodeStart callback will not be called."
 				);
 			}
 		}
@@ -248,9 +319,13 @@ namespace Futureverse.UBF.Runtime
 
 	public class BlueprintExecutionTask : CustomYieldInstruction
 	{
-		public BlueprintExecutionTask(Blueprint blueprint, IExecutionConfig executionConfig)
+		public BlueprintExecutionTask(Blueprint blueprint, IExecutionConfig executionConfig, string graphLabel = null)
 		{
-			ExecutionContext = blueprint.Execute(executionConfig, () => { _isDone = true; });
+			ExecutionContext = blueprint.Execute(
+				executionConfig,
+				graphLabel: graphLabel,
+				onGraphComplete: () => { _isDone = true; }
+			);
 		}
 
 		private bool _isDone;
