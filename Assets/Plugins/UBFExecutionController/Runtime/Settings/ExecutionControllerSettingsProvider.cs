@@ -22,6 +22,7 @@ namespace Futureverse.UBF.ExecutionController.Runtime.Settings
 					EditorGUI.BeginChangeCheck();
 					var settings = ExecutionControllerSettings.GetSerializedSettings();
 					EditorGUILayout.PropertyField(settings.FindProperty("_assetProfilesPath"));
+					EditorGUILayout.PropertyField(settings.FindProperty("_supportedVariants"));
 					if (EditorGUI.EndChangeCheck())
 					{
 						settings.ApplyModifiedProperties();

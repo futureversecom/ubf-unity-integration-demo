@@ -1,12 +1,13 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Linq;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class PlayAnimation : ACustomNode
+	public class PlayAnimation : ACustomExecNode
 	{
 		public PlayAnimation(Context context) : base(context) { }
 
@@ -14,30 +15,25 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<Transform>("Animator", out var animator))
 			{
-				Debug.LogError("No animator supplied to PlayAnimation");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] Could not find input \"Animator\"");
 				return;
 			}
 
 			if (!animator.TryGetComponent<GLBReference>(out var glbRef) || glbRef.GLTFImport == null)
 			{
-				Debug.LogError("No GLB Reference on animator, or invalid GLTFImport object");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] No GLB Reference on animator, or invalid GLTFImport object");
 				return;
 			}
 
 			if (!animator.TryGetComponent<Animation>(out var anim))
 			{
-				Debug.LogError("No animation component on animator");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] No Animation component on animator");
 				return;
 			}
-
-			TryRead<string>("Animation Name", out var animName);
-			if (string.IsNullOrEmpty(animName))
+			
+			if (!TryRead<string>("Animation Name", out var animName) || string.IsNullOrEmpty(animName))
 			{
-				Debug.LogError("Null animation name supplied to PlayAnimation");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] Could not find input \"Animation Name\"");
 				return;
 			}
 
@@ -45,26 +41,22 @@ namespace Futureverse.UBF.Runtime.Builtin
 			var clips = glb.GetAnimationClips();
 			if (clips == null || clips.Length == 0)
 			{
-				Debug.LogError("No valid clips to run on GLB");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] No valid clips to run on GLB");
 				return;
 			}
 
 			var clip = clips.FirstOrDefault(x => x.name == animName);
 			if (clip == null)
 			{
-				Debug.LogError("No matching clip on GLB");
-				TriggerNext();
+				UbfLogger.LogError("[PlayAnimation] No matching clip on GLB");
 				return;
 			}
 
-			TryRead<bool>("Loop?", out var doLoop);
-			anim.wrapMode = doLoop ? WrapMode.Loop : WrapMode.Default;
+			anim.wrapMode = TryRead<bool>("Loop?", out var doLoop) && doLoop ? WrapMode.Loop : WrapMode.Default;
 			anim.clip = clip;
 			anim.Play();
 
-			WriteOutput("Clip Time", Dynamic.Float(clip.length));
-			TriggerNext();
+			WriteOutput("Clip Time", clip.length);
 		}
 	}
 }

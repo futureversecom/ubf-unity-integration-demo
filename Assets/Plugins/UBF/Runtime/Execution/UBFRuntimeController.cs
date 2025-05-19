@@ -62,7 +62,7 @@ namespace Futureverse.UBF.Runtime.Execution
 		}
 
 		/// <summary>
-		/// Clear all GameObjects that were created by UBF Blueprint executions
+		/// Clear all GameObjects that were created by UBF Blueprint executions, and clean up resources
 		/// </summary>
 		public void DestroyChildObjects()
 		{
@@ -70,6 +70,8 @@ namespace Futureverse.UBF.Runtime.Execution
 			{
 				Destroy(child.gameObject);
 			}
+
+			UnityEngine.Resources.UnloadUnusedAssets();
 		}
 	}
 }

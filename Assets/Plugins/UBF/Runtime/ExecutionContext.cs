@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using AOT;
 using Futureverse.UBF.Runtime.Execution;
 using Futureverse.UBF.Runtime.Native.FFI;
+
+[assembly: InternalsVisibleTo("com.futureverse.ubf.tests.0.2.0")]
 
 namespace Futureverse.UBF.Runtime
 {
@@ -74,15 +77,7 @@ namespace Futureverse.UBF.Runtime
 		{
 			Calls.ctx_complete_node(NativePtr, scopeId);
 		}
-
-		/// <summary>
-		/// Attempt to retrieve a node input from the runtime Blueprint.
-		/// </summary>
-		/// <param name="nodeId">ID of the node to get the input from.</param>
-		/// <param name="portKey">The name of the input to retrieve.</param>
-		/// <param name="value">The resulting value retrieved from the Blueprint.</param>
-		/// <typeparam name="T">The type of the input to retrieve.</typeparam>
-		/// <returns>Whether the input was found on the node.</returns>
+		
 		internal bool TryReadInput<T>(string nodeId, string portKey, uint scope, out T value)
 		{
 			if (TryReadInput(nodeId, portKey, scope, out var dynamic))
@@ -93,15 +88,7 @@ namespace Futureverse.UBF.Runtime
 			value = default(T);
 			return false;
 		}
-
-		/// <summary>
-		/// Attempt to retrieve an array input of a node from the runtime Blueprint.
-		/// </summary>
-		/// <param name="nodeId">ID of the node to get the input from.</param>
-		/// <param name="portKey">The name of the input to retrieve.</param>
-		/// <param name="value">The resulting list value retrieved from the Blueprint.</param>
-		/// <typeparam name="T">The type of the input to retrieve.</typeparam>
-		/// <returns>Whether the input was found on the node.</returns>
+		
 		internal bool TryReadArrayInput<T>(string nodeId, string portKey, uint scope, out List<T> value)
 		{
 			if (TryReadInput(nodeId, portKey, scope, out var dynamic))
@@ -113,12 +100,6 @@ namespace Futureverse.UBF.Runtime
 			return false;
 		}
 		
-		/// <summary>
-		/// Attempt to retrieve an output from the runtime Blueprint.
-		/// </summary>
-		/// <param name="bindingId">The ID of the output binding to retrieve.</param>
-		/// <param name="value">The resulting output value.</param>
-		/// <returns>Whether an output value was successfully retrieved.</returns>
 		internal bool TryReadOutput(string bindingId, out Dynamic value)
 		{
 			fixed (char* bindingIdUtf16 = bindingId)

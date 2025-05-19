@@ -12,9 +12,6 @@ using UnityEngine;
 
 namespace Futureverse.UBF.ExecutionController.Runtime
 {
-	// Asset Profile JSON format -   Asset Name,        Variant Name,      Version
-	using AssetProfiles = Dictionary<string, Dictionary<string, Dictionary<string, AssetProfile.AssetProfileData>>>;
-
 	public class AssetProfile
 	{
 		[JsonObject]
@@ -30,28 +27,45 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			public readonly string ParsingCatalogUri;
 		}
 
+		[JsonObject]
+		public class AssetProfileJson
+		{
+			[JsonProperty(PropertyName = "profile-version")]
+			public string ProfileVersion;
+			[JsonProperty(PropertyName = "ubf-variants")]
+			public Dictionary<string, Dictionary<string, AssetProfileData>> Variants;
+		}
+
 		public string RenderBlueprintResourceId { get; private set; }
 		public string ParsingBlueprintResourceId { get; private set; }
 		public Catalog RenderCatalog { get; private set; }
 		public Catalog ParsingCatalog { get; private set; }
 
-		public static IEnumerator FetchByAssetId(string collectionId, string assetName, Action<AssetProfile> onComplete)
+		public static IEnumerator FetchByAssetId(
+			string collectionId,
+			string assetName,
+			Action<AssetProfile> onComplete,
+			string[] variantsOverride = null)
 		{
 			var settings = ExecutionControllerSettings.GetOrCreateSettings();
-			var remotePath = $"{settings.AssetProfilesPath}/profiles_{collectionId}.json";
-			yield return FetchByUri(remotePath, assetName, onComplete);
+			var remotePath = $"{settings.AssetProfilesPath}/{collectionId}.json";
+			yield return FetchByUri(remotePath, assetName, onComplete, variantsOverride);
 		}
 
-		public static IEnumerator FetchByUri(string uri, string assetName, Action<AssetProfile> onComplete)
+		public static IEnumerator FetchByUri(
+			string uri,
+			string assetName,
+			Action<AssetProfile> onComplete,
+			string[] variantsOverride = null)
 		{
 			// Fetch asset profile data
-			var resourceHandler = new ResourceLoader<AssetProfiles>(
+			var resourceHandler = new ResourceLoader<Dictionary<string, AssetProfileJson>>(
 				new BasicResource(uri),
 				new DefaultDownloader(),
-				new JsonLoader<AssetProfiles>()
+				new JsonLoader<Dictionary<string, AssetProfileJson>>()
 			);
 
-			AssetProfiles profileCollectionData = null;
+			Dictionary<string, AssetProfileJson> profileCollectionData = null;
 			yield return resourceHandler.Get(data => profileCollectionData = data);
 			if (profileCollectionData == null)
 			{
@@ -73,24 +87,47 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 				yield break;
 			}
 
-			// TODO Get supported variants?
-			var defaultVariant = profile["Default"];
-			var validVersions = defaultVariant.Keys.Select(BlueprintVersion.FromString)
+			var profileData = GetProfileData(profile, variantsOverride);
+			if (profileData == null)
+			{
+				Debug.LogError($"No asset profile with supported variant and version found for {assetName}.");
+				yield break;
+			}
+
+			yield return FromProfileData(profileData, onComplete);
+		}
+
+		private static AssetProfileData GetProfileData(AssetProfileJson profile, string[] variantsOverride = null)
+		{
+			var supportedVariants = variantsOverride ??
+				ExecutionControllerSettings.GetOrCreateSettings()
+					.SupportedVariants;
+
+			Dictionary<string, AssetProfileData> variant = null;
+			foreach (var v in supportedVariants)
+			{
+				if (profile.Variants.TryGetValue(v, out var variantData))
+				{
+					variant = variantData;
+					break;
+				}
+			}
+
+			if (variant == null)
+			{
+				return null;
+			}
+			
+			var validVersions = variant.Keys.Select(Version.Parse)
 				.Where(v => v != null && v.IsSupported())
 				.ToList();
+			
 			validVersions.Sort((a, b) => b.CompareTo(a));
 			var version = validVersions.FirstOrDefault()
 					?.ToString() ??
 				"";
 
-			if (!defaultVariant.TryGetValue(version, out var value))
-			{
-				Debug.LogError($"No asset profile of a supported version found for {assetName}.");
-				onComplete?.Invoke(null);
-				yield break;
-			}
-
-			yield return FromProfileData(value, onComplete);
+			return variant.GetValueOrDefault(version);
 		}
 
 		private static IEnumerator FromProfileData(AssetProfileData profileData, Action<AssetProfile> onComplete)

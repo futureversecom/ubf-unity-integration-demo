@@ -68,6 +68,11 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 					node.NodeData,
 					(definition, catalog) =>
 					{
+						if (definition == null || catalog == null)
+						{
+							return;
+						}
+						
 						blueprintDefinitions.Add(node.NodeData.Id, definition);
 						artifactProvider.RegisterCatalog(catalog);
 

@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Resources
@@ -12,7 +13,7 @@ namespace Futureverse.UBF.Runtime.Resources
 		{
 			if (string.IsNullOrWhiteSpace(uriString))
 			{
-				Debug.LogWarning("URI cannot be null, or contain whitespace.");
+				UbfLogger.LogWarn("URI cannot be null, or contain whitespace.");
 				return null;
 			}
 
@@ -33,7 +34,7 @@ namespace Futureverse.UBF.Runtime.Resources
 			}
 			catch (Exception)
 			{
-				Debug.LogWarning("URI is not a valid local path.");
+				UbfLogger.LogWarn("URI is not a valid local path.");
 				return null;
 			}
 		}

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -40,7 +41,7 @@ namespace Futureverse.UBF.Runtime.Resources
 
 			if (request.result != UnityWebRequest.Result.Success)
 			{
-				Debug.LogError($"Failed to download.\nURI: {normalizedUri}\nResult: {request.responseCode} - {request.result}");
+				UbfLogger.LogError($"Failed to download from {normalizedUri}\nResult: {request.responseCode} - {request.result}");
 
 				onComplete?.Invoke(null);
 				yield break;

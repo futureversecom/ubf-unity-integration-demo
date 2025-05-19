@@ -92,13 +92,13 @@ namespace Futureverse.UBF.Runtime.Resources
 		{
 			if (_cache == null)
 			{
-				Debug.Log("Skipping preload - no cache assigned");
+				UbfLogger.LogInfo("Skipping preload - no cache assigned");
 				yield break;
 			}
 
 			if (_cache.TryGetCachedBytes(_resourceData, out _))
 			{
-				Debug.Log("Skipping preload - already loaded");
+				UbfLogger.LogInfo("Skipping preload - already loaded");
 				yield break;
 			}
 

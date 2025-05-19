@@ -1,5 +1,6 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -10,9 +11,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<string>("Texture Resource", out var resourceId))
+			if (!TryReadResourceId("Texture Resource", out var resourceId) || !resourceId.IsValid)
 			{
-				Debug.LogError("No valid resource given for SetTextureSettings");
 				return;
 			}
 
@@ -24,9 +24,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			var importSettings = new TextureImportSettings();
 			importSettings.UseSrgb = srgb;
-			NodeContext.ExecutionContext.SetDynamicDataEntry(resourceId, Dynamic.Foreign(importSettings));
+			NodeContext.ExecutionContext.SetDynamicDataEntry(resourceId.Value, Dynamic.Foreign(importSettings));
 
-			WriteOutput("Texture", Dynamic.String(resourceId));
+			WriteOutput("Texture", resourceId);
 		}
 	}
 

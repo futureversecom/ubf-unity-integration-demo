@@ -1,11 +1,12 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class BindMeshes : ACustomNode
+	public class BindMeshes : ACustomExecNode
 	{
 		public BindMeshes(Context context) : base(context) { }
 
@@ -13,20 +14,17 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadArray<Renderer>("Mesh", out var meshes))
 			{
-				Debug.LogError("[BindMesh] No input provided to pin \"Mesh\"");
-				TriggerNext();
+				UbfLogger.LogError("[BindMeshes] Could not find input \"Mesh\"");
 				return;
 			}
 
 			if (!TryRead<Renderer>("Skeleton", out var skeleton))
 			{
-				Debug.LogError("[BindMesh] No input provided to pin \"Skeleton\"");
-				TriggerNext();
+				UbfLogger.LogError("[BindMeshes] Could not find input \"Skeleton\"");
 				return;
 			}
 
 			Bind(skeleton, meshes);
-			TriggerNext();
 		}
 
 		private void Bind(Renderer skeleton, List<Renderer> targetSkins)

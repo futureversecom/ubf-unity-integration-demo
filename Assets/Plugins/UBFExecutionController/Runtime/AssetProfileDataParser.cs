@@ -5,12 +5,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Futureverse.UBF.Runtime.Execution;
 using Futureverse.UBF.Runtime.Resources;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Futureverse.UBF.ExecutionController.Runtime
 {
 	public class AssetProfileDataParser : IUbfDataParser
 	{
+		private readonly string[] _variantOverrides;
+
+		public AssetProfileDataParser(string[] variantOverrides)
+		{
+			_variantOverrides = variantOverrides;
+		}
+
+		public AssetProfileDataParser()
+		{
+			
+		}
+		
 		public IEnumerator GetBlueprintDefinition(IUbfData data, Action<IBlueprintInstanceData, Catalog> callback)
 		{
 			if (data is not IUbfAsset asset)
@@ -24,7 +37,8 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			yield return AssetProfile.FetchByAssetId(
 				asset.CollectionId,
 				asset.TokenId,
-				profile => assetProfile = profile
+				profile => assetProfile = profile,
+				_variantOverrides
 			);
 			if (assetProfile == null)
 			{
@@ -41,7 +55,16 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			}
 
 			var parsingBlueprintDefinition = new BlueprintInstanceData(assetProfile.ParsingBlueprintResourceId);
-			parsingBlueprintDefinition.AddInput("metadata", asset.Metadata.ToString());
+
+			var meta = asset.Metadata;
+			if (meta.TryGetValue("metadata", out var unwrappedToken))
+			{
+				parsingBlueprintDefinition.AddInput("metadata", unwrappedToken.ToString());
+			}
+			else
+			{
+				parsingBlueprintDefinition.AddInput("metadata", meta.ToString());
+			}
 			var parsingArtifactProvider = new ArtifactProvider(null);
 			parsingArtifactProvider.RegisterCatalog(assetProfile.ParsingCatalog);
 

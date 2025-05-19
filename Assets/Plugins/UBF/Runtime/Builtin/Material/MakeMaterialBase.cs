@@ -1,6 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -25,12 +26,18 @@ namespace Futureverse.UBF.Runtime.Builtin
 				Properties = properties,
 			};
 
-			WriteOutput("Material", Dynamic.Foreign(shader));
+			WriteOutput("Material", shader);
 		}
 
-		/// <returns>The resources path of the shader to load</returns>
+		/// <summary>
+		/// Use 'AddFloat', 'AddRenderMode' etc. methods to add properties to the dictionary parameter
+		/// </summary>
+		/// <param name="dictionary">The dictionary to add properties to</param>
 		protected abstract void AddProperties(Dictionary<string, object> dictionary);
 
+		/// <summary>
+		/// Return the material that this node customizes properties for
+		/// </summary>
 		protected abstract Material GetMaterial { get; }
 
 		protected void AddRenderMode(
@@ -99,24 +106,22 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<T>(resourceName, out var property))
 			{
+				UbfLogger.LogError($"[{GetType().Name}] Could not find input \"{resourceName}\"");
 				return;
 			}
-
+			
 			propertiesDictionary.Add(propertyName, property);
 		}
 
 		protected void AddTexture(
 			Dictionary<string, object> dictionary,
 			string resourceName,
-			string propertyName,
-			bool isNormal = false)
+			string propertyName)
 		{
-			if (!TryReadResourceId(resourceName, out var resourceId) || !resourceId.IsValid)
+			if (TryReadResourceId(resourceName, out var resourceId) && resourceId.IsValid)
 			{
-				return;
+				dictionary.Add(propertyName, resourceId);
 			}
-
-			dictionary.Add(propertyName, resourceId);
 		}
 	}
 }

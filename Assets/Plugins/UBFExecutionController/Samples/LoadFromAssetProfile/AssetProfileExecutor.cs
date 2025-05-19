@@ -34,13 +34,17 @@ namespace Futureverse.UBF.ExecutionController.Samples.LoadFromAssetProfile
 		[SerializeField] private string _collectionId;
 		[SerializeField] private string _tokenId;
 		[SerializeField] private string _metadata;
+		[SerializeField] private bool _overrideSupportedVariants;
+		[SerializeField] private string[] _supportedVariantOverrides;
 
 		[ContextMenu("Run")]
 		public void Run()
 		{
 			var assetData = new AssetData($"{_collectionId}:{_tokenId}", _collectionId, _tokenId, _metadata);
 			var assetTree = new AssetTree(assetData);
-			StartCoroutine(_controller.ExecuteAssetTree(assetTree, new AssetProfileDataParser(), OnExecutionFinished));
+
+			var dataParser = new AssetProfileDataParser(_overrideSupportedVariants ? _supportedVariantOverrides : null);
+			StartCoroutine(_controller.ExecuteAssetTree(assetTree, dataParser, OnExecutionFinished));
 		}
 		
 		private void OnExecutionFinished(ExecutionResult result)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class CreateSceneNode : ACustomNode
+	public class CreateSceneNode : ACustomExecNode
 	{
 		public CreateSceneNode(Context context) : base(context) { }
 
@@ -18,7 +18,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			var gameObject = new GameObject(nodeName);
 
-			if (TryRead<Transform>("Parent", out var parent))
+			if (TryRead<Transform>("Parent", out var parent) && parent != null)
 			{
 				gameObject.transform.SetParent(parent);
 			}
@@ -31,8 +31,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			gameObject.transform.localRotation = Quaternion.identity;
 			gameObject.transform.localScale = Vector3.one;
 
-			WriteOutput("Node", Dynamic.Foreign(gameObject.transform));
-			TriggerNext();
+			WriteOutput("Node", gameObject.transform);
 		}
 	}
 }

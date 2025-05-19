@@ -1,6 +1,8 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System;
+using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -13,21 +15,19 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<Transform>("Root", out var rootTransform))
 			{
-				Debug.LogWarning("Find Scene Nodes node has no input 'Root'");
+				UbfLogger.LogError("[FindSceneNodes] Could not find input \"Root\"");
 				return;
 			}
 
 			if (!TryRead<string>("Filter", out var filter))
 			{
-				Debug.LogWarning("Find Scene Nodes node could not find input 'Filter'");
+				UbfLogger.LogError("[FindSceneNodes] Could not find input \"Filter\"");
 				return;
 			}
 
-			var dynamicArray = Dynamic.Array();
-
-			FindNodes(filter, rootTransform, node => { dynamicArray.Push(Dynamic.Foreign(node)); });
-
-			WriteOutput("Nodes", dynamicArray);
+			var nodeArray = new List<Transform>();
+			FindNodes(filter, rootTransform, node => { nodeArray.Add(node); });
+			WriteOutput("Nodes", nodeArray);
 		}
 
 		private static void FindNodes(string filter, Transform root, Action<Transform> action)

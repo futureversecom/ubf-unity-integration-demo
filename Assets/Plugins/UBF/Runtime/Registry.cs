@@ -37,7 +37,6 @@ namespace Futureverse.UBF.Runtime
 
 		private static Registry MakeDefault()
 			=> new Registry()
-
 				// register managed built-in nodes
 				.Register<DebugLog>()
 				.Register<FindSceneNodes>()
@@ -45,9 +44,8 @@ namespace Futureverse.UBF.Runtime
 				.Register<BindMeshes>()
 				.Register<ApplyMaterial>()
 				.Register<PlayAnimation>()
-				.Register<SetBlendshape>()
+				.Register<SetBlendShape>("SetBlendshape")
 				.Register<SetTextureSettings>()
-				.Register<FindFirstSceneNode>()
 				.Register<CreateSceneNode>()
 				.Register<CreateMeshConfig>()
 				.Register<FindRenderer>()

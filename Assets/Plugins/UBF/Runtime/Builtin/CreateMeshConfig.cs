@@ -2,35 +2,33 @@
 
 using System.Linq;
 using Futureverse.UBF.Runtime.Settings;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class CreateMeshConfig : ACustomNode
+	public class CreateMeshConfig : ACustomExecNode
 	{
 		public CreateMeshConfig(Context context) : base(context) { }
 
 		protected override void ExecuteSync()
 		{
-			if (!TryReadResourceId("Resource", out var resourceId))
+			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
 			{
-				//Debug.LogWarning("Spawn Mesh node could not find Resource from pin: Resource");
-				//TriggerNext();
-				//return;
+				UbfLogger.LogError("[CreateMeshConfig] Could not find resource input \"Resource\"");
+				return;
 			}
 
 			if (!TryRead("ConfigOverrideKey", out string configKey))
 			{
-				Debug.LogWarning("Could not read ConfigOverrideKey from pin: ConfigOverrideKey");
-				TriggerNext();
+				UbfLogger.LogError("[CreateMeshConfig] Could not find input \"ConfigOverrideKey\"");
 				return;
 			}
 
 			var settings = UBFSettings.GetOrCreateSettings();
 			if (settings == null)
 			{
-				Debug.LogWarning("Unable to read UBF settings");
-				TriggerNext();
+				UbfLogger.LogError("[CreateMeshConfig] Unable to load UBF settings");
 				return;
 			}
 			var configEntry = settings
@@ -49,9 +47,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				};
 			}
 
-			var foreignOut = Dynamic.Foreign(runtimeConfig);
-			WriteOutput("MeshConfig", foreignOut);
-			TriggerNext();
+			WriteOutput("MeshConfig", runtimeConfig);
 		}
 	}
 }

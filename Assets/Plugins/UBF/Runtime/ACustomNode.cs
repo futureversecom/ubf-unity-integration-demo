@@ -75,58 +75,10 @@ namespace Futureverse.UBF.Runtime
 		/// </summary>
 		/// <param name="key">The name of the output to assign.</param>
 		/// <param name="value">The value to assign.</param>
-		protected void WriteOutput(string key, Dynamic value)
+		protected void WriteOutput(string key, object value)
 		{
 			NodeContext.ExecutionContext.WriteOutput(NodeContext.NodeId, key, value);
 		}
-
-		/// <summary>
-		/// Trigger another node and wait for it to be done.
-		/// </summary>
-		/// <param name="key">The name of the Exec output that leads to the next node.</param>
-		/// <returns>An IEnumerator to yield on.</returns>
-		/// <exception cref="Exception">Node at the specified Exec output was not successfully triggered.</exception>
-		protected IEnumerable TriggerAndWait(string key)
-		{
-			if (NodeContext.ExecutionContext.TriggerNode(
-				NodeContext.NodeId,
-				key,
-				NodeContext.ScopeId,
-				out var scopeId
-			))
-			{
-				if (!NodeContext.IsPending)
-				{
-					yield break;
-				}
-
-				yield return new WaitUntil(() => !NodeContext.IsPending);
-			}
-			else
-			{
-				// TODO how to deal with errors?
-				throw new Exception($"Failed to trigger node {NodeContext.NodeId} with key {key}");
-			}
-		}
-
-		/// <summary>
-		/// Trigger a node at the specified Exec output.
-		/// </summary>
-		/// <param name="key">The name of the Exec output that leads to the next node.</param>
-		/// <returns>Whether the node was successfully triggered.</returns>
-		protected bool Trigger(string key)
-			=> NodeContext.ExecutionContext.TriggerNode(
-				NodeContext.NodeId,
-				key,
-				NodeContext.ScopeId,
-				out var _
-			);
-
-		/// <summary>
-		///     Shortcut for TriggerNode("Exec")
-		/// </summary>
-		protected bool TriggerNext()
-			=> Trigger("Exec");
 
 		/// <summary>
 		/// Retrieve an input of a Resource type, and create a ResourceId instance to wrap it.
@@ -154,6 +106,7 @@ namespace Futureverse.UBF.Runtime
 			try
 			{
 				ExecuteSync();
+				PostExecute();
 				status.Done();
 			}
 			catch (ExecuteNotImplementedException)
@@ -170,11 +123,17 @@ namespace Futureverse.UBF.Runtime
 				yield return routine;
 			}
 
+			PostExecute();
 			status.Done();
 		}
 
+		protected internal virtual void PostExecute()
+		{
+			return;
+		}
+
 		/// <summary>
-		/// Override this to implement a node that executes synchronously, i.e. does not have Exec inputs/outputs.
+		/// Override this to implement a node that executes synchronously, i.e. in one frame
 		/// </summary>
 		protected virtual void ExecuteSync()
 		{
@@ -182,8 +141,7 @@ namespace Futureverse.UBF.Runtime
 		}
 
 		/// <summary>
-		/// Override this to implement a node that executes asynchronously, can yield/wait for other processes, and has
-		/// Exec inputs and outputs. Trigger/TriggerNext must be called at the end of this method.
+		/// Override this to implement a node that executes asynchronously, and can yield/wait for other processes
 		/// </summary>
 		/// <returns>An IEnumerator to yield on.</returns>
 		protected virtual IEnumerator ExecuteAsync()

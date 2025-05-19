@@ -22,8 +22,11 @@ namespace Futureverse.UBF.Runtime.Native.FFI
 
 
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void graph_load_on_log_delegate(int arg1, byte* arg2, int arg3);
+
         [DllImport(__DllName, EntryPoint = "graph_load", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern GraphInstance* graph_load(NodeRegistry* registry, ushort* json, int json_len);
+        public static extern GraphInstance* graph_load(NodeRegistry* registry, ushort* json, int json_len, graph_load_on_log_delegate on_log);
 
         [DllImport(__DllName, EntryPoint = "graph_version", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -50,9 +53,12 @@ namespace Futureverse.UBF.Runtime.Native.FFI
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void graph_execute_on_node_start_delegate(byte* arg1, int arg2, uint arg3, Dynamic* arg4);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void graph_execute_on_log_delegate(int arg1, byte* arg2, int arg3, Dynamic* arg4);
+
         /// <summary>Execute the UBF Graph.</summary>
         [DllImport(__DllName, EntryPoint = "graph_execute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern ArcExecutionContext* graph_execute(GraphInstance* graph, Dynamic* inputs, Dynamic* context_data, ushort* graph_label, int graph_label_len, graph_execute_on_graph_complete_delegate on_graph_complete, graph_execute_on_node_complete_delegate on_node_complete, graph_execute_on_node_start_delegate on_node_start);
+        public static extern ArcExecutionContext* graph_execute(GraphInstance* graph, Dynamic* inputs, Dynamic* context_data, ushort* graph_label, int graph_label_len, graph_execute_on_graph_complete_delegate on_graph_complete, graph_execute_on_node_complete_delegate on_node_complete, graph_execute_on_node_start_delegate on_node_start, graph_execute_on_log_delegate on_log);
 
         /// <summary>Free graph</summary>
         [DllImport(__DllName, EntryPoint = "graph_release", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]

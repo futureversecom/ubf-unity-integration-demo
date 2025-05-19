@@ -373,8 +373,14 @@ namespace Futureverse.UBF.Runtime
 		[MonoPInvokeCallback(typeof(Calls.dynamic_new_foreign_drop_delegate))]
 		private static void DropPointer(nint ptr)
 		{
-			GCHandle.FromIntPtr(ptr)
-				.Free();
+			try
+			{
+				GCHandle.FromIntPtr(ptr)
+					.Free();
+			}
+			catch (InvalidOperationException)
+			{
+			}
 		}
 
 		/// <summary>
@@ -481,6 +487,8 @@ namespace Futureverse.UBF.Runtime
 					return Float(f);
 				case int i:
 					return Int(i);
+				case ResourceId resourceId:
+					return String(resourceId.Value);
 				case Dictionary<string, object> dict:
 				{
 					var output = Dictionary();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MeshConfig", menuName = "UBF/Mesh Config")]
@@ -34,7 +35,7 @@ public class RigUtilities : MonoBehaviour
             var boneName = boneArray[idx].name;
             if (!boneMap.TryGetValue(boneName, out boneArray[idx]))
             {
-                Debug.LogError("failed to get bone: " + boneName);
+                UbfLogger.LogError("failed to get bone: " + boneName);
                 Debug.Break();
             }
         }
@@ -57,7 +58,7 @@ public class RigUtilities : MonoBehaviour
             var boneName = boneArray[idx].name;
             if (!boneMap.TryGetValue(boneName, out boneArray[idx]))
             {
-                Debug.LogError("failed to get bone: " + boneName);
+                UbfLogger.LogError("failed to get bone: " + boneName);
                 Debug.Break();
             }
         }

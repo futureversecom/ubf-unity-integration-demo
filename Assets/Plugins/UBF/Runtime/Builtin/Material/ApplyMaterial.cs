@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class ApplyMaterial : ACustomNode
+	public class ApplyMaterial : ACustomExecNode
 	{
 		public ApplyMaterial(Context context) : base(context) { }
 
@@ -14,15 +14,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<MaterialValue>("Material", out var materialValue))
 			{
-				Debug.LogError("[ApplyMaterial] Could not find input \"Material\"");
-				TriggerNext();
+				UbfLogger.LogError("[ApplyMaterial] Could not find input \"Material\"");
 				yield break;
 			}
 
 			if (!TryRead<Renderer>("Renderer", out var renderer))
 			{
-				Debug.LogError("[ApplyMaterial] Could not find input \"Renderer\"");
-				TriggerNext();
+				UbfLogger.LogError("[ApplyMaterial] Could not find input \"Renderer\"");
 				yield break;
 			}
 
@@ -87,8 +85,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 						if (textureResource == null)
 						{
-							Debug.LogError(
-								$"[ApplyMaterial] Couldn't get texture resource with ID \"{resourceId.Value}\""
+							UbfLogger.LogError(
+								$"[ApplyMaterial] Could not load texture resource with ID \"{resourceId.Value}\""
 							);
 							continue;
 						}
@@ -102,7 +100,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 			var rMats = renderer.materials;
 			rMats[matIndex] = material;
 			renderer.materials = rMats;
-			TriggerNext();
 		}
 	}
 }

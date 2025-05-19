@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 
 namespace Futureverse.UBF.Runtime.Execution
 {
@@ -54,7 +55,10 @@ namespace Futureverse.UBF.Runtime.Execution
 		/// <param name="value">The input value.</param>
 		public void AddInput(string key, object value)
 		{
-			Inputs.Add(key, value);
+			if (!Inputs.TryAdd(key, value))
+			{
+				UbfLogger.LogError($"Attempted to add duplicate input key {key}");
+			}
 		}
 	}
 }

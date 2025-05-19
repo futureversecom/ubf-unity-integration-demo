@@ -56,12 +56,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			AddTexture(properties, "Diffuse Texture", "_DiffuseTex");
 			AddTexture(properties, "ORM", "_ORMTex");
 			AddTexture(properties, "Decal Tex", "_DecalTex");
-			AddTexture(
-				properties,
-				"Normal Tex",
-				"_NormalTex",
-				true
-			);
+			AddTexture(properties, "Normal Tex", "_NormalTex");
 		}
 
 		protected override Material GetMaterial => 

@@ -50,7 +50,7 @@ namespace Futureverse.UBF.Runtime.Settings
 				return settings;
 			}
 
-			var fullPath = $"{Application.dataPath}/Settings";
+			var fullPath = $"{Application.dataPath}/Resources";
 			if (!Directory.Exists(fullPath))
 			{
 				Directory.CreateDirectory(fullPath);

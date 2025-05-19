@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
 using UnityEngine;
@@ -9,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class SpawnMesh : ACustomNode
+	public class SpawnMesh : ACustomExecNode
 	{
 		public SpawnMesh(Context context) : base(context) { }
 
@@ -17,22 +18,20 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
 			{
-				Debug.LogError("[SpawnMesh] Failed to find resource \"Resource\"");
-				TriggerNext();
+				UbfLogger.LogError("[SpawnMesh] Could not find input \"Resource\"");
 				yield break;
 			}
 
 			if (!TryRead<Transform>("Parent", out var parent))
 			{
-				Debug.LogError("[SpawnMesh] Failed to get input 'Parent'");
-				TriggerNext();
+				UbfLogger.LogError("[SpawnMesh] Could not find input \"Parent\"");
 				yield break;
 			}
 
 			if (!TryRead<RuntimeMeshConfig>("Config", out var runtimeConfig))
 			{
-				Debug.LogError("[SpawnMesh] Failed to get input 'Config'");
-			}
+                UbfLogger.LogError("[SpawnMesh] Failed to get input 'Config'");
+            }
 
 			GltfImport gltfResource = null;
 			var routine = CoroutineHost.Instance.StartCoroutine(
@@ -45,8 +44,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			if (gltfResource == null)
 			{
-				Debug.LogError($"[SpawnMesh] Failed to get gltf resource with Id {resourceId.Value}");
-				TriggerNext();
+				UbfLogger.LogError($"[SpawnMesh] Could not load GLB resource with Id {resourceId.Value}");
 				yield break;
 			}
 
@@ -54,9 +52,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 			glbReference.GLTFImport = gltfResource;
 
 			var instantiator = new GameObjectInstantiator(gltfResource, parent);
-			var renderersArray = Dynamic.Array();
-			var sceneNodesArray = Dynamic.Array();
-			List<SkinnedMeshRenderer> skinnedMeshes = new();
+			var renderersArray = new List<Renderer>();
+			var sceneNodesArray = new List<Transform>();
+			//List<SkinnedMeshRenderer> skinnedMeshes = new();
 			instantiator.MeshAdded += (
 				gameObject,
 				_,
@@ -67,15 +65,15 @@ namespace Futureverse.UBF.Runtime.Builtin
 				_,
 				_) =>
 			{
-				sceneNodesArray.Push(Dynamic.From(gameObject.transform));
+				sceneNodesArray.Add(gameObject.transform);
 				var renderer = gameObject.GetComponent<Renderer>();
 				if (renderer != null)
 				{
-					renderersArray.Push(Dynamic.From(renderer));
-					if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
-					{
-						skinnedMeshes.Add(skinnedMeshRenderer);
-					}
+					renderersArray.Add(renderer);
+					//if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
+					//{
+						//skinnedMeshes.Add(skinnedMeshRenderer);
+					//}
 				}
 			};
 
@@ -90,7 +88,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 			yield return null;
 			yield return null;
 
-			if (runtimeConfig != null && runtimeConfig.RuntimeObject != null && skinnedMeshes.Count > 0)
+			var skinnedMeshes = renderersArray.Where(x => x is SkinnedMeshRenderer).Cast<SkinnedMeshRenderer>().ToArray();
+			if (runtimeConfig != null && runtimeConfig.RuntimeObject != null && skinnedMeshes.Length > 0)
 			{
 			 	foreach (var renderer in skinnedMeshes)
 			 	{
@@ -106,7 +105,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 			WriteOutput("Renderers", renderersArray);
 			WriteOutput("Scene Nodes", sceneNodesArray);
-			TriggerNext();
 		}
 	}
 }

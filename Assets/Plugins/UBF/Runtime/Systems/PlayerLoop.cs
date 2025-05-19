@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime
@@ -404,15 +405,6 @@ namespace Futureverse.UBF.Runtime
 			}
 
 			return sb.ToString();
-		}
-
-		// [MenuItem("Test/Output current state to file")]
-		private static void OutputCurrentStateToFile()
-		{
-			var str = PrintSystemToString(PlayerLoop.GetCurrentPlayerLoop());
-
-			Debug.Log(str);
-			File.WriteAllText("playerLoopInterfaceOutput.txt", str);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Execution
@@ -31,7 +32,7 @@ namespace Futureverse.UBF.Runtime.Execution
 
 			if (rootBlueprint == null)
 			{
-				Debug.LogWarning("No root blueprint instance found.");
+				UbfLogger.LogError($"Cannot execute UBF. No root blueprint found with Instance ID {rootInstanceId}.");
 				yield break;
 			}
 

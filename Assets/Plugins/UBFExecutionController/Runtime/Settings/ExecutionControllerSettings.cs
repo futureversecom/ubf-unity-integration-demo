@@ -13,8 +13,11 @@ namespace Futureverse.UBF.ExecutionController.Runtime.Settings
 		private const string MyCustomSettingsPath = "Assets/Settings/ExecutionControllerSettings.asset";
 
 		[SerializeField] private string _assetProfilesPath;
+		[SerializeField] [Tooltip("List of Variants that can be loaded, in order of load preference")]
+		private string[] _supportedVariants;
 
 		public string AssetProfilesPath => _assetProfilesPath;
+		public string[] SupportedVariants => _supportedVariants;
 
 		public static ExecutionControllerSettings GetOrCreateSettings()
 		{

@@ -1,10 +1,11 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class TransformPositionNode : ACustomNode
+	public class TransformPositionNode : ACustomExecNode
 	{
 		public TransformPositionNode(Context context) : base(context) { }
 
@@ -12,39 +13,15 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<Transform>("Transform Object", out var transformObject))
 			{
-				Debug.LogError("No transform supplied to TransformPositionNode");
-				TriggerNext();
+				UbfLogger.LogError("[TransformPositionNode] Could not find input \"Transform Object\"");
 				return;
 			}
 
-			if (!TryRead<bool>("Use World Space", out var useWorldSpace))
-			{
-				Debug.LogError("No option supplied for Use World Space input");
-				TriggerNext();
-				return;
-			}
-
-			if (!TryRead<bool>("Is Additive", out var isAdditive))
-			{
-				Debug.LogError("No option supplied for Is Additive input");
-				TriggerNext();
-				return;
-			}
-
-			if (!TryRead<float>("Right", out var x))
-			{
-				x = 0;
-			}
-
-			if (!TryRead<float>("Up", out var y))
-			{
-				y = 0;
-			}
-
-			if (!TryRead<float>("Forward", out var z))
-			{
-				z = 0;
-			}
+			var useWorldSpace = TryRead<bool>("Use World Space", out var outUseWorldSpace) && outUseWorldSpace;
+			var isAdditive = TryRead<bool>("Is Additive", out var outIsAdditive) && outIsAdditive;
+			var x = TryRead<float>("Right", out var outX) ? outX : 0;
+			var y = TryRead<float>("Up", out var outY) ? outY : 0;
+			var z = TryRead<float>("Forward", out var outZ) ? outZ : 0;
 
 			if (useWorldSpace)
 			{
@@ -68,8 +45,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 					transformObject.localPosition = new Vector3(x, y, z);
 				}
 			}
-
-			TriggerNext();
 		}
 	}
 }

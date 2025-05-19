@@ -1,6 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Linq;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -13,18 +14,18 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadArray<Renderer>("Array", out var array))
 			{
-				Debug.LogWarning("No renderers supplied to FindRenderer");
+				UbfLogger.LogError("[FindRenderer] Could not find input \"Array\"");
 				return;
 			}
 
 			if (!TryRead<string>("Name", out var name))
 			{
-				Debug.LogWarning("No name provided to FindRenderer");
+				UbfLogger.LogError("[FindRenderer] Could not find input \"Name\"");
 				return;
 			}
 
 			var renderer = array.FirstOrDefault(x => x.name == name);
-			WriteOutput("Renderer", Dynamic.Foreign(renderer));
+			WriteOutput("Renderer", renderer);
 		}
 	}
 }

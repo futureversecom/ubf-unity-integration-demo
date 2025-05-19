@@ -1,45 +1,49 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class SetBlendshape : ACustomNode
+	public class SetBlendShape : ACustomExecNode
 	{
-		public SetBlendshape(Context context) : base(context) { }
+		public SetBlendShape(Context context) : base(context) { }
 
 		protected override void ExecuteSync()
 		{
 			if (!TryRead<Renderer>("Target", out var targetRenderer) || targetRenderer == null)
 			{
-				Debug.LogWarning("[SetBlendshape] No Renderer supplied");
-				TriggerNext();
+				UbfLogger.LogError("[SetBlendShape] Could not find input \"Target\"");
 				return;
 			}
-
-			TryRead<string>("ID", out var blendshapeID);
-			TryRead<float>("Value", out var blendshapeValue);
+			
+			if (!TryRead<string>("ID", out var blendShapeId))
+			{
+				UbfLogger.LogError("[SetBlendShape] Could not find input \"ID\"");
+				return;
+			}
+			
+			if (!TryRead<float>("Value", out var blendShapeValue))
+			{
+				UbfLogger.LogError("[SetBlendShape] Could not find input \"Value\"");
+				return;
+			}
 
 			var smr = targetRenderer as SkinnedMeshRenderer;
 			if (smr == null)
 			{
-				Debug.Log("[SetBlendshape] No Skinned Mesh Renderer on target transform");
-				TriggerNext();
+				UbfLogger.LogError("[SetBlendShape] No Skinned Mesh Renderer on target transform");
 				return;
 			}
 
-			var index = smr.sharedMesh.GetBlendShapeIndex(blendshapeID);
+			var index = smr.sharedMesh.GetBlendShapeIndex(blendShapeId);
 			if (index == -1)
 			{
-				Debug.Log("[SetBlendshape] Invalid blendshape ID: " + blendshapeID);
-				TriggerNext();
+				UbfLogger.LogError($"[SetBlendShape] Invalid blend shape ID: {blendShapeId}");
 				return;
 			}
 
-			smr.SetBlendShapeWeight(index, blendshapeValue);
-
-			TriggerNext();
+			smr.SetBlendShapeWeight(index, blendShapeValue);
 		}
 	}
 }

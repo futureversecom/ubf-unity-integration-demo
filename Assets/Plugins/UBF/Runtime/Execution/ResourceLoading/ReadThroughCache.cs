@@ -1,6 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.IO;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Resources
@@ -51,12 +52,11 @@ namespace Futureverse.UBF.Runtime.Resources
 			var cachePath = Path.Combine(_baseCachePath, resourceData.Hash);
 			if (!File.Exists(cachePath))
 			{
-				Debug.Log($"Cache miss for {resourceData.Uri}");
+				UbfLogger.LogInfo($"Cache miss for {resourceData.Uri}");
 				bytes = null;
 				return false;
 			}
 
-			Debug.Log($"Cache hit for {resourceData.Uri}");
 			bytes = File.ReadAllBytes(cachePath);
 			return true;
 		}

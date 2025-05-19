@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class ExecuteBlueprint : ACustomNode
+	public class ExecuteBlueprint : ACustomExecNode
 	{
 		public ExecuteBlueprint(Context context) : base(context) { }
 
@@ -14,8 +14,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadResourceId("Blueprint", out var resourceId) || !resourceId.IsValid)
 			{
-				Debug.Log("[ExecuteBlueprint] No blueprint resource provided");
-				TriggerNext();
 				yield break;
 			}
 
@@ -23,8 +21,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			yield return NodeContext.ExecutionContext.Config.GetBlueprintInstance(resourceId, g => blueprint = g);
 			if (blueprint == null)
 			{
-				Debug.LogError($"[ExecuteBlueprint] Unable to get or create instance from ID {resourceId.Value}");
-				TriggerNext();
+				UbfLogger.LogError($"[ExecuteBlueprint] Unable to get or create Blueprint Instance from ID {resourceId.Value}");
 				yield break;
 			}
 
@@ -53,8 +50,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 					WriteOutput(output.Id, value);
 				}
 			}
-
-			TriggerNext();
 		}
 	}
 }

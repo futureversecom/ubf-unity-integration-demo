@@ -69,10 +69,10 @@ namespace Futureverse.UBF.Runtime.Resources
 			var deferAgent = new UninterruptedDeferAgent();
 			_gltfImport = new GltfImport(deferAgent: deferAgent, logger: logger);
 		}
-
+		
 		public IEnumerator LoadFromData(byte[] bytes, Action<GltfImport> onComplete)
 		{
-			var task = _gltfImport.LoadGltfBinary(bytes);
+			var task = _gltfImport.Load(bytes);
 			while (!task.IsCompleted)
 			{
 				yield return null;

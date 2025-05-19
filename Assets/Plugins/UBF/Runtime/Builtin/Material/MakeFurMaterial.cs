@@ -27,12 +27,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			AddFloat(properties, "Emissive Tint Boost", "_EmissiveTintBoost");
 
 			AddBool(properties, "Use Normal Map", "_USENORMALMAP");
-			AddTexture(
-				properties,
-				"Normal Tex",
-				"_NormalTex",
-				true
-			);
+			AddTexture(properties, "Normal Tex", "_NormalTex");
 			AddBool(properties, "Use ORM", "_USEORM");
 			AddTexture(properties, "ORM", "_ORMTex");
 			AddFloat(properties, "Occlusion", "_Occlusion");

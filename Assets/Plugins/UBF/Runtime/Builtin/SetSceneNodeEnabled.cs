@@ -1,11 +1,12 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class SetSceneNodeEnabled : ACustomNode
+	public class SetSceneNodeEnabled : ACustomExecNode
 	{
 		public SetSceneNodeEnabled(Context context) : base(context) { }
 
@@ -13,20 +14,17 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<Transform>("Node", out var node))
 			{
-				Debug.LogWarning("Failed to read node");
-				TriggerNext();
+				UbfLogger.LogError("[SetSceneNodeEnabled] No Skinned Mesh Renderer on target transform");
 				return;
 			}
 
 			if (!TryRead<bool>("Enabled", out var enabled))
 			{
-				Debug.LogWarning("Failed to read enabled state");
-				TriggerNext();
+				UbfLogger.LogError("[SetSceneNodeEnabled] No Skinned Mesh Renderer on target transform");
 				return;
 			}
 
 			node.gameObject.SetActive(enabled);
-			TriggerNext();
 		}
 	}
 }

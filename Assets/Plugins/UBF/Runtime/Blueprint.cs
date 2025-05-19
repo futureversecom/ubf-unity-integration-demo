@@ -7,6 +7,7 @@ using System.Text;
 using AOT;
 using Futureverse.UBF.Runtime.Execution;
 using Futureverse.UBF.Runtime.Native.FFI;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime
@@ -121,9 +122,9 @@ namespace Futureverse.UBF.Runtime
 			return true;
 		}
 
-		private BlueprintVersion _version;
+		private Version _version;
 
-		internal BlueprintVersion Version
+		internal Version Version
 		{
 			get
 			{
@@ -140,9 +141,7 @@ namespace Futureverse.UBF.Runtime
 				}
 
 				var versionString = new string((char*)bytes, 0, (int)bytesLen);
-				_version = BlueprintVersion.FromString(versionString);
-
-				return _version;
+				return !Version.TryParse(versionString, out _version) ? null : _version;
 			}
 		}
 
@@ -175,16 +174,14 @@ namespace Futureverse.UBF.Runtime
 		public static bool TryLoad(string instanceId, string json, out Blueprint blueprint, Registry customRegistry = null)
 		{
 			var registry = customRegistry ?? Registry.DefaultRegistry;
-			if (!GraphVersionUtils.JsonHasSupportedVersion(json))
-			{
-				Debug.LogError("Cannot load blueprint with unsupported UBF Standard version");
-				blueprint = null;
-				return false;
-			}
-
 			fixed (char* p = json)
 			{
-				var ptr = Calls.graph_load(registry.NativePtr, (ushort*)p, json.Length);
+				var ptr = Calls.graph_load(
+					registry.NativePtr,
+					(ushort*)p,
+					json.Length,
+					UbfLogger.GraphLoadLogCallback
+				);
 				if (ptr is null)
 				{
 					blueprint = null;
@@ -192,6 +189,12 @@ namespace Futureverse.UBF.Runtime
 				}
 
 				blueprint = new Blueprint(ptr, instanceId);
+				if (!blueprint.Version.IsSupported())
+				{
+					UbfLogger.LogError($"Cannot load blueprint with unsupported standard version ({blueprint.Version})");
+					return false;
+				}
+				
 				return true;
 			}
 		}
@@ -222,7 +225,8 @@ namespace Futureverse.UBF.Runtime
 						(ushort*)p, graphLabel?.Length ?? 0,
 						on_graph_complete: OnGraphComplete,
 						on_node_complete: OnNodeComplete,
-						on_node_start: OnNodeStart
+						on_node_start: OnNodeStart,
+						UbfLogger.GraphExecuteLogCallback
 					),
 					contextData
 				);
@@ -242,13 +246,13 @@ namespace Futureverse.UBF.Runtime
 				}
 				catch (Exception e)
 				{
-					Debug.LogError("Exception in OnGraphComplete callback: " + e);
+					UbfLogger.LogError("Exception in OnGraphComplete callback: " + e);
 				}
 			}
 			else
 			{
 				// TODO this should never happen; report this.
-				Debug.LogError(
+				UbfLogger.LogError(
 					"Failed to deref user data from graph execution context. OnGraphComplete callback will not be called."
 				);
 			}
@@ -272,13 +276,13 @@ namespace Futureverse.UBF.Runtime
 				}
 				catch (Exception e)
 				{
-					Debug.LogError("Exception in OnNodeComplete callback: " + e);
+					UbfLogger.LogError("Exception in OnNodeComplete callback: " + e);
 				}
 			}
 			else
 			{
 				// TODO this should never happen; report this.
-				Debug.LogError(
+				UbfLogger.LogError(
 					"Failed to deref user data from graph execution context. OnNodeComplete callback will not be called."
 				);
 			}
@@ -304,13 +308,13 @@ namespace Futureverse.UBF.Runtime
 				}
 				catch (Exception e)
 				{
-					Debug.LogError("Exception in OnNodeStart callback: " + e);
+					UbfLogger.LogError("Exception in OnNodeStart callback: " + e);
 				}
 			}
 			else
 			{
 				// TODO this should never happen; report this.
-				Debug.LogError(
+				UbfLogger.LogError(
 					"Failed to deref user data from graph execution context. OnNodeStart callback will not be called."
 				);
 			}

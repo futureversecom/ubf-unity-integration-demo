@@ -1,11 +1,12 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System;
+using Futureverse.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-	public class DebugLog : ACustomNode
+	public class DebugLog : ACustomExecNode
 	{
 		public static Action<string> OnLog;
 		public DebugLog(Context context) : base(context) { }
@@ -14,15 +15,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (TryRead<string>("Message", out var message))
 			{
-				Debug.Log(message);
+				UbfLogger.LogInfo(message);
 				OnLog?.Invoke(message);
 			}
 			else
 			{
-				Debug.LogWarning("DebugLog: Message not found");
+				UbfLogger.LogError("[DebugLog] Could not find input \"Message\"");
 			}
-
-			TriggerNext();
 		}
 	}
 }
