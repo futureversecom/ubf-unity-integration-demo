@@ -15,6 +15,10 @@ namespace Futureverse.UBF.Runtime.Native.FFI
     {
 #if (UNITY_WEBGL || UNITY_IOS) && !UNITY_EDITOR
         const string __DllName = "__Internal";
+#elif UNITY_ANDROID && !UNITY_EDITOR
+        const string __DllName = "libubf_interpreter";
+        //const string __DllName = "__Internal";
+
 #else
         const string __DllName = "ubf_interpreter";
 #endif

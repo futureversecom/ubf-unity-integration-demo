@@ -537,7 +537,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1217624453}
   - component: {fileID: 1217624452}
-  - component: {fileID: 1217624454}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -557,7 +556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601a7b3280b6d144bbe895ba1f9f7496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  json: "{\r\n  \"version\": \"0.0.0\",\r\n  \"nodes\": [\r\n    {\r\n      \"id\":
+  json: "{\r\n  \"version\": \"0.2.0\",\r\n  \"nodes\": [\r\n    {\r\n      \"id\":
     \"MxC4TgpcNAm0wgU4bCspv\",\r\n      \"type\": \"Entry\",\r\n      \"inputs\":
     [],\r\n      \"outputs\": [\r\n        {\r\n          \"id\": \"Exec\",\r\n         
     \"value\": null,\r\n          \"type\": \"exec\"\r\n        }\r\n      ]\r\n   
@@ -572,7 +571,7 @@ MonoBehaviour:
     \"value\": \"Test\",\r\n          \"type\": \"unknown\"\r\n        },\r\n       
     {\r\n          \"id\": \"Exec\",\r\n          \"value\": null,\r\n          \"type\":
     \"exec\"\r\n        },\r\n        {\r\n          \"id\": \"Value\",\r\n         
-    \"value\": 0,\r\n          \"type\": \"int\"\r\n        }\r\n      ],\r\n     
+    \"value\": 5,\r\n          \"type\": \"int\"\r\n        }\r\n      ],\r\n     
     \"outputs\": [\r\n        {\r\n          \"id\": \"Exec\",\r\n          \"value\":
     null,\r\n          \"type\": \"exec\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n 
     \"resources\": [],\r\n  \"connections\": [\r\n    {\r\n      \"source\": \"MxC4TgpcNAm0wgU4bCspv\",\r\n     
@@ -598,20 +597,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1217624454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217624451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70a10a0f378162b4cb6903fe6fff8726, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _a: 1
-  _b: 2
 --- !u!1 &1650921311
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Futureverse.UBF.Runtime;
 using Futureverse.UBF.Runtime.Builtin;
 using Futureverse.UBF.Runtime.Execution;
@@ -25,6 +26,7 @@ public class MobileTest : MonoBehaviour
     IEnumerator Execute()
     {
         var ap = new MTArtifactProvider();
+        ap.RegisterJSON(json);
         var instance = new BlueprintInstanceData("graph");
         var executionData = new ExecutionData(
             transform,
@@ -38,7 +40,7 @@ public class MobileTest : MonoBehaviour
 
     void OnExecutionFinished(ExecutionResult result)
     {
-        text.text = JsonConvert.SerializeObject(result.Success + "\n" + result.BlueprintOutputs);
+        text.text = result.BlueprintOutputs.First().Value.ToString();
     }
 }
 
