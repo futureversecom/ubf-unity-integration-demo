@@ -28,7 +28,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        AndroidSharedLibraryType: Executable
+        AndroidSharedLibraryType: Symbol
         CPU: ARMv7
   - first:
       Any: 
