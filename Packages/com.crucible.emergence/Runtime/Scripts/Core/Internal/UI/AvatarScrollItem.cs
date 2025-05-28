@@ -28,12 +28,20 @@ namespace EmergenceSDK.Runtime.Internal.UI
         private void Awake()
         {
             selectButton.onClick.AddListener(OnSelectClicked);
+            if (RequestImage.Instance == null)
+            {
+                return;
+            }
             RequestImage.Instance.OnImageReady += Instance_OnImageReady;
         }
 
         private void OnDestroy()
         {
             selectButton.onClick.RemoveListener(OnSelectClicked);
+            if (RequestImage.Instance == null)
+            {
+                return;
+            }
             RequestImage.Instance.OnImageReady -= Instance_OnImageReady;
         }
 

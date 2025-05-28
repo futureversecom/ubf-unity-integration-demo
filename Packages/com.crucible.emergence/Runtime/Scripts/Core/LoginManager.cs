@@ -54,6 +54,8 @@ namespace EmergenceSDK.Runtime
         /// </summary>
         public LoginCancelledEvent loginCancelledEvent;
         
+        public CustodialAccessTokenResponse CustodialAccessToken { get; private set; }
+        
         /// <summary>
         /// Called when an error occurs during login.
         /// <seealso cref="LoginFailedEvent"/>
@@ -289,6 +291,7 @@ namespace EmergenceSDK.Runtime
         /// <param name="ct"> The cancellation Token</param>
         private async UniTask CacheCustodialResponse(CustodialAccessTokenResponse response, CancellationToken ct)
         {
+            CustodialAccessToken = response;
             try
             {
                 var futureverseService = EmergenceServiceProvider.GetService<IFutureverseService>();
