@@ -1,0 +1,12 @@
+{
+  "name": "com.futureverse.unity-futurepass-authentication",
+  "version": "0.1.0",
+  "displayName": "Futureverse - Unity Futurepass Authentication",
+  "unity": "2021.3",
+  "author": {
+    "name": "Futureverse"
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}
