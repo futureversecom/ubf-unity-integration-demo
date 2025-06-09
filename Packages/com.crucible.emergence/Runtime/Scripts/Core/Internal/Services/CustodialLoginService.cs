@@ -26,9 +26,9 @@ namespace EmergenceSDK.Runtime.Internal.Services
         private string currentCodeVerifier;
 
         // Need to add support for Developer Custom URLs, lets use a serialised object.
-        private string DevelopmentClientID = "3KMMFCuY59SA4DDV8ggwc";
-        private string StagingClientID = "3KMMFCuY59SA4DDV8ggwc";
-        private string ProductionClientID = "G9mOSDHNklm_dCN0DHvfX";
+        private string DevelopmentClientID = "ApfHakM-BwcErAkQupb6i";
+        private string StagingClientID = "ApfHakM-BwcErAkQupb6i";
+        private string ProductionClientID = "J0OJwSS2HJuJziJdb2dZT";
         private string ProductionBaseUrl = "https://login.pass.online";
         private string StagingBaseUrl = "https://login.passonline.cloud";
         
@@ -118,7 +118,7 @@ namespace EmergenceSDK.Runtime.Internal.Services
             });
 
             string nonce = GenerateSecureRandomString(128);
-
+            
             string authUrl = $"{BaseUrl}/auth?" +
                              "response_type=code" +
                              $"&client_id={ClientID}" +
