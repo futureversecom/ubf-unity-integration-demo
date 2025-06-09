@@ -49,12 +49,16 @@ public class FuturepassAuthenticationManager : MonoBehaviour
     private string _currentState;
     private string _currentCodeVerifier;
 
-    private const string DevelopmentClientID = "3KMMFCuY59SA4DDV8ggwc";
-    private const string StagingClientID = "3KMMFCuY59SA4DDV8ggwc";
-    private const string ProductionClientID = "G9mOSDHNklm_dCN0DHvfX";
+    private const string DevelopmentClientID = "ApfHakM-BwcErAkQupb6i";
+    private const string StagingClientID = "ApfHakM-BwcErAkQupb6i";
+    private const string ProductionClientID = "i8YTchXgUDYPswRfs3A5n";
     private const string ProductionBaseUrl = "https://login.pass.online";
     private const string StagingBaseUrl = "https://login.passonline.cloud";
     private const string DevelopmentBaseUrl = "https://login.passonline.cloud";
+
+    public string d_accessToken;
+    public string d_eoa;
+    public string d_futurepass;
     
     private string ClientID
     {
@@ -112,7 +116,8 @@ public class FuturepassAuthenticationManager : MonoBehaviour
         });
         
         string nonce = GenerateSecureRandomString(128);
-
+        Debug.Log("Logging in with URL: " + BaseUrl);
+        Debug.Log("Client ID: " + ClientID);
         string authUrl = $"{BaseUrl}/auth?" +
                          "response_type=code" +
                          $"&client_id={ClientID}" +
@@ -165,10 +170,14 @@ public class FuturepassAuthenticationManager : MonoBehaviour
         }
         
         var responseText = webRequest.downloadHandler.text;
+        Debug.Log(responseText);
         CustodialAccessTokenResponse custodialResponse = null;
         try
         {
             custodialResponse = JsonConvert.DeserializeObject<CustodialAccessTokenResponse>(responseText);
+            d_accessToken = custodialResponse.AccessToken;
+            d_eoa = custodialResponse.DecodedToken.Eoa;
+            d_futurepass = custodialResponse.DecodedToken.Futurepass;
         }
         catch (Exception ex)
         {

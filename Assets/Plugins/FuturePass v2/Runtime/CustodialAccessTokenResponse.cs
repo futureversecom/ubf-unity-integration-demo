@@ -8,7 +8,7 @@ using UnityEngine;
 public class CustodialAccessTokenResponse
 {
     [JsonProperty("access_token")]
-    public string Token { get; set; }
+    public string AccessToken { get; set; }
             
     [JsonProperty("id_token")]
     public string RawIdToken

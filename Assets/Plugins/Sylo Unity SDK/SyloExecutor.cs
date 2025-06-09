@@ -36,7 +36,7 @@ public class SyloExecutor : MonoBehaviour
     IEnumerator SyloGetTestRoutine()
     {
         var webRequest = UnityWebRequest.Get(GetURI());
-        webRequest.SetRequestHeader("accept", "*/*");
+        webRequest.SetRequestHeader("Accept", "*/*");
         webRequest.SetRequestHeader("Authorization", "Bearer " + accessToken);
         yield return webRequest.SendWebRequest();
         Debug.Log("Result: " + webRequest.result);
@@ -47,7 +47,7 @@ public class SyloExecutor : MonoBehaviour
     private string GetURI()
     {
         string uri = resolverUri;
-        uri += "/api/objects/get/" + futurepassId + "/" + dataId;
+        uri += "/api/v1/objects/get/" + futurepassId + "/" + dataId + "?authType=access_token";
         return uri;
     }
 }
