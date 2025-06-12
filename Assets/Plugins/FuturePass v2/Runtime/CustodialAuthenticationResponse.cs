@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class CustodialAccessTokenResponse
+public class CustodialAuthenticationResponse
 {
     [JsonProperty("access_token")]
     public string AccessToken { get; set; }
