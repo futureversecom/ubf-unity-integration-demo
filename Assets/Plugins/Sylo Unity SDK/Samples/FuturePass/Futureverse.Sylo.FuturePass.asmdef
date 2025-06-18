@@ -1,7 +1,10 @@
 {
-    "name": "Futureverse.FuturePass",
-    "rootNamespace": "Futureverse.FuturePass",
-    "references": [],
+    "name": "Futureverse.Sylo.FuturePass",
+    "rootNamespace": "Futureverse.Sylo",
+    "references": [
+        "Futureverse.Sylo",
+        "Futureverse.FuturePass"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

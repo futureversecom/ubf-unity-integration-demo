@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CustodialHttpListener
+namespace Futureverse.FuturePass
+{
+    public class CustodialHttpListener
 {
     public static CustodialHttpListener Instance;
     private HttpListener _httpListener;
@@ -146,3 +146,5 @@ public class CustodialHttpListener
         return bytes;
     }
 }
+}
+

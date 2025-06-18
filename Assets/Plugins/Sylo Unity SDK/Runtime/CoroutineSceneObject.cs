@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Futureverse.FuturePass
+namespace Futureverse.Sylo
 {
     public class CoroutineSceneObject : MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace Futureverse.FuturePass
                 }
                 else
                 {
-                    var newGo = new GameObject("FuturePass - CSO");
+                    var newGo = new GameObject("Sylo CSO");
                     s_instance = newGo.AddComponent<CoroutineSceneObject>();
                 }
 
