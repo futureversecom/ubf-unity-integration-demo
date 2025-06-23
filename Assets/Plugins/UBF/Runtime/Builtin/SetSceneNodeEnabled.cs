@@ -14,13 +14,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryRead<Transform>("Node", out var node))
 			{
-				UbfLogger.LogError("[SetSceneNodeEnabled] No Skinned Mesh Renderer on target transform");
+				UbfLogger.LogError("[SetSceneNodeEnabled] Could not find input \"Node\"");
 				return;
 			}
 
 			if (!TryRead<bool>("Enabled", out var enabled))
 			{
-				UbfLogger.LogError("[SetSceneNodeEnabled] No Skinned Mesh Renderer on target transform");
+				UbfLogger.LogError("[SetSceneNodeEnabled] Could not find input \"Enabled\"");
 				return;
 			}
 

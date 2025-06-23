@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Futureverse.UBF.Runtime.Builtin;
+using Futureverse.UBF.Runtime.Resources;
 using GLTFast;
 using UnityEngine;
 
@@ -21,14 +22,14 @@ namespace Futureverse.UBF.Runtime.Execution
 		/// <param name="id">Resource ID or Instance ID of the Blueprint to load.</param>
 		/// <param name="callback">Callback containing the loaded runtime Blueprint.</param>
 		/// <returns>IEnumerator to yield on</returns>
-		IEnumerator GetBlueprintInstance(ResourceId id, Action<Blueprint> callback);
+		IEnumerator GetBlueprintInstance(ResourceId id, Action<Blueprint, BlueprintAssetImportSettings> callback);
 		/// <summary>
 		/// Loads an instance of a GltfImport which can be used to instantiate a glTF mesh in the scene.
 		/// </summary>
 		/// <param name="id">Resource ID of the Mesh from the Blueprint.</param>
 		/// <param name="callback">Callback containing the loaded GltfImport component.</param>
 		/// <returns></returns>
-		IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport> callback);
+		IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport, MeshAssetImportSettings> callback);
 		/// <summary>
 		/// Loads a Texture2D resource.
 		/// </summary>
@@ -36,7 +37,7 @@ namespace Futureverse.UBF.Runtime.Execution
 		/// <param name="settings">Texture settings that are applied to the loaded Texture2D.</param>
 		/// <param name="callback">Callback containing the loaded Texture2D.</param>
 		/// <returns>IEnumerator to yield on</returns>
-		IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D> callback);
+		IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D, TextureAssetImportSettings> callback);
 	}
 	
 	public class ExecutionConfig : IExecutionConfig
@@ -46,30 +47,30 @@ namespace Futureverse.UBF.Runtime.Execution
 		private readonly Dictionary<string, Blueprint> _loadedBlueprints;
 		private readonly IArtifactProvider _artifactProvider;
 
-		public IEnumerator GetBlueprintInstance(ResourceId id, Action<Blueprint> callback)
+		public IEnumerator GetBlueprintInstance(ResourceId id, Action<Blueprint, BlueprintAssetImportSettings> callback)
 		{
 			if (_loadedBlueprints.TryGetValue(id.Value, out var loadedGraph))
 			{
-				callback?.Invoke(loadedGraph);
+				callback?.Invoke(loadedGraph, null);
 				yield break;
 			}
 
 			// instance ID could also be a resource id - check for a graph resource and create instance from it
 			var guid = Guid.NewGuid().ToString();
 			yield return _artifactProvider.GetBlueprintResource(id, guid,
-				graph =>
+				(graph, importSettings) =>
 				{
 					_loadedBlueprints.Add(guid, graph);
-					callback?.Invoke(graph);
+					callback?.Invoke(graph, importSettings);
 				});
 		}
 
-		public IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport> callback)
+		public IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport, MeshAssetImportSettings> callback)
 		{
 			yield return _artifactProvider.GetMeshResource(id, callback);
 		}
 
-		public IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D> callback)
+		public IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D, TextureAssetImportSettings> callback)
 		{
 			yield return _artifactProvider.GetTextureResource(id, settings, callback);
 		}

@@ -37,13 +37,13 @@ namespace Futureverse.UBF.Runtime
 
 		private static Registry MakeDefault()
 			=> new Registry()
-				// register managed built-in nodes
 				.Register<DebugLog>()
 				.Register<FindSceneNodes>()
 				.Register<SpawnMesh>()
+				.Register<SpawnModel>()
+				.Register<SpawnModelWithLods>("SpawnModelWithLODs")
 				.Register<BindMeshes>()
 				.Register<ApplyMaterial>()
-				.Register<PlayAnimation>()
 				.Register<SetBlendShape>("SetBlendshape")
 				.Register<SetTextureSettings>()
 				.Register<CreateSceneNode>()
@@ -52,10 +52,7 @@ namespace Futureverse.UBF.Runtime
 				.Register<SetSceneNodeEnabled>()
 				.Register<ExecuteBlueprint>()
 				.Register<ExecuteBlueprint>("ExecuteBlueprint2")
-				.Register<
-					TransformPositionNode>(
-					"TransformPosition"
-				) // Class includes node due to potential conflicts re Transform
+				.Register<TransformPositionNode>("TransformPosition") // Class includes 'node' due to potential conflicts re Transform
 				.Register<TransformScaleNode>("TransformScale")
 				.Register<MakePBRMaterial>()
 				.Register<MakeDecalMaterial>()

@@ -423,6 +423,14 @@ namespace Futureverse.UBF.Runtime
 					return true;
 				}
 			}
+			else if (typeof(T) == typeof(ResourceId))
+			{
+				if (TryReadString(out var v))
+				{
+					value = (T)(object)ResourceId.UnsafeFromString(v);
+					return true;
+				}
+			}
 
 			// TODO: special case for dictionary & arrays? - would require the use of reflection to 
 			// figure out the inner type. using TryReadArray for now

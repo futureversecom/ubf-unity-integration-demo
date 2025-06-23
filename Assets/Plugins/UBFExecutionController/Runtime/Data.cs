@@ -15,17 +15,25 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 	public interface IUbfAsset : IUbfData
 	{
 		/// <summary>
+		/// ID of the chain the NFT exists on
+		/// </summary>
+		string ChainId { get; }
+		/// <summary>
+		/// Chain Name or Type
+		/// </summary>
+		string ChainName { get; }
+		/// <summary>
 		/// ID of the NFT Collection.
 		/// </summary>
-		public string CollectionId { get; }
+		string CollectionId { get; }
 		/// <summary>
 		/// Metadata of the NFT in Json format.
 		/// </summary>
-		public JObject Metadata { get; }
+		JObject Metadata { get; }
 		/// <summary>
 		/// Token ID of the specific NFT asset.
 		/// </summary>
-		public string TokenId { get; }
+		string TokenId { get; }
 	}
 
 	/// <summary>

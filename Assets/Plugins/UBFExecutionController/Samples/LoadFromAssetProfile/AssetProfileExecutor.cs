@@ -31,6 +31,8 @@ namespace Futureverse.UBF.ExecutionController.Samples.LoadFromAssetProfile
 	public class AssetProfileExecutor : MonoBehaviour
 	{
 		[SerializeField] private FutureverseRuntimeController _controller;
+		[SerializeField] private string _chainId;
+		[SerializeField] private string _chainName;
 		[SerializeField] private string _collectionId;
 		[SerializeField] private string _tokenId;
 		[SerializeField] private string _metadata;
@@ -40,7 +42,14 @@ namespace Futureverse.UBF.ExecutionController.Samples.LoadFromAssetProfile
 		[ContextMenu("Run")]
 		public void Run()
 		{
-			var assetData = new AssetData($"{_collectionId}:{_tokenId}", _collectionId, _tokenId, _metadata);
+			var assetData = new AssetData(
+				$"{_collectionId}:{_tokenId}",
+				_chainId,
+				_chainName,
+				_collectionId,
+				_tokenId,
+				_metadata
+			);
 			var assetTree = new AssetTree(assetData);
 
 			var dataParser = new AssetProfileDataParser(_overrideSupportedVariants ? _supportedVariantOverrides : null);

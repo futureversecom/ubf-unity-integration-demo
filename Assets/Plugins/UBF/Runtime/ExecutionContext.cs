@@ -8,7 +8,9 @@ using System.Text;
 using AOT;
 using Futureverse.UBF.Runtime.Execution;
 using Futureverse.UBF.Runtime.Native.FFI;
+using Futureverse.UBF.Runtime.Utils;
 
+[assembly: InternalsVisibleTo("com.futureverse.ubf.tests.utils")]
 [assembly: InternalsVisibleTo("com.futureverse.ubf.tests.0.2.0")]
 
 namespace Futureverse.UBF.Runtime
@@ -28,10 +30,43 @@ namespace Futureverse.UBF.Runtime
 		/// child graphs as well.
 		/// </summary>
 		public IExecutionConfig Config => _contextData.ExecutionConfig;
+		
 		/// <summary>
 		/// The unique identifier for this Blueprint.
 		/// </summary>
 		public string InstanceId => _contextData.InstanceId;
+
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="version">Semantic version string</param>
+		/// <returns>If the UBF Standard version the running Blueprint was created against is greater or equal to the provided version</returns>
+		public bool BlueprintVersionIsGreaterOrEqualTo(string version)
+		{
+			if (!Version.TryParse(version, out var v))
+			{
+				UbfLogger.LogWarn("Cannot compare invalid Blueprint version");
+				return false;
+			}
+			
+			return _contextData.BlueprintVersion >= v;
+		}
+		
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="version">Semantic version string</param>
+		/// <returns>If the UBF Standard version the running Blueprint was created against is less than the provided version</returns>
+		public bool BlueprintVersionIsLessThan(string version)
+		{
+			if (!Version.TryParse(version, out var v))
+			{
+				UbfLogger.LogWarn("Cannot compare invalid Blueprint version");
+				return false;
+			}
+			
+			return _contextData.BlueprintVersion < v;
+		}
 
 		internal bool IsScopePending(uint scopeId)
 			=> _contextData.PendingScopeIDs.Contains(scopeId);
@@ -44,6 +79,7 @@ namespace Futureverse.UBF.Runtime
 		internal class ContextData
 		{
 			public readonly string InstanceId;
+			public readonly Version BlueprintVersion;
 			public HashSet<uint> PendingScopeIDs { get; } = new();
 			public readonly IExecutionConfig ExecutionConfig;
 
@@ -53,6 +89,7 @@ namespace Futureverse.UBF.Runtime
 
 			public ContextData(
 				string instanceId,
+				Version blueprintVersion,
 				IExecutionConfig executionConfig,
 				Action onGraphComplete,
 				Action<string, uint> onNodeStart = null,
@@ -60,6 +97,7 @@ namespace Futureverse.UBF.Runtime
 			)
 			{
 				InstanceId = instanceId;
+				BlueprintVersion = blueprintVersion;
 				ExecutionConfig = executionConfig;
 				OnGraphComplete = onGraphComplete;
 				OnNodeStart = onNodeStart ?? ((_, _) => { });

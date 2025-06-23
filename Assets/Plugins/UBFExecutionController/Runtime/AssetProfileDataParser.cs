@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Futureverse.UBF.Runtime.Execution;
 using Futureverse.UBF.Runtime.Resources;
-using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Futureverse.UBF.ExecutionController.Runtime
@@ -35,6 +34,8 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 
 			AssetProfile assetProfile = null;
 			yield return AssetProfile.FetchByAssetId(
+				asset.ChainId,
+				asset.ChainName,
 				asset.CollectionId,
 				asset.TokenId,
 				profile => assetProfile = profile,
@@ -55,16 +56,7 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			}
 
 			var parsingBlueprintDefinition = new BlueprintInstanceData(assetProfile.ParsingBlueprintResourceId);
-
-			var meta = asset.Metadata;
-			if (meta.TryGetValue("metadata", out var unwrappedToken))
-			{
-				parsingBlueprintDefinition.AddInput("metadata", unwrappedToken.ToString());
-			}
-			else
-			{
-				parsingBlueprintDefinition.AddInput("metadata", meta.ToString());
-			}
+			parsingBlueprintDefinition.AddInput("metadata", asset.Metadata.ToString());
 			var parsingArtifactProvider = new ArtifactProvider(null);
 			parsingArtifactProvider.RegisterCatalog(assetProfile.ParsingCatalog);
 

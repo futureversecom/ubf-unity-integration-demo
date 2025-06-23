@@ -124,7 +124,7 @@ namespace Futureverse.UBF.Runtime
 
 		private Version _version;
 
-		internal Version Version
+		private Version Version
 		{
 			get
 			{
@@ -209,6 +209,7 @@ namespace Futureverse.UBF.Runtime
 			var dynamicInputs = Dynamic.From(_variables);
 			var contextData = new ExecutionContext.ContextData(
 				InstanceId,
+				Version,
 				executionConfig,
 				onGraphComplete: onGraphComplete,
 				onNodeStart: onNodeStart,

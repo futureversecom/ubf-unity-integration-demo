@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using Futureverse.UBF.Runtime.Utils;
-using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Resources
 {
@@ -11,12 +10,13 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// Composable class for flexible downloading of resources. Add custom caching, downloading, and loading behavior
 	/// to get resources in any matter that is required.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public class ResourceLoader<T> where T : class
+	/// <typeparam name="TResource">The type of the resource to be loaded</typeparam>
+	/// <typeparam name="TImportSettings">The import settings for the object</typeparam>
+	public class ResourceLoader<TResource, TImportSettings> where TResource : class where TImportSettings : class, IAssetImportSettings<TResource>
 	{
 		private readonly ICache _cache;
 		private readonly IDownloader _downloader;
-		private readonly IDataLoader<T> _dataLoader;
+		private readonly IDataLoader<TResource, TImportSettings> _dataLoader;
 		private readonly IResourceData _resourceData;
 
 		/// <summary>
@@ -29,7 +29,7 @@ namespace Futureverse.UBF.Runtime.Resources
 		public ResourceLoader(
 			IResourceData resourceData,
 			IDownloader downloader,
-			IDataLoader<T> dataLoader,
+			IDataLoader<TResource, TImportSettings> dataLoader,
 			ICache cache = null)
 		{
 			_resourceData = resourceData;
@@ -41,9 +41,9 @@ namespace Futureverse.UBF.Runtime.Resources
 		/// <summary>
 		/// Loads the resource.
 		/// </summary>
-		/// <param name="onComplete">Callback containing the loaded resource.</param>
+		/// <param name="onComplete">Callback containing the loaded resource and import settings for that resource.</param>
 		/// <returns>IEnumerator to yield on.</returns>
-		public IEnumerator Get(Action<T> onComplete)
+		public IEnumerator Get(Action<TResource, TImportSettings> onComplete)
 		{
 			byte[] bytes = null;
 			if (_cache != null && _cache.TryGetCachedBytes(_resourceData, out var cachedBytes))
@@ -73,14 +73,38 @@ namespace Futureverse.UBF.Runtime.Resources
 
 			if (bytes == null)
 			{
-				onComplete?.Invoke(null);
+				onComplete?.Invoke(null, null);
 				yield break;
 			}
 
-			var loadRoutine = CoroutineHost.Instance.StartCoroutine(_dataLoader.LoadFromData(bytes, onComplete));
+			var importSettings = _resourceData.ImportSettings?.ToObject<TImportSettings>();
+			var loadRoutine = CoroutineHost.Instance.StartCoroutine(
+				_dataLoader.LoadFromData(
+					bytes,
+					importSettings,
+					(resource) =>
+					{
+						onComplete?.Invoke(resource, importSettings);
+					}
+				)
+			);
 			if (loadRoutine != null)
 			{
 				yield return loadRoutine;
+			}
+		}
+		
+		/// <summary>
+		/// Same as original Get method, but discards the import settings parameter for simplicity.
+		/// </summary>
+		/// <param name="onComplete">Callback containing the loaded resource.</param>
+		/// <returns>IEnumerator to yield on.</returns>
+		public IEnumerator Get(Action<TResource> onComplete)
+		{
+			var routine = CoroutineHost.Instance.StartCoroutine(Get((resource, _) => onComplete(resource)));
+			if (routine != null)
+			{
+				yield return routine;
 			}
 		}
 
@@ -119,6 +143,18 @@ namespace Futureverse.UBF.Runtime.Resources
 			{
 				yield return downloadRoutine;
 			}
+		}
+	}
+
+	public class JsonResourceLoader<T> : ResourceLoader<T, EmptyImportSettings<T>> where T : class
+	{
+		public JsonResourceLoader(string uri) : base(
+			new BasicResource(uri),
+			new DefaultDownloader(),
+			new JsonLoader<T>()
+		)
+		{
+			
 		}
 	}
 }

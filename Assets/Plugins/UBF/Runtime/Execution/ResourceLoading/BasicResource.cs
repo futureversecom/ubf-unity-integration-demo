@@ -1,5 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using Newtonsoft.Json.Linq;
+
 namespace Futureverse.UBF.Runtime.Resources
 {
 	/// <summary>
@@ -10,10 +12,13 @@ namespace Futureverse.UBF.Runtime.Resources
 	{
 		public string Hash => "";
 		public string Uri { get; }
+		public JObject ImportSettings => null;
+		public ResourceType Type { get; }
 
-		public BasicResource(string uri)
+		public BasicResource(string uri, ResourceType resourceType = ResourceType.Unspecified)
 		{
 			Uri = uri;
+			Type = resourceType;
 		}
 	}
 }
