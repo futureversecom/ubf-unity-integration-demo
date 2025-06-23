@@ -1576,6 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6315884d40f5f5a4f83f0e4cf99da2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RuntimeController: {fileID: 1507590201}
   path: 
 --- !u!1 &2114283753834967212
 GameObject:

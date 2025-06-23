@@ -7,21 +7,26 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 using Futureverse.UBF.Runtime;
+using Futureverse.UBF.Runtime.Builtin;
+using Futureverse.UBF.Runtime.Resources;
+using GLTFast;
+using GLTFast.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine.Networking;
 
 public class DemoSceneController : MonoBehaviour
 {
-    private UBFRuntimeController RuntimeController;
-
+    public UBFRuntimeController RuntimeController;
     public string path;
-    private Blueprint _blueprint;
 
-    private ExportCatalog Catalog;
+    private DemoArtifactProvider _artifactProvider;
     
     [ContextMenu("Select instance")]
     private void SelectGraphFile()
     {
+        _artifactProvider = new DemoArtifactProvider();
+        
         var paths = StandaloneFileBrowser.OpenFilePanel("Select Blueprint", "", "ubp.json", false);
         if (paths == null || paths.Length == 0)
         {
@@ -31,68 +36,43 @@ public class DemoSceneController : MonoBehaviour
         
         path = paths[0];
 
-        if (TryValidateBlueprint(out var bp))
-        {
-            _blueprint = bp;
-        }
-
-        if (!TryFormCombinedCatalog())
-        {
-            Debug.LogError("Failed to form catalog");
-        }
-    }
-
-    private bool TryValidateBlueprint(out Blueprint blueprint)
-    {
-        var text = File.ReadAllText(path);
-        if (Blueprint.TryLoad("", text, out blueprint)) return true;
-        
-        Debug.LogError("Failed to load blueprint");
-        return false;
-    }
-
-    private bool TryFormCombinedCatalog()
-    {
         if (string.IsNullOrEmpty(path) || !File.Exists(path))
-            return false;
+        {
+            Debug.LogError("No file at path " + path);
+            return;
+        }
 
+        if (!_artifactProvider.TryRegisterBlueprint(File.ReadAllText(path)))
+        {
+            
+        }
+        
         var dirName = Path.GetDirectoryName(Path.GetFullPath(path));
         if (string.IsNullOrEmpty(dirName))
-            return false;
-        
+        {
+            Debug.LogError("Invalid directory path");
+            return;
+        }        
         var currentDir = new DirectoryInfo(dirName);
-        if (!currentDir.Name.Equals("assets", StringComparison.OrdinalIgnoreCase))
-            return false;
-
+        if (!currentDir.Name.Equals("asset", StringComparison.OrdinalIgnoreCase))
+        {
+            Debug.LogError("Asset not located in asset folder. Instance directory: " + currentDir.Name);
+            return;
+        }
         currentDir = currentDir.Parent;
         if (!currentDir.Name.Equals(".export", StringComparison.OrdinalIgnoreCase))
-            return false;
-        
+        {
+            Debug.LogError("Parent directory is not .export. Parent directory: " + currentDir.Name);
+            return;
+        }        
         
         var catalogDir = Path.Combine(currentDir.FullName, "catalog");
         if (!Directory.Exists(catalogDir))
-            return false;
-
-        Catalog = new ExportCatalog();
-        
-        var catalogFiles = Directory.GetFiles(catalogDir, "*.json", SearchOption.TopDirectoryOnly);
-        foreach (var file in catalogFiles)
         {
-            var text = File.ReadAllText(file);
-            try
-            {
-                var catalog = JsonConvert.DeserializeObject<ExportCatalog>(text);
-                foreach (var resource in catalog.Resources)
-                {
-                    Catalog.Resources.Add(resource);
-                }
-            }
-            catch
-            {
-                Debug.LogError("Failed to deserialize catalog: " + file);
-            }
+            Debug.LogError(".export folder does not contain catalog folder");
+            return;
         }
-        return true;
+        _artifactProvider.PopulateCatalog(catalogDir);
     }
 }
 
@@ -131,5 +111,225 @@ public class ExportCatalog
     {
         var r = GetResource(id);
         return r?.Uri;
+    }
+}
+
+public class DemoArtifactProvider : IArtifactProvider
+{
+    private Blueprint _blueprint;
+    private ExportCatalog _catalog;
+
+    public bool TryRegisterBlueprint(string json)
+    {
+        if (Blueprint.TryLoad("", json, out var blueprint))
+        {
+            _blueprint = blueprint;
+            return true;
+        }
+        
+        Debug.LogError("Failed to load blueprint");
+        return false;
+    }
+    
+    public void PopulateCatalog(string catalogDirectory)
+    {
+        _catalog = new ExportCatalog
+        {
+            Resources = new List<ExportCatalog.ExportResource>()
+        };
+
+        var catalogFiles = Directory.GetFiles(catalogDirectory, "*.json", SearchOption.TopDirectoryOnly);
+        Debug.Log($"{catalogFiles.Length} files found in catalog directory");
+        foreach (var file in catalogFiles)
+        {
+            var text = File.ReadAllText(file);
+            try
+            {
+                var catalog = JsonConvert.DeserializeObject<ExportCatalog>(text);
+                foreach (var resource in catalog.Resources)
+                {
+                    if (!_catalog.Resources.Any(x => x.Id == resource.Id)) // Only add resource if it doesnt exist
+                    {
+                        _catalog.Resources.Add(resource);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Failed to deserialize catalog: " + file);
+                Debug.LogException(e);
+            }
+        }
+        
+        Debug.Log($"Catalog created with {_catalog.Resources.Count} resources");
+    }
+    
+    public IEnumerator GetTextureResource(ResourceId resourceId, TextureImportSettings settings, Action<Texture2D, TextureAssetImportSettings> onComplete)
+    {
+        if (_catalog == null)
+        {
+            Debug.LogError($"Cannot find catalog for resource {resourceId}");
+            onComplete?.Invoke(null, null);
+            yield break;
+        }
+			
+        var uri = _catalog.GetResourceUri(resourceId.Value);
+        if (string.IsNullOrEmpty(uri))
+        {
+            Debug.LogError("Invalid resource URI. Please check that resource exists, and that it contains a valid path");
+            onComplete?.Invoke(null, null);
+            yield break;
+        }
+			
+        Texture2D tex = null;
+        yield return LoadResource(
+            uri,
+            (success, obj) =>
+            {
+                if (success)
+                {
+                    tex = obj as Texture2D;
+                }
+            }
+        );
+			
+
+        if (tex == null)
+        {
+            onComplete?.Invoke(null, null);
+            yield break;
+        }
+			
+        if (settings != null && !settings.UseSrgb)
+        {
+            var linearTexture = new Texture2D(tex.width, tex.height, tex.format, tex.mipmapCount > 1, !settings.UseSrgb);
+            linearTexture.SetPixels(tex.GetPixels());
+            linearTexture.Apply();
+            onComplete?.Invoke(linearTexture, null); // TODO implement a constructor for TextureAssetImportSettings here?
+            yield break;
+        }
+        onComplete?.Invoke(tex, null);
+    }
+
+    public IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint, BlueprintAssetImportSettings> onComplete)
+	{
+		string blueprintID = resourceId.Value;
+		if (instances.TryGetValue(resourceId.Value, out BlueprintInstanceData instanceFromResourceId))
+		{
+			blueprintID = instanceFromResourceId.ResourceId;
+		}
+		else if (instances.TryGetValue(instanceId, out BlueprintInstanceData instanceFromInstanceId))
+		{
+			blueprintID = instanceFromInstanceId.ResourceId;
+		}
+		var blueprint = blueprints[blueprintID];
+		Blueprint.TryLoad(instanceId, blueprint.Json, out var bp);
+		Debug.Log($"Providing resource for graph {blueprint.DisplayName}");
+		onComplete?.Invoke(bp, new BlueprintAssetImportSettings());
+		yield break;
+	}
+
+	public IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport, MeshAssetImportSettings> onComplete)
+	{
+		if (_catalog == null)
+		{
+			Debug.LogError($"Cannot find catalog for resource {resourceId}");
+			onComplete?.Invoke(null, null);
+			yield break;
+		}
+		
+		var resource = _catalog.GetResource(resourceId.Value);
+		var uri = resource.Uri;
+		if (string.IsNullOrEmpty(uri))
+		{
+			Debug.LogError("Invalid resource URI. Please check that resource exists, and that it contains a valid path");
+			onComplete?.Invoke(null, null);
+			yield break;
+		}
+		
+		GltfImport gltf = null;
+		
+		yield return LoadResource(
+			uri,
+			(success, obj) =>
+			{
+				if (success)
+				{
+					gltf = obj as GltfImport;
+				}
+			}
+		);
+		
+		if (gltf == null)
+		{
+			onComplete?.Invoke(null, null);
+			yield break;
+		}
+		
+		MeshAssetImportSettings importSettings = null;
+		if (resource?.ImportSettings?.ToString() != "{}")
+		{
+			importSettings = resource.ImportSettings?.ToObject<MeshAssetImportSettings>();
+		}
+		onComplete?.Invoke(gltf, importSettings);
+	}
+    
+    private IEnumerator LoadResource(string uri, Action<bool, object> onComplete)
+    {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+#else 
+			uri = "file://" + uri;
+#endif
+        var ext = Path.GetExtension(uri);
+        switch (ext)
+        {
+            case ".glb":
+            {
+                var request = UnityWebRequest.Get(uri);
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError(
+                        $"Failed to download mesh.\nURI: {uri}\nResult: {request.responseCode} - {request.result}"
+                    );
+
+                    onComplete?.Invoke(false, null);
+                    yield break;
+                }
+
+                var gltf = new GltfImport(deferAgent: new UninterruptedDeferAgent(), logger: new ConsoleLogger());
+                var task = gltf.Load(request.downloadHandler.data);
+                while (!task.IsCompleted)
+                {
+                    yield return null;
+                }
+
+                onComplete?.Invoke(true, gltf);
+                yield break;
+            }
+            case ".png":
+            {
+                var request = UnityWebRequestTexture.GetTexture(uri);
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError(
+                        $"Failed to download texture.\nURI: {uri}\nResult: {request.responseCode} - {request.result}"
+                    );
+
+                    onComplete?.Invoke(false, null);
+                    yield break;
+                }
+
+                var tex = DownloadHandlerTexture.GetContent(request);
+                onComplete?.Invoke(true, tex);
+                yield break;
+            }
+            default:
+                onComplete(false, null);
+                break;
+        }
     }
 }
