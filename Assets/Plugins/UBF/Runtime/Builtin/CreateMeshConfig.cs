@@ -28,7 +28,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			var settings = UBFSettings.GetOrCreateSettings();
 			if (settings == null)
 			{
-				UbfLogger.LogError("[CreateMeshConfig] Unable to load UBF settings");
+				UbfLogger.LogWarn("[CreateMeshConfig] Unable to read UBF settings");
 				return;
 			}
 			var configEntry = settings
@@ -37,8 +37,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 			RuntimeMeshConfig runtimeConfig = null;
 			if (configEntry != null && configEntry.Config != null && configEntry.Config.RigPrefab != null)
 			{
-				//Debug.Log("Found ConfigOverrideKey: " + configEntry.Key);
-				//Debug.Log("Spawning RigPrefab: " + configEntry.Config.RigPrefab.name);
 				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
 				runtimeConfig = new RuntimeMeshConfig()
 				{

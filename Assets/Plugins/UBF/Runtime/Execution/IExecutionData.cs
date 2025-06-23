@@ -59,7 +59,7 @@ namespace Futureverse.UBF.Runtime.Execution
 				yield return _artifactProvider.GetBlueprintResource(
 					resourceId,
 					blueprint.InstanceId,
-					graph =>
+					(graph, _) =>
 					{
 						if (graph == null)
 						{

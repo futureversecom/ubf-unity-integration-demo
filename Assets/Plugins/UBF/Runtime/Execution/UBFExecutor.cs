@@ -1,9 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections;
-using System.Collections.Generic;
 using Futureverse.UBF.Runtime.Utils;
-using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Execution
 {
@@ -27,7 +25,7 @@ namespace Futureverse.UBF.Runtime.Execution
 				{
 					Value = rootInstanceId,
 				},
-				g => rootBlueprint = g
+				(blueprint, _) => rootBlueprint = blueprint
 			);
 
 			if (rootBlueprint == null)

@@ -6,78 +6,94 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Testbed.AssetRegister
 {
-	public static class AssetRegisterQuery
-	{
-    private static readonly Dictionary<string, InventoryNode[]> s_walletQueryResultCache = new();
-    private const string QueryUri = "https://ar-api.futureverse.app/graphq";
-
-    public static IEnumerator InventoryQueryRoutine(string walletAddress, string[] collectionIds, int numResults, Action<bool, InventoryNode[]> callback, string uri = QueryUri)
+    public static class AssetRegisterQuery
     {
-      if (s_walletQueryResultCache.TryGetValue(walletAddress, out var nodes))
-      {
-        callback?.Invoke(true, nodes);
-        yield break;
-      }
-      
-      const string query = @"query Assets($addresses: [ChainAddress!]!, $collectionIds: [CollectionId!], $first: Float) {
-                            assets(addresses: $addresses, collectionIds: $collectionIds, first: $first) {
-                              edges {
-                                node {
-                                  id
-                                  collectionId
-                                  tokenId
-                                  assetType
-                                  metadata {
-                                    attributes
-                                    properties
-                                    uri
-                                    rawAttributes
-                                  }
-                                  collection {
-                                    chainId
-                                    chainType
-                                  }
-								                  assetTree {
-                                    data
-                                  }
-                                }
-                              }
-                            }
-                          }";
-      
-      var variables = new InventoryQueryVariables() { Addresses = new []{walletAddress}, CollectionIds = collectionIds, First = numResults, };
-      var q = new
-      {
-        query,
-        variables,
-      };
+       private static readonly Dictionary<string, InventoryNode[]> s_walletQueryResultCache = new();
 
-      var queryJson = JsonConvert.SerializeObject(q, Formatting.None);
-      var webRequest = new UnityWebRequest(uri, "POST");
-      webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(queryJson));
-      webRequest.SetRequestHeader("Content-Type", "application/json");
-      webRequest.downloadHandler = new DownloadHandlerBuffer();
-      yield return webRequest.SendWebRequest();
+       public static IEnumerator InventoryQueryRoutine(string walletAddress, string[] collectionIds, int numResults, Action<bool, InventoryNode[]> callback)
+       {
+          yield return InventoryQueryRoutine(new[] {walletAddress}, collectionIds, numResults, callback);
+       }
+       
+       public static IEnumerator InventoryQueryRoutine(string[] walletAddresses, string[] collectionIds, int numResults, Action<bool, InventoryNode[]> callback)
+       {
+          if (walletAddresses == null || walletAddresses.Length == 0)
+          {
+             Debug.LogError("InventoryQueryRoutine: no walletAddresses provided.");
+             callback?.Invoke(false, null);
+             yield break;
+          }
 
-      if (webRequest.result != UnityWebRequest.Result.Success)
-      {
-        Debug.LogError(webRequest.error);
-        callback?.Invoke(false, null);
-        yield break;
-      }
+          // gracefully handle empty/duplicate wallet addresses
+          string[] validAddresses = walletAddresses.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToArray();
 
-      var resultString = Encoding.UTF8.GetString(webRequest.downloadHandler.data);
-      var resultData = JsonConvert.DeserializeObject<InventoryResultData>(resultString);
-      nodes = resultData.InventoryData.InventoryAssets.Edges.Select(e => e.InventoryNode).ToArray();
-      s_walletQueryResultCache.Add(walletAddress, nodes);
-      callback?.Invoke(true, nodes);
+          if (validAddresses.Length == 0)
+          {
+             Debug.LogError("InventoryQueryRoutine: no walletAddresses provided.");
+             callback?.Invoke(false, null);
+             yield break;
+          }
+          
+          walletAddresses = validAddresses;
+          
+          const string query = @"
+            query Assets($addresses: [ChainAddress!]!, $collectionIds: [CollectionId!], $first: Float) {
+              assets(addresses: $addresses, collectionIds: $collectionIds, first: $first) {
+                edges {
+                  node {
+                    id
+                    collectionId
+                    tokenId
+                    assetType
+                    metadata {
+                      attributes
+                      properties
+                      uri
+                      rawAttributes
+                    }
+                    collection {
+                      chainId
+                      chainType
+                    }
+                    assetTree {
+                      data
+                    }
+                  }
+                }
+              }
+            }";
+
+          InventoryQueryVariables variables = new InventoryQueryVariables { Addresses = walletAddresses, CollectionIds = collectionIds, First = numResults };
+
+          var payload = new { query, variables };
+          string jsonPayload = JsonConvert.SerializeObject(payload, Formatting.None);
+
+          using UnityWebRequest webRequest = new UnityWebRequest("https://ar-api.futureverse.app/graphql", "POST");
+          
+          webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonPayload));
+          webRequest.downloadHandler = new DownloadHandlerBuffer();
+          webRequest.SetRequestHeader("Content-Type", "application/json");
+
+          yield return webRequest.SendWebRequest();
+
+          if (webRequest.result != UnityWebRequest.Result.Success)
+          {
+             Debug.LogError($"GraphQL request failed: {webRequest.error}");
+             callback?.Invoke(false, null);
+             
+             yield break;
+          }
+
+          string resultString = webRequest.downloadHandler.text;
+          InventoryResultData resultData = JsonConvert.DeserializeObject<InventoryResultData>(resultString);
+          var nodes = resultData.InventoryData.InventoryAssets.Edges.Select(e => e.InventoryNode).ToArray();
+
+          callback?.Invoke(true, nodes);
+       }
     }
-	}
 }

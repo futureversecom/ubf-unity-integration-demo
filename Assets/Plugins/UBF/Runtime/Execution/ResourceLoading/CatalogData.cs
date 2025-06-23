@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Futureverse.UBF.Runtime.Resources
 {
@@ -32,18 +33,23 @@ namespace Futureverse.UBF.Runtime.Resources
 	{
 		[JsonProperty("id")] private string _resourceId;
 		[JsonProperty("uri")] private string _uri;
+		[JsonProperty("type")] private ResourceType _type;
 		[JsonProperty("hash")] private string _hash;
+		[JsonProperty("metadata")] private JObject _importSettings;
 
 		public string Id => _resourceId;
 		public string Uri => _uri;
+		public ResourceType Type => _type;
 		public string Hash => _hash;
+		public JObject ImportSettings => _importSettings;
 
+		[JsonConstructor]
 		private ResourceData()
 		{
 			
 		}
 		
-		/// <param name="resourceId">Used to index the resource. Should match the resource Id from the target Blueprint.</param>
+		/// <param name="resourceId">Used to index the resource. Should match the resource ID from the target Blueprint.</param>
 		/// <param name="uri">URL or local path that points to the resource.</param>
 		public ResourceData(string resourceId, string uri)
 		{

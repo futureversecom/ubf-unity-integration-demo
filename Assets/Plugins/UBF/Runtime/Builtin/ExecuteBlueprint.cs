@@ -18,7 +18,14 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 
 			Blueprint blueprint = null;
-			yield return NodeContext.ExecutionContext.Config.GetBlueprintInstance(resourceId, g => blueprint = g);
+			var routine = CoroutineHost.Instance.StartCoroutine(NodeContext.ExecutionContext.Config.GetBlueprintInstance(
+				resourceId,
+				(bp, _) => blueprint = bp
+			));
+			if (routine != null)
+			{
+				yield return routine;
+			}
 			if (blueprint == null)
 			{
 				UbfLogger.LogError($"[ExecuteBlueprint] Unable to get or create Blueprint Instance from ID {resourceId.Value}");

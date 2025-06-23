@@ -75,7 +75,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 							NodeContext.ExecutionContext.Config.GetTextureInstance(
 								resourceId,
 								textureSettings,
-								texture => { textureResource = texture; }
+								(texture, _) => { textureResource = texture; }
 							)
 						);
 						if (routine != null)

@@ -161,6 +161,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.DefaultCompany.UBFIntegrationDemo
     Standalone: com.DefaultCompany.UBF-Integration-Demo
   buildNumber:
     Standalone: 0
@@ -738,6 +739,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
+    Android: STARTER_ASSETS_PACKAGES_CHECKED;UNIGLTF_DISABLE_DEFAULT_GLB_IMPORTER;UNIGLTF_DISABLE_DEFAULT_GLTF_IMPORTER
     Standalone: STARTER_ASSETS_PACKAGES_CHECKED;UNIGLTF_DISABLE_DEFAULT_GLTF_IMPORTER;UNIGLTF_DISABLE_DEFAULT_GLB_IMPORTER
   additionalCompilerArguments: {}
   platformArchitecture: {}

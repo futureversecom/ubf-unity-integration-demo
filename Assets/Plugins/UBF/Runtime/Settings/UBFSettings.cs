@@ -23,6 +23,7 @@ namespace Futureverse.UBF.Runtime.Settings
 		[SerializeField] private Material _hair;
 		[SerializeField] private Material _skin;
 		[SerializeField] private List<MeshConfigEntry> _meshConfigs;
+		[SerializeField] private AnimationCurve _lodFalloffCurve;
 		public Material DecalOpaque => _decalOpaque;
 		public Material DecalTransparent => _decalTransparent;
 		public Material FurOpaque => _furOpaque;
@@ -31,6 +32,7 @@ namespace Futureverse.UBF.Runtime.Settings
 		public Material PbrTransparent => _pbrTransparent;
 		public Material Hair => _hair;
 		public Material Skin => _skin;
+		public AnimationCurve LodFalloffCurve => _lodFalloffCurve;
 
 		[System.Serializable]
 		public class MeshConfigEntry
@@ -61,16 +63,8 @@ namespace Futureverse.UBF.Runtime.Settings
 			AssetDatabase.SaveAssets();
 			return settings;
 #else
-			var settings = UnityEngine.Resources.Load<UBFSettings>("UBF");
-			if (settings != null)
-			{
-				return settings;
-			}
+			return UnityEngine.Resources.Load<UBFSettings>("UBF");
 #endif
-#pragma warning disable CS0162
-			return null;
-#pragma warning restore CS0162
-			
 		}
 
 		private void OnEnable()

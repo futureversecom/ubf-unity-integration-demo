@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Text;
+using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
 using GLTFast.Logging;
 using Newtonsoft.Json;
@@ -13,22 +14,24 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// <summary>
 	/// Provides a mechanism for turning raw byte data (from download or cache) into an object of a given type.
 	/// </summary>
-	/// <typeparam name="T">Type of the data being loaded.</typeparam>
-	public interface IDataLoader<out T> where T : class
+	/// <typeparam name="TResource">Type of the data being loaded.</typeparam>
+	/// <typeparam name="TImportSettings">The import settings for the resource.</typeparam>
+	public interface IDataLoader<out TResource, in TImportSettings> where TResource : class where TImportSettings : IAssetImportSettings<TResource>
 	{
 		/// <summary>
 		/// Coroutine that loads an object from raw byte data.
 		/// </summary>
 		/// <param name="bytes">The raw bytes to turn into the object.</param>
+		/// <param name="importSettings">Contains settings for how the resource should be loaded or altered.</param>
 		/// <param name="onComplete">Callback that contains the loaded object.</param>
 		/// <returns>IEnumerator for yielding on.</returns>
-		IEnumerator LoadFromData(byte[] bytes, Action<T> onComplete);
+		IEnumerator LoadFromData(byte[] bytes, TImportSettings importSettings, Action<TResource> onComplete);
 	}
 
 	/// <summary>
 	/// IDataLoader implementation for loading a Unity Texture2D from byte data. Allows settings to be configured before loading.
 	/// </summary>
-	public class TextureLoader : IDataLoader<Texture2D>
+	public class TextureLoader : IDataLoader<Texture2D, TextureAssetImportSettings>
 	{
 		private bool _useSrgb;
 
@@ -41,7 +44,7 @@ namespace Futureverse.UBF.Runtime.Resources
 			_useSrgb = useSrgb;
 		}
 
-		public IEnumerator LoadFromData(byte[] bytes, Action<Texture2D> onComplete)
+		public IEnumerator LoadFromData(byte[] bytes, TextureAssetImportSettings importSettings, Action<Texture2D> onComplete)
 		{
 			var texture = new Texture2D(
 				2,
@@ -59,7 +62,7 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// <summary>
 	/// IDataLoader implementation for loading a Gltf Loader from byte data.
 	/// </summary>
-	public class GltfLoader : IDataLoader<GltfImport>
+	public class GltfLoader : IDataLoader<GltfImport, MeshAssetImportSettings>
 	{
 		private readonly GltfImport _gltfImport;
 
@@ -70,14 +73,14 @@ namespace Futureverse.UBF.Runtime.Resources
 			_gltfImport = new GltfImport(deferAgent: deferAgent, logger: logger);
 		}
 		
-		public IEnumerator LoadFromData(byte[] bytes, Action<GltfImport> onComplete)
+		public IEnumerator LoadFromData(byte[] bytes, MeshAssetImportSettings importSettings, Action<GltfImport> onComplete)
 		{
 			var task = _gltfImport.Load(bytes);
 			while (!task.IsCompleted)
 			{
 				yield return null;
 			}
-
+			
 			onComplete?.Invoke(_gltfImport);
 		}
 	}
@@ -85,7 +88,7 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// <summary>
 	/// IDataLoader implementation for loading a UBF Blueprint from byte data. Allows the Instance Id to be configured before loading.
 	/// </summary>
-	public class BlueprintLoader : IDataLoader<Blueprint>
+	public class BlueprintLoader : IDataLoader<Blueprint, BlueprintAssetImportSettings>
 	{
 		private string _instanceId;
 
@@ -98,7 +101,7 @@ namespace Futureverse.UBF.Runtime.Resources
 			_instanceId = instanceId;
 		}
 		
-		public IEnumerator LoadFromData(byte[] bytes, Action<Blueprint> onComplete)
+		public IEnumerator LoadFromData(byte[] bytes, BlueprintAssetImportSettings importSettings, Action<Blueprint> onComplete)
 		{
 			var jsonString = Encoding.UTF8.GetString(bytes);
 			if (Blueprint.TryLoad(_instanceId, jsonString, out var graph))
@@ -116,9 +119,9 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// and then deserialized into the given type.
 	/// </summary>
 	/// <typeparam name="T">The type of object to deserialize the Json to</typeparam>
-	public class JsonLoader<T> : IDataLoader<T> where T : class
+	public class JsonLoader<T> : IDataLoader<T, EmptyImportSettings<T>> where T : class
 	{
-		public IEnumerator LoadFromData(byte[] bytes, Action<T> onComplete)
+		public IEnumerator LoadFromData(byte[] bytes, EmptyImportSettings<T> importSettings, Action<T> onComplete)
 		{
 			try
 			{

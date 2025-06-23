@@ -34,6 +34,9 @@ namespace Futureverse.UBF.Runtime.Settings
 					EditorGUILayout.Space();
 					EditorGUILayout.LabelField("Add mesh config data here to support custom rigs at runtime");
 					EditorGUILayout.PropertyField(settings.FindProperty("_meshConfigs"));
+					
+					EditorGUILayout.LabelField("LOD Settings");	
+					EditorGUILayout.PropertyField(settings.FindProperty("_lodFalloffCurve"));
 					if (EditorGUI.EndChangeCheck())
 					{
 						settings.ApplyModifiedProperties();

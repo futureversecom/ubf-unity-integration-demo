@@ -65,6 +65,8 @@ namespace Testbed.AssetRegister
                 .Replace(" ", "")
                 .Replace("-", "");
         public string TokenId => _tokenId;
+        public string ChainId => _collection.ChainId.ToString();
+        public string ChainName => _collection.ChainType;
         public string CollectionId => _collectionId.Split(":")[^1];
         
         // For some reason, Unreal project passes in a higher level object where metadata is expected to be a property.

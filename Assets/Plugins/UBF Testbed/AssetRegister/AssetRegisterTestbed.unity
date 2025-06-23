@@ -352,8 +352,8 @@ MonoBehaviour:
   _onExecutionComplete:
     m_PersistentCalls:
       m_Calls: []
-  _cacheType: 1
-  _readThroughCachePathOverride: 
+  _cacheType: 2
+  _readThroughCachePathOverride: C:/Users/cston/AppData/LocalLow/Futureverse/UBF
 --- !u!4 &1210805797
 Transform:
   m_ObjectHideFlags: 0
@@ -630,6 +630,10 @@ MonoBehaviour:
   - 7668:root:21604
   - 7668:root:25700
   - 1:evm:0x6bca6de2dbdc4e0d41f7273011785ea16ba47182
+  - 1:evm:0xccc441ac31f02cd96c153db6fd5fe0a2f4e6a68d
+  - 1:evm:0x35471f47c3c0bc5fc75025b97a19ecdde00f78f8
+  _overrideSupportedVariants: 0
+  _supportedVariantOverrides: []
   _numResults: 500
   _controller: {fileID: 1210805796}
   _assetUIPrefab: {fileID: 5074754524229657676, guid: 272b3b646cce9f6459ee1335a0b61601, type: 3}
@@ -652,20 +656,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6162336598521774503, guid: 17d3e7b624739ba43929307b6d06b2ad, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.00016784668
-      objectReference: {fileID: 0}
     - target: {fileID: 8329780308075253721, guid: 17d3e7b624739ba43929307b6d06b2ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8329780308075253721, guid: 17d3e7b624739ba43929307b6d06b2ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8329780308075253721, guid: 17d3e7b624739ba43929307b6d06b2ad, type: 3}
-      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8987224787390523745, guid: 17d3e7b624739ba43929307b6d06b2ad, type: 3}

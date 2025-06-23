@@ -23,16 +23,21 @@ namespace Futureverse.UBF.Runtime.Execution
 		IEnumerator GetTextureResource(
 			ResourceId resourceId,
 			TextureImportSettings settings,
-			Action<Texture2D> onComplete);
+			Action<Texture2D, TextureAssetImportSettings> onComplete);
+
 		/// <param name="resourceId">Resource ID from the Blueprint.</param>
 		/// <param name="instanceId">Options to set on the loaded Texture.</param>
 		/// <param name="onComplete">Callback containing the loaded Blueprint.</param>
 		/// <returns></returns>
-		IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint> onComplete);
+		IEnumerator GetBlueprintResource(
+			ResourceId resourceId,
+			string instanceId,
+			Action<Blueprint, BlueprintAssetImportSettings> onComplete);
+
 		/// <param name="resourceId">Resource ID from the Blueprint.</param>
 		/// <param name="onComplete">Callback containing the loaded GltfImport component.</param>
 		/// <returns></returns>
-		IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport> onComplete);
+		IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport, MeshAssetImportSettings> onComplete);
 	}
 
 	/// <summary>
@@ -69,13 +74,18 @@ namespace Futureverse.UBF.Runtime.Execution
 		public IEnumerator GetTextureResource(
 			ResourceId resourceId,
 			TextureImportSettings settings,
-			Action<Texture2D> onComplete)
+			Action<Texture2D, TextureAssetImportSettings> onComplete)
 		{
 			var loader = new TextureLoader();
 			loader.SetSrgb(settings.UseSrgb);
 
 			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<Texture2D, TextureLoader, DefaultDownloader>(resourceId, onComplete, loader)
+				GetResource<Texture2D, TextureLoader, TextureAssetImportSettings, DefaultDownloader>(
+					resourceId,
+					ResourceType.Texture,
+					onComplete,
+					loader
+				)
 			);
 			if (routine != null)
 			{
@@ -83,13 +93,18 @@ namespace Futureverse.UBF.Runtime.Execution
 			}
 		}
 
-		public IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint> onComplete)
+		public IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint, BlueprintAssetImportSettings> onComplete)
 		{
 			var loader = new BlueprintLoader();
 			loader.SetInstanceId(instanceId);
-			
+
 			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<Blueprint, BlueprintLoader, DefaultDownloader>(resourceId, onComplete, loader)
+				GetResource<Blueprint, BlueprintLoader, BlueprintAssetImportSettings, DefaultDownloader>(
+					resourceId,
+					ResourceType.Blueprint,
+					onComplete,
+					loader
+				)
 			);
 			if (routine != null)
 			{
@@ -97,10 +112,14 @@ namespace Futureverse.UBF.Runtime.Execution
 			}
 		}
 
-		public IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport> onComplete)
+		public IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport, MeshAssetImportSettings> onComplete)
 		{
 			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<GltfImport, GltfLoader, DefaultDownloader>(resourceId, onComplete)
+				GetResource<GltfImport, GltfLoader, MeshAssetImportSettings, DefaultDownloader>(
+					resourceId,
+					ResourceType.Mesh,
+					onComplete
+				)
 			);
 			if (routine != null)
 			{
@@ -108,28 +127,40 @@ namespace Futureverse.UBF.Runtime.Execution
 			}
 		}
 
-		private IEnumerator GetResource<TResource, TLoader, TDownloader>(
+		private IEnumerator GetResource<TResource, TLoader, TImportSettings, TDownloader>(
 			ResourceId resourceId,
-			Action<TResource> onComplete,
+			ResourceType type,
+			Action<TResource, TImportSettings> onComplete,
 			TLoader loader = null,
 			TDownloader downloader = null)
 			where TResource : class
-			where TLoader : class, IDataLoader<TResource>, new()
+			where TLoader : class, IDataLoader<TResource, TImportSettings>, new()
+			where TImportSettings : class, IAssetImportSettings<TResource>
 			where TDownloader : class, IDownloader, new()
 		{
 			if (!_catalog.TryGetValue(resourceId.Value, out var resource))
 			{
-				onComplete?.Invoke(null);
+				UbfLogger.LogWarn($"No resource found with Id \"{resourceId.Value}\"");
+				onComplete?.Invoke(null, null);
 				yield break;
 			}
 
-			var resourceLoader = new ResourceLoader<TResource>(
+			if (resource.Type != ResourceType.Unspecified && resource.Type != type)
+			{
+				UbfLogger.LogWarn(
+					$"Resource found with Id \"{resourceId.Value}\", but had type {resource.Type} (Expected {type})"
+				);
+				onComplete?.Invoke(null, null);
+				yield break;
+			}
+
+			var resourceLoader = new ResourceLoader<TResource, TImportSettings>(
 				resource,
 				downloader ?? new TDownloader(),
 				loader ?? new TLoader(),
 				_resourceCache
 			);
-
+			
 			var routine = CoroutineHost.Instance.StartCoroutine(resourceLoader.Get(onComplete));
 			if (routine != null)
 			{

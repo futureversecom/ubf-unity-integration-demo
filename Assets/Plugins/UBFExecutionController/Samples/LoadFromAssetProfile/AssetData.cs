@@ -8,6 +8,8 @@ namespace Futureverse.UBF.ExecutionController.Samples.LoadFromAssetProfile
 {
 	public class AssetData : IUbfAsset
 	{
+		public string ChainId { get; }
+		public string ChainName { get; }
 		public string Id { get; }
 		public string CollectionId { get; }
 		public JObject Metadata { get; }
@@ -15,11 +17,15 @@ namespace Futureverse.UBF.ExecutionController.Samples.LoadFromAssetProfile
 
 		public AssetData(
 			string id,
+			string chainId,
+			string chainName,
 			string collectionId,
 			string tokenId,
 			string metadata)
 		{
 			Id = id;
+			ChainId = chainId;
+			ChainName = chainName;
 			CollectionId = collectionId;
 			TokenId = tokenId;
 			Metadata = string.IsNullOrEmpty(metadata) ? null : JObject.Parse(metadata);

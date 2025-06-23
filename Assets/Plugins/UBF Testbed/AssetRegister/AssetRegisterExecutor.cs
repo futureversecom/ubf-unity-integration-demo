@@ -2,9 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using EmergenceSDK.Runtime;
-using EmergenceSDK.Runtime.Futureverse.Services;
-using EmergenceSDK.Runtime.Services;
 using Futureverse.UBF.ExecutionController.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +11,8 @@ namespace Testbed.AssetRegister
 	public class AssetRegisterExecutor : MonoBehaviour
 	{
 		[SerializeField] private string[] _collectionIds;
+		[SerializeField] private bool _overrideSupportedVariants;
+		[SerializeField] private string[] _supportedVariantOverrides;
 		[SerializeField] private int _numResults;
 		[SerializeField] private FutureverseRuntimeController _controller;
 		[SerializeField] private AssetUI _assetUIPrefab;
@@ -22,8 +21,7 @@ namespace Testbed.AssetRegister
 		[SerializeField] private RectTransform _assetGrid;
 
 		private Dictionary<string, InventoryNode> _inventoryNodes = new();
-
-		public bool useFuturepassEnvironmentURI;
+		
 		private void Start()
 		{
 			_searchButton.onClick.AddListener(OnWalletEntered);
@@ -42,29 +40,15 @@ namespace Testbed.AssetRegister
 			{
 				Destroy(child.gameObject);
 			}
-
-			if (useFuturepassEnvironmentURI)
-			{
-				var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
-				var uri = fvService.GetArApiUrl();
-				StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
-					_walletInput.text,
-					_collectionIds,
-					_numResults,
-					OnWalletsLoaded,
-					uri
-				));
-			}
-			else
-			{
-				StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
-					_walletInput.text,
-					_collectionIds,
-					_numResults,
-					OnWalletsLoaded
-				));
-			}
 			
+			Resources.UnloadUnusedAssets();
+			
+			StartCoroutine(AssetRegisterQuery.InventoryQueryRoutine(
+				_walletInput.text,
+				_collectionIds,
+				_numResults,
+				OnWalletsLoaded
+			));
 		}
 
 		private void OnWalletsLoaded(bool success, InventoryNode[] assets)
@@ -72,11 +56,6 @@ namespace Testbed.AssetRegister
 			if (!success)
 			{
 				// TODO: Set some error text
-				Debug.LogError("Failed to load wallet");
-			}
-			else
-			{
-				Debug.Log($"Wallet loaded with {assets.Length} assets");
 			}
 
 			foreach (var asset in assets)
@@ -90,7 +69,8 @@ namespace Testbed.AssetRegister
 		private void LoadAsset(InventoryNode asset)
 		{
 			var (assetTree, assets) = CreateTreeForAsset(asset);
-			StartCoroutine(_controller.ExecuteAssetTree(assetTree, new AssetProfileDataParser(), null));
+			var dataParser = new AssetProfileDataParser(_overrideSupportedVariants ? _supportedVariantOverrides : null);
+			StartCoroutine(_controller.ExecuteAssetTree(assetTree, dataParser, null));
 		}
 
 		private (IUbfTree, IUbfData[]) CreateTreeForAsset(InventoryNode asset)
@@ -138,12 +118,6 @@ namespace Testbed.AssetRegister
 			}
 
 			return (assetTree, allAssets.ToArray());
-		}
-
-		public void EnterWalletAndLoad(string wallet)
-		{
-			_walletInput.SetTextWithoutNotify(wallet);
-			OnWalletEntered();
 		}
 	}
 }
