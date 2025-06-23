@@ -88,7 +88,7 @@ public class ExperienceController : MonoBehaviour
         arUI.SetActive(true);
         
         // Populate asset grid from wallet assets
-        arExecutor.EnterWalletAndLoad(wallet);
+        arExecutor.EnterWallet(wallet);
     }
 
     private void OnLoginClicked()
