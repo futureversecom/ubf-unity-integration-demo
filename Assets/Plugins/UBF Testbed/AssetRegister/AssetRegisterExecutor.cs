@@ -27,6 +27,12 @@ namespace Testbed.AssetRegister
 			_searchButton.onClick.AddListener(OnWalletEntered);
 		}
 
+		public void EnterWallet(string wallet)
+		{
+			_walletInput.text = wallet;
+			OnWalletEntered();
+		}
+		
 		private void OnWalletEntered()
 		{
 			if (_walletInput.text == string.Empty)

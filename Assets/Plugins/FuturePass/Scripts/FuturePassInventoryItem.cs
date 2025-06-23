@@ -20,8 +20,7 @@ namespace Futureverse.FuturePass
 			InventoryItem = inventoryItem;
 			//UbfAssetProfile = UbfController.Config.GetProfileForInventoryItem(inventoryItem);
 
-			CoroutineHost.Instance.StartCoroutine(AssetProfile.FetchByAssetId(inventoryItem.ID.Replace(":"+inventoryItem.TokenId,""), inventoryItem.Meta.Name,
-				(profile) => UbfAssetProfile = profile));
+			// CoroutineHost.Instance.StartCoroutine(AssetProfile.FetchByAssetId(inventoryItem.ID.Replace(":"+inventoryItem.TokenId,""), inventoryItem.Meta.Name, (profile) => UbfAssetProfile = profile));
 		}
 
 		public InventoryItem InventoryItem { get; }
