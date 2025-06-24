@@ -4239,13 +4239,14 @@ MonoBehaviour:
   - 1:evm:0x6bca6de2dbdc4e0d41f7273011785ea16ba47182
   - 7668:root:1124
   - 7668:root:3172
+  _overrideSupportedVariants: 0
+  _supportedVariantOverrides: []
   _numResults: 500
   _controller: {fileID: 1507590201}
   _assetUIPrefab: {fileID: 5074754524229657676, guid: 272b3b646cce9f6459ee1335a0b61601, type: 3}
   _walletInput: {fileID: 1788051051}
   _searchButton: {fileID: 1788051053}
   _assetGrid: {fileID: 1788051052}
-  useFuturepassEnvironmentURI: 1
 --- !u!1 &2114283753834967212
 GameObject:
   m_ObjectHideFlags: 0
@@ -4388,6 +4389,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sylo
       objectReference: {fileID: 0}
+    - target: {fileID: 2881092735350761846, guid: 9c72d981275df6342bdc956e9a0cc4a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7353060214609855611, guid: 9c72d981275df6342bdc956e9a0cc4a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4484,6 +4489,10 @@ PrefabInstance:
     - target: {fileID: 2900168042055971829, guid: 7e26bd8a8e98a2a449f8537206c1a798, type: 3}
       propertyPath: m_Name
       value: FuturePass
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900168042055971829, guid: 7e26bd8a8e98a2a449f8537206c1a798, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4818794303478167638, guid: 7e26bd8a8e98a2a449f8537206c1a798, type: 3}
       propertyPath: environment
