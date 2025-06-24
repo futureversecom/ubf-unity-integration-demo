@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73932d3d27b79af4ba9134813fa862e8, type: 3}
+  m_Name: MC_Goblins
+  m_EditorClassIdentifier: 
+  _rigPrefab: {fileID: 8621802948925070923, guid: 7f6438100a117fc49ae3fe614a2546f4, type: 3}
+  _avatar: {fileID: 9000000, guid: 258aa6db5b401e141834af00f88df843, type: 3}

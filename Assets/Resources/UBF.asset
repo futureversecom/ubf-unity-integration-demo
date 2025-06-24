@@ -23,6 +23,8 @@ MonoBehaviour:
   _meshConfigs:
   - Key: PartyBear_BodyMesh
     Config: {fileID: 11400000, guid: 44e942827f2dc1349935e6223112dc52, type: 2}
+  - Key: Goblins_MC
+    Config: {fileID: 11400000, guid: a22931afa5bc6e7459b5dda14e853298, type: 2}
   _lodFalloffCurve:
     serializedVersion: 2
     m_Curve:
