@@ -145,13 +145,14 @@ namespace Futureverse.UBF.Runtime.Execution
 				yield break;
 			}
 
+			
 			if (resource.Type != ResourceType.Unspecified && resource.Type != type)
 			{
 				UbfLogger.LogWarn(
 					$"Resource found with Id \"{resourceId.Value}\", but had type {resource.Type} (Expected {type})"
 				);
-				onComplete?.Invoke(null, null);
-				yield break;
+				//onComplete?.Invoke(null, null);
+				//yield break;
 			}
 
 			var resourceLoader = new ResourceLoader<TResource, TImportSettings>(

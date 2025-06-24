@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73932d3d27b79af4ba9134813fa862e8, type: 3}
   m_Name: MC_Partybear
   m_EditorClassIdentifier: 
-  RigPrefab: {fileID: 6338454149265447151, guid: 036737e8e846ee54d96bd6f793eb5ec8, type: 3}
-  avatar: {fileID: 9000000, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
+  _rigPrefab: {fileID: 919132149155446097, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
+  _avatar: {fileID: 9000000, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
