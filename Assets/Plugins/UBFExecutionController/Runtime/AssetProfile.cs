@@ -4,16 +4,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using AssetRegister.Runtime.Schema.Objects;
 using Futureverse.UBF.ExecutionController.Runtime.Settings;
 using Futureverse.UBF.Runtime;
 using Futureverse.UBF.Runtime.Resources;
 using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Networking;
 
-namespace Futureverse.UBF.ExecutionController.Runtime
+namespace Futureverse.UBF.UBFExecutionController.Runtime
 {
+	[JsonObject]
+	public class AssetProfileData
+	{
+		[JsonProperty(PropertyName = "render-instance")]
+		public readonly string RenderBlueprintId;
+		[JsonProperty(PropertyName = "render-catalog")]
+		public readonly string RenderCatalogUri;
+		[JsonProperty(PropertyName = "parsing-instance")]
+		public readonly string ParsingBlueprintId;
+		[JsonProperty(PropertyName = "parsing-catalog")]
+		public readonly string ParsingCatalogUri;
+	}
+
+	[JsonObject]
+	public class AssetProfileJson
+	{
+		[JsonProperty(PropertyName = "profile-version")]
+		public string ProfileVersion;
+		[JsonProperty(PropertyName = "ubf-variants")]
+		public Dictionary<string, Dictionary<string, AssetProfileData>> Variants;
+	}
+	
 	public class AssetProfile
 	{
 		public string RenderBlueprintResourceId { get; private set; }
@@ -21,87 +42,30 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 		public Catalog RenderCatalog { get; private set; }
 		public Catalog ParsingCatalog { get; private set; }
 
-		public static IEnumerator FetchByAssetId(
-			string chainId,
-			string chainName,
-			string collectionId,
-			string tokenId,
+		public static IEnumerator FetchByAsset(
+			Asset asset,
 			Action<AssetProfile> onComplete,
 			string[] variantsOverride = null)
 		{
 			var settings = ExecutionControllerSettings.GetOrCreateSettings();
 			if (settings.UseAssetRegisterProfiles)
 			{
-				var fullCollectionId = $"{chainId}:{chainName}:{collectionId}";
-				string assetProfileUrl = null;
-				yield return GetAssetProfileUrlFromAssetRegister(fullCollectionId, tokenId, (url) => assetProfileUrl = url);
-				if (assetProfileUrl == null)
+				if (!asset.Profiles.TryGetValue("asset-profile", out var profile))
 				{
-					onComplete?.Invoke(null);
+					Debug.LogError($"No asset profile exists on Asset Register for asset {asset.CollectionId}:{asset.TokenId}");
 					yield break;
 				}
 				
-				yield return FetchByUri(assetProfileUrl, $"{collectionId}:{tokenId}", onComplete, variantsOverride);
+				yield return FetchByUri(profile.ToString(), $"{asset.CollectionId}:{asset.TokenId}", onComplete, variantsOverride);
 			}
 			else
 			{
-				var assetProfileUrl = $"{settings.AssetProfilesPath}/{collectionId}.json";
-				yield return FetchByUriLegacy(assetProfileUrl, tokenId, onComplete, variantsOverride);
+				var assetProfileUrl = $"{settings.AssetProfilesPath}/{asset.Collection.Location}.json";
+				yield return FetchByUriLegacy(assetProfileUrl, asset.TokenId, onComplete, variantsOverride);
 			}
-			
 		}
 
-		private static IEnumerator GetAssetProfileUrlFromAssetRegister(string collectionId, string tokenId, Action<string> onComplete)
-		{
-			const string url = "https://ar-api.futureverse.cloud/graphql";
-			const string query = @"
-				query Assets($assetIds: [AssetInput!]) {
-				  assetsByIds(assetIds: $assetIds) {
-				    profiles
-				  }
-				}";
-			var variables = new ProfileQueryVariables()
-			{
-				AssetIds = new[]
-				{
-					new ProfileQueryFilter()
-					{
-						CollectionId = collectionId,
-						TokenId = tokenId,
-					},
-				},
-			};
-			
-			var payload = new { query, variables };
-			var jsonPayload = JsonConvert.SerializeObject(payload, Formatting.None);
-			
-			using var webRequest = new UnityWebRequest(url, "POST");
-          
-			webRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonPayload));
-			webRequest.downloadHandler = new DownloadHandlerBuffer();
-			webRequest.SetRequestHeader("Content-Type", "application/json");
-
-			yield return webRequest.SendWebRequest();
-
-			if (webRequest.result != UnityWebRequest.Result.Success)
-			{
-				Debug.LogError($"GraphQL request failed: {webRequest.error}");
-				onComplete?.Invoke(null);
-				yield break;
-			}
-			
-			var resultString = webRequest.downloadHandler.text;
-			var resultData = JsonConvert.DeserializeObject<QueryResponse>(resultString);
-			var profiles = resultData?.Data?.Profiles;
-			if (profiles == null || profiles.Length == 0)
-			{
-				onComplete?.Invoke(null);
-				yield break;
-			}
-			onComplete?.Invoke(profiles[0]?.Profile?.Url);
-		}
-
-		public static IEnumerator FetchByUri(
+		public static IEnumerator FetchByUri(	
 			string uri,
 			string fullId,
 			Action<AssetProfile> onComplete,
@@ -135,7 +99,6 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 			Action<AssetProfile> onComplete,
 			string[] variantsOverride = null)
 		{
-			// Fetch asset profile data
 			var resourceHandler = new JsonResourceLoader<Dictionary<string, AssetProfileJson>>(uri);
 
 			Dictionary<string, AssetProfileJson> profileCollectionData = null;
@@ -205,11 +168,11 @@ namespace Futureverse.UBF.ExecutionController.Runtime
 
 		private static IEnumerator FromProfileData(AssetProfileData profileData, Action<AssetProfile> onComplete)
 		{
-			var profile = new AssetProfile();
-			var downloader = new DefaultDownloader();
-
-			profile.RenderBlueprintResourceId = profileData.RenderBlueprintId;
-			profile.ParsingBlueprintResourceId = profileData.ParsingBlueprintId;
+			var profile = new AssetProfile
+			{
+				RenderBlueprintResourceId = profileData.RenderBlueprintId,
+				ParsingBlueprintResourceId = profileData.ParsingBlueprintId,
+			};
 
 			if (!string.IsNullOrEmpty(profileData.RenderCatalogUri))
 			{

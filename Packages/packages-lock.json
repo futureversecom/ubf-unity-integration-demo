@@ -19,6 +19,15 @@
       "dependencies": {},
       "hash": "733f113e365583098805e4c926a88b275c51531d"
     },
+    "com.futureverse.sdk-unity-asset-register": {
+      "version": "https://github.com/futureversecom/sdk-unity-asset-register.git?path=Assets/Plugins/AssetRegister",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "c7c773e7bdeee09b96a07f4a9d93c8df49e2c06b"
+    },
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,

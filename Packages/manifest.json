@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.cyanilux.shadergraph-variables": "https://github.com/Cyanilux/ShaderGraphVariables.git",
+    "com.futureverse.sdk-unity-asset-register": "https://github.com/futureversecom/sdk-unity-asset-register.git?path=Assets/Plugins/AssetRegister",
     "com.unity.cinemachine": "2.9.7",
     "com.unity.cloud.draco": "5.1.8",
     "com.unity.cloud.gltfast": "6.13.0",

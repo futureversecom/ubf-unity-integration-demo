@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef19ef67658843958b5603e1b6a302b6, type: 3}
+  m_Name: ExecutionControllerSettings
+  m_EditorClassIdentifier: 
+  _useAssetRegisterProfiles: 0
+  _assetProfilesPath: https://dq7a7vxun94d0.cloudfront.net/Genesis/Profiles/1.0
+  _supportedVariants:
+  - Default

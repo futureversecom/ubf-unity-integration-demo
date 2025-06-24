@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AssetRegister.Runtime.Schema.Objects;
 using EmergenceSDK.Runtime.Futureverse.Services;
 using EmergenceSDK.Runtime.Services;
 using Futureverse.FuturePass;
-using Testbed.AssetRegister;
+using Futureverse.UBF.UBFExecutionController.Runtime;
+using Futureverse.UBF.UBFExecutionController.Samples;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,10 +43,14 @@ public class ExperienceController : MonoBehaviour
     public TMP_InputField enterWalletInputField; // Takes user input for wallet
     public TMP_Text loginText; // Displays login status (aka connecting text)
 
+    [Header("Assets")]
+    public AssetUI assetUI;
+    public RectTransform assetsGrid;
+
     [Header("Rendering")]
     public GameObject arRoot; // Player controller root (aka Armature)
     public GameObject arUI; // Root of grid UI used to render player assets
-    public AssetRegisterExecutor arExecutor; // Futureverse tool for executing UBF graphs from an asset registry query
+    public ExecutionController executionController;
     
     private bool loggedIn;
     private string wallet;
@@ -88,7 +94,27 @@ public class ExperienceController : MonoBehaviour
         arUI.SetActive(true);
         
         // Populate asset grid from wallet assets
-        arExecutor.EnterWallet(wallet);
+        enterWalletInputField.text = wallet;
+        StartCoroutine(executionController.FetchAssetsFromWallet(wallet, OnAssetsLoaded, OnFailure));
+    }
+    
+    private void OnFailure(string error)
+    {
+        // TODO: Set some error text?
+    }
+
+    private void OnAssetsLoaded(Asset[] assets)
+    {
+        foreach (var asset in assets)
+        {
+            var ui = Instantiate(assetUI, assetsGrid);
+            ui.Load(asset, () => LoadAsset(asset));
+        }
+    }
+    
+    private void LoadAsset(Asset asset)
+    {
+        StartCoroutine(executionController.LoadUBFAsset(asset));
     }
 
     private void OnLoginClicked()

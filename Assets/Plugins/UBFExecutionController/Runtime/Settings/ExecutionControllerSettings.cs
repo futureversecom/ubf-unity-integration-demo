@@ -10,7 +10,7 @@ namespace Futureverse.UBF.ExecutionController.Runtime.Settings
 {
 	internal class ExecutionControllerSettings : ScriptableObject
 	{
-		private const string MyCustomSettingsPath = "Assets/Settings/ExecutionControllerSettings.asset";
+		private const string MyCustomSettingsPath = "Assets/Resources/RuntimeSettings/ExecutionControllerSettings.asset";
 
 		[SerializeField] private bool _useAssetRegisterProfiles = false;
 		[SerializeField] private string _assetProfilesPath;
@@ -23,27 +23,24 @@ namespace Futureverse.UBF.ExecutionController.Runtime.Settings
 
 		public static ExecutionControllerSettings GetOrCreateSettings()
 		{
+			var settings = Resources.Load<ExecutionControllerSettings>("RuntimeSettings/ExecutionControllerSettings");
+			
+			if (settings == null)
+			{
 #if UNITY_EDITOR
-			var settings = AssetDatabase.LoadAssetAtPath<ExecutionControllerSettings>(MyCustomSettingsPath);
-			if (settings != null)
-			{
-				return settings;
-			}
+				const string fullPath = "Assets/Resources/RuntimeSettings";
+				if (!Directory.Exists(fullPath))
+				{
+					Directory.CreateDirectory(fullPath);
+				}
 
-			var fullPath = $"{Application.dataPath}/Settings";
-			if (!Directory.Exists(fullPath))
-			{
-				Directory.CreateDirectory(fullPath);
-			}
-
-			settings = CreateInstance<ExecutionControllerSettings>();
-			AssetDatabase.CreateAsset(settings, MyCustomSettingsPath);
-			AssetDatabase.SaveAssets();
-			return settings;
+				settings = CreateInstance<ExecutionControllerSettings>();
+				AssetDatabase.CreateAsset(settings, MyCustomSettingsPath);
+				AssetDatabase.SaveAssets();
 #endif
-#pragma warning disable CS0162
-			return null;
-#pragma warning restore CS0162
+			}
+		
+			return settings;
 		}
 
 #if UNITY_EDITOR
