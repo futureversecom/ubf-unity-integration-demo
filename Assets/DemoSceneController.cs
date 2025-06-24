@@ -44,7 +44,8 @@ public class DemoSceneController : MonoBehaviour
 
         if (!_artifactProvider.TryRegisterBlueprint(File.ReadAllText(path)))
         {
-            
+            Debug.LogError("Failed to register blueprint " + path);
+            return;
         }
         
         var dirName = Path.GetDirectoryName(Path.GetFullPath(path));
@@ -73,6 +74,13 @@ public class DemoSceneController : MonoBehaviour
             return;
         }
         _artifactProvider.PopulateCatalog(catalogDir);
+    }
+
+    [ContextMenu("Run")]
+    private void Run()
+    {
+        StartCoroutine(RuntimeController.Execute("root", _artifactProvider, new List<IBlueprintInstanceData>(),
+            onComplete: Debug.Log));
     }
 }
 
@@ -121,7 +129,7 @@ public class DemoArtifactProvider : IArtifactProvider
 
     public bool TryRegisterBlueprint(string json)
     {
-        if (Blueprint.TryLoad("", json, out var blueprint))
+        if (Blueprint.TryLoad("root", json, out var blueprint))
         {
             _blueprint = blueprint;
             return true;
@@ -192,8 +200,7 @@ public class DemoArtifactProvider : IArtifactProvider
                 }
             }
         );
-			
-
+        
         if (tex == null)
         {
             onComplete?.Invoke(null, null);
@@ -213,18 +220,29 @@ public class DemoArtifactProvider : IArtifactProvider
 
     public IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint, BlueprintAssetImportSettings> onComplete)
 	{
-		string blueprintID = resourceId.Value;
-		if (instances.TryGetValue(resourceId.Value, out BlueprintInstanceData instanceFromResourceId))
-		{
-			blueprintID = instanceFromResourceId.ResourceId;
-		}
-		else if (instances.TryGetValue(instanceId, out BlueprintInstanceData instanceFromInstanceId))
-		{
-			blueprintID = instanceFromInstanceId.ResourceId;
-		}
-		var blueprint = blueprints[blueprintID];
-		Blueprint.TryLoad(instanceId, blueprint.Json, out var bp);
-		Debug.Log($"Providing resource for graph {blueprint.DisplayName}");
+        if (resourceId.Value == "root") // This is the root graph with manual instance id
+        {
+            onComplete?.Invoke(_blueprint, new BlueprintAssetImportSettings());
+            yield break;
+        }
+        if (_catalog == null)
+        {
+            Debug.LogError($"Cannot find catalog for resource {resourceId}");
+            onComplete?.Invoke(null, null);
+            yield break;
+        }
+			
+        var uri = _catalog.GetResourceUri(resourceId.Value);
+        if (string.IsNullOrEmpty(uri) || !File.Exists(uri))
+        {
+            Debug.LogError($"Invalid resource URI. Please check that resource exists, and that it contains a valid path.\nResource: {resourceId.Value}\nURI: {uri}");
+            onComplete?.Invoke(null, null);
+            yield break;
+        }
+
+        string text = File.ReadAllText(uri);
+		Blueprint.TryLoad(instanceId, text, out var bp);
+		Debug.Log($"Providing resource for graph {resourceId.Value}");
 		onComplete?.Invoke(bp, new BlueprintAssetImportSettings());
 		yield break;
 	}

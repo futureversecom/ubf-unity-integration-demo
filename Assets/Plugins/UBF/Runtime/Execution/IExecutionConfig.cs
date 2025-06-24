@@ -60,7 +60,7 @@ namespace Futureverse.UBF.Runtime.Execution
 			yield return _artifactProvider.GetBlueprintResource(id, guid,
 				(graph, importSettings) =>
 				{
-					_loadedBlueprints.Add(guid, graph);
+					_loadedBlueprints.TryAdd(guid, graph);
 					callback?.Invoke(graph, importSettings);
 				});
 		}
