@@ -6,6 +6,8 @@ using SFB;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Futureverse.UBF.Runtime;
 using Futureverse.UBF.Runtime.Builtin;
 using Futureverse.UBF.Runtime.Resources;
@@ -13,15 +15,38 @@ using GLTFast;
 using GLTFast.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TMPro;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class DemoSceneController : MonoBehaviour
 {
-    public UBFRuntimeController RuntimeController;
-    public string path;
+    public UBFRuntimeController runtimeController;
 
-    private DemoArtifactProvider _artifactProvider;
+    public float updateFrequency = 0.5f;
     
+    [SerializeField]
+    private string artifactPath;
+    [SerializeField]
+    private string folderHash;
+    
+    public Button fileBtn;
+    public TMP_Text renderText;
+    
+    private DemoArtifactProvider _artifactProvider;
+
+    private void OnEnable()
+    {
+        fileBtn.onClick.AddListener(SelectGraphFile);
+        StartCoroutine(CheckForUpdateRoutine());
+    }
+
+    private void OnDisable()
+    {
+        fileBtn.onClick.RemoveListener(SelectGraphFile);
+        StopAllCoroutines();
+    }
+
     [ContextMenu("Select instance")]
     private void SelectGraphFile()
     {
@@ -34,21 +59,26 @@ public class DemoSceneController : MonoBehaviour
             return;
         }
         
-        path = paths[0];
+        SelectGraphFile(paths[0]);
+    }
 
-        if (string.IsNullOrEmpty(path) || !File.Exists(path))
+    private void SelectGraphFile(string path)
+    {
+        artifactPath = path;
+
+        if (string.IsNullOrEmpty(artifactPath) || !File.Exists(artifactPath))
         {
-            Debug.LogError("No file at path " + path);
+            Debug.LogError("No file at path " + artifactPath);
             return;
         }
 
-        if (!_artifactProvider.TryRegisterBlueprint(File.ReadAllText(path)))
+        if (!_artifactProvider.TryRegisterBlueprint(File.ReadAllText(artifactPath)))
         {
-            Debug.LogError("Failed to register blueprint " + path);
+            Debug.LogError("Failed to register blueprint " + artifactPath);
             return;
         }
         
-        var dirName = Path.GetDirectoryName(Path.GetFullPath(path));
+        var dirName = Path.GetDirectoryName(Path.GetFullPath(artifactPath));
         if (string.IsNullOrEmpty(dirName))
         {
             Debug.LogError("Invalid directory path");
@@ -65,7 +95,9 @@ public class DemoSceneController : MonoBehaviour
         {
             Debug.LogError("Parent directory is not .export. Parent directory: " + currentDir.Name);
             return;
-        }        
+        }
+
+        folderHash = CreateMd5ForFolder(currentDir.FullName);
         
         var catalogDir = Path.Combine(currentDir.FullName, "catalog");
         if (!Directory.Exists(catalogDir))
@@ -74,13 +106,86 @@ public class DemoSceneController : MonoBehaviour
             return;
         }
         _artifactProvider.PopulateCatalog(catalogDir);
+        
+        Run();
     }
 
     [ContextMenu("Run")]
     private void Run()
     {
-        StartCoroutine(RuntimeController.Execute("root", _artifactProvider, new List<IBlueprintInstanceData>(),
+        renderText.text = $"Rendering artifact {Path.GetFileName(artifactPath)}";
+        StartCoroutine(runtimeController.Execute("root", _artifactProvider, new List<IBlueprintInstanceData>(),
             onComplete: Debug.Log));
+    }
+
+    private IEnumerator CheckForUpdateRoutine()
+    {
+        while (true)
+        {
+            CheckForUpdate();
+            
+            yield return new WaitForSeconds(updateFrequency);
+        }
+    }
+    
+    private void CheckForUpdate()
+    {
+        if (string.IsNullOrEmpty(artifactPath) || !File.Exists(artifactPath))
+        {
+            return;
+        }
+        
+        var dirName = Path.GetDirectoryName(Path.GetFullPath(artifactPath));
+        if (string.IsNullOrEmpty(dirName))
+        {
+            return;
+        }  
+        
+        var currentDir = new DirectoryInfo(dirName);
+        if (!currentDir.Name.Equals("asset", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+        
+        currentDir = currentDir.Parent;
+        if (!currentDir.Name.Equals(".export", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        var newHash = CreateMd5ForFolder(currentDir.FullName);
+        if (newHash != folderHash)
+        {
+            Debug.Log("Change detected, rerendering");
+            SelectGraphFile(artifactPath);
+        }
+    }
+    
+    private static string CreateMd5ForFolder(string path)
+    {
+        var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories)
+            .OrderBy(p => p).ToList(); // Include nested folders
+
+        MD5 md5 = MD5.Create();
+
+        for(int i = 0; i < files.Count; i++)
+        {
+            string file = files[i];
+        
+            // hash path
+            string relativePath = file.Substring(path.Length + 1);
+            byte[] pathBytes = Encoding.UTF8.GetBytes(relativePath.ToLower());
+            md5.TransformBlock(pathBytes, 0, pathBytes.Length, pathBytes, 0);
+        
+            // hash contents
+            byte[] contentBytes = File.ReadAllBytes(file);
+            if (i == files.Count - 1)
+                md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
+            else
+                md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+        }
+    
+        return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
     }
 }
 

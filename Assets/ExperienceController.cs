@@ -133,7 +133,7 @@ public class ExperienceController : MonoBehaviour
         {
             loginText.text += "Logged in!";
             wallet = Auth.LoadedAuthenticationDetails.DecodedToken.Futurepass;
-                
+            Debug.Log("Logged in with wallet: " + wallet);
             loggedIn = true;
         }, exception =>
         {
