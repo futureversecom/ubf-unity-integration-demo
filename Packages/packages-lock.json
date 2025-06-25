@@ -1,17 +1,5 @@
 {
   "dependencies": {
-    "com.crucible.emergence": {
-      "version": "file:com.crucible.emergence",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.inputsystem": "1.6.1",
-        "com.unity.cinemachine": "2.10.1",
-        "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.textmeshpro": "3.0.6",
-        "com.unity.test-framework": "1.1.33"
-      }
-    },
     "com.cyanilux.shadergraph-variables": {
       "version": "https://github.com/Cyanilux/ShaderGraphVariables.git",
       "depth": 0,
@@ -39,8 +27,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.10.1",
-      "depth": 1,
+      "version": "2.9.7",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.31"
