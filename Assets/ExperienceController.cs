@@ -1,16 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AssetRegister.Runtime.Clients;
 using AssetRegister.Runtime.Schema.Objects;
-using EmergenceSDK.Runtime.Futureverse.Services;
-using EmergenceSDK.Runtime.Services;
-using Futureverse.FuturePass;
 using Futureverse.UBF.UBFExecutionController.Runtime;
 using Futureverse.UBF.UBFExecutionController.Samples;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Auth = Futureverse.FuturePass.FuturePassAuthentication;
 
 // Custom editor to add label to inspector
 #if UNITY_EDITOR
@@ -30,11 +30,17 @@ public class ExperienceControllerEditor : Editor
 
 public class ExperienceController : MonoBehaviour
 {
-    [Header("General")]
+    public enum Environment // A single environment variable to tie together the various sdks
+    {
+        Staging,
+        Production
+    }
+
+    [Header("General")] 
+    public Environment authEnvironment;
     public GameObject backgroundFader;
         
     [Header("Login")]
-    public FuturePassLoginManager loginManager; // Controls custodial authentication process
     public GameObject loginRoot; // Highest object in hierarchy that contains UI resources for login (aka first screen)
     public Button loginButton; // Starts custodial auth
     public Button walletButton; // Opens the input field to enter futurepass wallet
@@ -77,6 +83,7 @@ public class ExperienceController : MonoBehaviour
     
     private IEnumerator Start()
     {
+        Auth.SetEnvironment(authEnvironment == Environment.Staging ? Auth.Environment.Staging : Auth.Environment.Production);
         // Ensure that required objects are active, including buttons required to login
         backgroundFader.SetActive(true);
         loginRoot.SetActive(true);
@@ -122,28 +129,16 @@ public class ExperienceController : MonoBehaviour
         loginText.text = "Connecting...\n";
             
         // Start custodial authentication process
-        loginManager.Connect()
-            .Forget();
-        
-        // If success, save wallet and flag state
-        loginManager.onLoginSuccess?.AddListener((_) =>
+        Auth.StartLogin(() =>
         {
             loginText.text += "Logged in!";
-            
-            var fvService = EmergenceServiceProvider.GetService<IFutureverseService>();
-            
-            // Assume ROOT network, so discard network identifiers and just use wallet address
-            var fp = fvService.CurrentFuturepassInformation.futurepass.Split(":")[^1]; 
-            wallet = fp;
+            wallet = Auth.LoadedAuthenticationDetails.DecodedToken.Futurepass;
                 
             loggedIn = true;
-        });
-            
-        // If fail, inform user, but no other action required (they can just click login again)
-        loginManager.onLoginFailed?.AddListener((errorContainer,_) =>
+        }, exception =>
         {
             loginText.text += "Failed to login!\n";
-            loginText.text += errorContainer.Exception.Message + '\n';
+            loginText.text += exception.Message + '\n';
         });
     }
 
