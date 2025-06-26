@@ -176,13 +176,13 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 
 			if (!string.IsNullOrEmpty(profileData.RenderCatalogUri))
 			{
-				var renderCatalogLoader = new JsonResourceLoader<Catalog>(profileData.RenderCatalogUri);
+				var renderCatalogLoader = new CatalogResourceLoader(profileData.RenderCatalogUri);
 				yield return renderCatalogLoader.Get(data => profile.RenderCatalog = data);
 			}
 
 			if (!string.IsNullOrEmpty(profileData.ParsingCatalogUri))
 			{
-				var parsingCatalogLoader = new JsonResourceLoader<Catalog>(profileData.ParsingCatalogUri);
+				var parsingCatalogLoader = new CatalogResourceLoader(profileData.ParsingCatalogUri);
 				yield return parsingCatalogLoader.Get(data => profile.ParsingCatalog = data);
 			}
 

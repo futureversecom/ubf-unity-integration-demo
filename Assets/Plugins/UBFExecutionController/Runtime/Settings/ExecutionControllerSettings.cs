@@ -12,7 +12,7 @@ namespace Futureverse.UBF.ExecutionController.Runtime.Settings
 	{
 		private const string MyCustomSettingsPath = "Assets/Resources/RuntimeSettings/ExecutionControllerSettings.asset";
 
-		[SerializeField] private bool _useAssetRegisterProfiles = false;
+		[SerializeField] private bool _useAssetRegisterProfiles;
 		[SerializeField] private string _assetProfilesPath;
 		[SerializeField] [Tooltip("List of Variants that can be loaded, in order of load preference")]
 		private string[] _supportedVariants;

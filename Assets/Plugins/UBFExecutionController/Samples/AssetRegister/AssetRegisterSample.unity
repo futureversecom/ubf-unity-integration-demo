@@ -650,6 +650,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _arClient: {fileID: 1193912752}
   _ubfController: {fileID: 1555705600}
+  _syloResolverUri: https://sylo-resolver.data.storage-sylo.futureverse.cloud
+  _specifySupportedCollectionIds: 0
   _supportedCollectionIds:
   - 7668:root:17508
   - 7668:root:20580
@@ -659,9 +661,8 @@ MonoBehaviour:
   - 7668:root:18532
   - 7668:root:21604
   - 7668:root:25700
-  - 1:evm:0x6bca6de2dbdc4e0d41f7273011785ea16ba47182
-  - 1:evm:0xccc441ac31f02cd96c153db6fd5fe0a2f4e6a68d
-  - 1:evm:0x35471f47c3c0bc5fc75025b97a19ecdde00f78f8
+  _overrideSupportedVariants: 0
+  _variantOverrides: []
   _onFetchAssetsSuccess:
     m_PersistentCalls:
       m_Calls: []

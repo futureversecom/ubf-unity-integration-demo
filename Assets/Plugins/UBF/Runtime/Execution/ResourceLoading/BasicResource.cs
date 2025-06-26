@@ -13,6 +13,7 @@ namespace Futureverse.UBF.Runtime.Resources
 		public string Hash => "";
 		public string Uri { get; }
 		public JObject ImportSettings => null;
+		public string StandardVersion => "";
 		public ResourceType Type { get; }
 
 		public BasicResource(string uri, ResourceType resourceType = ResourceType.Unspecified)

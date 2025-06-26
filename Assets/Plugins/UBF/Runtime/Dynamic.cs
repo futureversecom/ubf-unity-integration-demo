@@ -113,7 +113,7 @@ namespace Futureverse.UBF.Runtime
 		}
 
 		[MonoPInvokeCallback(typeof(Calls.dynamic_array_iter_iterator_delegate))]
-		private bool IterateArrayCallback(nint context, Native.FFI.Dynamic* defaultPtr)
+		private static bool IterateArrayCallback(nint context, Native.FFI.Dynamic* defaultPtr)
 		{
 			var element = new Dynamic(defaultPtr);
 			var xs = (List<Dynamic>)GCHandle.FromIntPtr(context)

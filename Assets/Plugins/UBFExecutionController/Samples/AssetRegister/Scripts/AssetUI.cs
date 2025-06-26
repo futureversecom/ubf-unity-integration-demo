@@ -34,6 +34,12 @@ namespace Futureverse.UBF.UBFExecutionController.Samples
 
 		private IEnumerator LoadBackgroundImage(string tokenId, string imageUri)
 		{
+			// Webp format not supported by unity. don't try to load the image if that's the case.
+			if (imageUri.EndsWith(".webp") || imageUri.EndsWith(".gif") || imageUri.StartsWith("ipfs:"))
+			{
+				yield break;
+			}
+			
 			if (s_spriteCache.TryGetValue(tokenId, out var sprite))
 			{
 				_image.sprite = sprite;

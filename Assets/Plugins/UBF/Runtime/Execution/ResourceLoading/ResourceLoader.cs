@@ -12,7 +12,7 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// </summary>
 	/// <typeparam name="TResource">The type of the resource to be loaded</typeparam>
 	/// <typeparam name="TImportSettings">The import settings for the object</typeparam>
-	public class ResourceLoader<TResource, TImportSettings> where TResource : class where TImportSettings : class, IAssetImportSettings<TResource>
+	public class ResourceLoader<TResource, TImportSettings> where TResource : class where TImportSettings : AAssetImportSettings<TResource>
 	{
 		private readonly ICache _cache;
 		private readonly IDownloader _downloader;
@@ -77,7 +77,13 @@ namespace Futureverse.UBF.Runtime.Resources
 				yield break;
 			}
 
+			// Propagate version from resource data to import settings
 			var importSettings = _resourceData.ImportSettings?.ToObject<TImportSettings>();
+			if (importSettings != null && Version.TryParse(_resourceData.StandardVersion, out var version))
+			{
+				importSettings.StandardVersion = version;
+			}
+
 			var loadRoutine = CoroutineHost.Instance.StartCoroutine(
 				_dataLoader.LoadFromData(
 					bytes,
@@ -152,6 +158,18 @@ namespace Futureverse.UBF.Runtime.Resources
 			new BasicResource(uri),
 			new DefaultDownloader(),
 			new JsonLoader<T>()
+		)
+		{
+			
+		}
+	}
+	
+	public class CatalogResourceLoader : ResourceLoader<Catalog, EmptyImportSettings<Catalog>>
+	{
+		public CatalogResourceLoader(string uri) : base(
+			new BasicResource(uri),
+			new DefaultDownloader(),
+			new CatalogLoader()
 		)
 		{
 			

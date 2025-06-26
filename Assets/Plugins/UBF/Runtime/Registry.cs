@@ -53,12 +53,14 @@ namespace Futureverse.UBF.Runtime
 				.Register<ExecuteBlueprint>()
 				.Register<ExecuteBlueprint>("ExecuteBlueprint2")
 				.Register<TransformPositionNode>("TransformPosition") // Class includes 'node' due to potential conflicts re Transform
+				.Register<TransformRotationNode>("TransformRotation")
 				.Register<TransformScaleNode>("TransformScale")
 				.Register<MakePBRMaterial>()
 				.Register<MakeDecalMaterial>()
 				.Register<MakeFurMaterial>()
 				.Register<MakeHairMaterial>()
-				.Register<MakeSkinMaterial>();
+				.Register<MakeSkinMaterial>()
+				.Register<MakeSkin02Material>();
 
 		/// <summary>
 		/// Adds a new type of node to the Registry.

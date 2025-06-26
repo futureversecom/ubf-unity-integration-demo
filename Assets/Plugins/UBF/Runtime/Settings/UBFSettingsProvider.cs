@@ -30,6 +30,7 @@ namespace Futureverse.UBF.Runtime.Settings
 					EditorGUILayout.PropertyField(settings.FindProperty("_pbrTransparent"));
 					EditorGUILayout.PropertyField(settings.FindProperty("_hair"));
 					EditorGUILayout.PropertyField(settings.FindProperty("_skin"));
+					EditorGUILayout.PropertyField(settings.FindProperty("_skin02"));
 					
 					EditorGUILayout.Space();
 					EditorGUILayout.LabelField("Add mesh config data here to support custom rigs at runtime");

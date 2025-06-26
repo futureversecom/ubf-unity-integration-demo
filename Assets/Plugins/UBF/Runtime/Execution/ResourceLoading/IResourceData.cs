@@ -39,5 +39,6 @@ namespace Futureverse.UBF.Runtime.Resources
 		string Uri { get; }
 		ResourceType Type { get; }
 		JObject ImportSettings { get; }
+		string StandardVersion { get; }
 	}
 }

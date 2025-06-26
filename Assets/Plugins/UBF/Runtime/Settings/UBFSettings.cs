@@ -22,6 +22,7 @@ namespace Futureverse.UBF.Runtime.Settings
 		[SerializeField] private Material _pbrTransparent;
 		[SerializeField] private Material _hair;
 		[SerializeField] private Material _skin;
+		[SerializeField] private Material _skin02;
 		[SerializeField] private List<MeshConfigEntry> _meshConfigs;
 		[SerializeField] private AnimationCurve _lodFalloffCurve;
 		public Material DecalOpaque => _decalOpaque;
@@ -32,9 +33,10 @@ namespace Futureverse.UBF.Runtime.Settings
 		public Material PbrTransparent => _pbrTransparent;
 		public Material Hair => _hair;
 		public Material Skin => _skin;
+		public Material Skin02 => _skin02;
 		public AnimationCurve LodFalloffCurve => _lodFalloffCurve;
 
-		[System.Serializable]
+		[Serializable]
 		public class MeshConfigEntry
 		{
 			public string Key;
@@ -109,6 +111,13 @@ namespace Futureverse.UBF.Runtime.Settings
 			if (MeshConfigs == null)
 			{
 				_meshConfigs = new List<MeshConfigEntry>();
+			}
+
+			if (_lodFalloffCurve == null || _lodFalloffCurve.length < 2)
+			{
+				_lodFalloffCurve = new AnimationCurve();
+				_lodFalloffCurve.AddKey(0, 1);
+				_lodFalloffCurve.AddKey(1, 0);
 			}
 		}
 		

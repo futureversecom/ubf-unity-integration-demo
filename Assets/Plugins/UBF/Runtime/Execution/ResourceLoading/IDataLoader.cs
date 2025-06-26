@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using System.Text;
-using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
 using GLTFast.Logging;
 using Newtonsoft.Json;
@@ -16,7 +15,7 @@ namespace Futureverse.UBF.Runtime.Resources
 	/// </summary>
 	/// <typeparam name="TResource">Type of the data being loaded.</typeparam>
 	/// <typeparam name="TImportSettings">The import settings for the resource.</typeparam>
-	public interface IDataLoader<out TResource, in TImportSettings> where TResource : class where TImportSettings : IAssetImportSettings<TResource>
+	public interface IDataLoader<out TResource, in TImportSettings> where TResource : class where TImportSettings : AAssetImportSettings<TResource>
 	{
 		/// <summary>
 		/// Coroutine that loads an object from raw byte data.
@@ -53,6 +52,7 @@ namespace Futureverse.UBF.Runtime.Resources
 				false,
 				!_useSrgb
 			);
+			
 			texture.LoadImage(bytes);
 			onComplete?.Invoke(texture);
 			yield break;
@@ -86,16 +86,16 @@ namespace Futureverse.UBF.Runtime.Resources
 	}
 
 	/// <summary>
-	/// IDataLoader implementation for loading a UBF Blueprint from byte data. Allows the Instance Id to be configured before loading.
+	/// IDataLoader implementation for loading a UBF Blueprint from byte data. Allows the Instance ID to be configured before loading.
 	/// </summary>
 	public class BlueprintLoader : IDataLoader<Blueprint, BlueprintAssetImportSettings>
 	{
 		private string _instanceId;
 
 		/// <summary>
-		/// Sets the instance Id of the resulting Blueprint, making it easier to reference.
+		/// Sets the instance ID of the resulting Blueprint, making it easier to reference.
 		/// </summary>
-		/// <param name="instanceId">Instance Id of the resulting Blueprint</param>
+		/// <param name="instanceId">Instance ID of the resulting Blueprint</param>
 		public void SetInstanceId(string instanceId)
 		{
 			_instanceId = instanceId;
@@ -128,6 +128,39 @@ namespace Futureverse.UBF.Runtime.Resources
 				var jsonString = Encoding.UTF8.GetString(bytes);
 				var deserializedJson = JsonConvert.DeserializeObject<T>(jsonString);
 				onComplete?.Invoke(deserializedJson);
+			}
+			catch (Exception)
+			{
+				onComplete?.Invoke(null);
+			}
+
+			yield break;
+		}
+	}
+	
+	/// <summary>
+	/// IDataLoader implementation for loading a Catalog object from byte data. Importantly, this sets the Standard
+	/// Version of each resource to the version of the catalog
+	/// </summary>
+	public class CatalogLoader : IDataLoader<Catalog, EmptyImportSettings<Catalog>>
+	{
+		public IEnumerator LoadFromData(
+			byte[] bytes,
+			EmptyImportSettings<Catalog> importSettings,
+			Action<Catalog> onComplete)
+		{
+			try
+			{
+				var jsonString = Encoding.UTF8.GetString(bytes);
+				var catalog = JsonConvert.DeserializeObject<Catalog>(jsonString);
+
+				// Assign the standard version to each of the resources
+				foreach (var resource in catalog.Entries)
+				{
+					resource.StandardVersion = catalog.Version;
+				}
+				
+				onComplete?.Invoke(catalog);
 			}
 			catch (Exception)
 			{

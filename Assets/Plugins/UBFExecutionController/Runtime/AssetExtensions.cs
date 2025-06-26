@@ -46,5 +46,8 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 		{
 			return asset?.Metadata?.Properties?["image"]?.ToString() ?? "";
 		}
+
+		public static string GetFullIdentifier(this Asset asset)
+			=> $"{asset.CollectionId ?? "{Unknown Collection ID}"}:{asset.TokenId ?? "{Unknown Token ID}"}";
 	}
 }

@@ -60,19 +60,19 @@ namespace Futureverse.UBF.Runtime.Execution
 			yield return _artifactProvider.GetBlueprintResource(id, guid,
 				(graph, importSettings) =>
 				{
-					_loadedBlueprints.TryAdd(guid, graph);
+					_loadedBlueprints.Add(guid, graph);
 					callback?.Invoke(graph, importSettings);
 				});
 		}
 
 		public IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport, MeshAssetImportSettings> callback)
 		{
-			yield return _artifactProvider.GetMeshResource(id, callback);
+			return _artifactProvider.GetMeshResource(id, callback);
 		}
 
 		public IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D, TextureAssetImportSettings> callback)
 		{
-			yield return _artifactProvider.GetTextureResource(id, settings, callback);
+			return _artifactProvider.GetTextureResource(id, settings, callback);
 		}
 		
 		/// <param name="artifactProvider">Provides a way for Remote resources to be loaded</param>

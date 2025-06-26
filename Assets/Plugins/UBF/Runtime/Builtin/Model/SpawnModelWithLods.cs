@@ -33,7 +33,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadArray<ResourceId>("Meshes", out var resources))
 			{
-				UbfLogger.LogError("[SpawnModelWithLODs] Could not find input \"Resources\"");
+				UbfLogger.LogError("[SpawnModelWithLODs] Could not find input \"Meshes\"");
 				yield break;
 			}
 
@@ -123,13 +123,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			var instantiator = new UbfMeshInstantiator(lodData.Mesh, parent, lodData.MeshNames);
 			instantiator.MeshAdded += MeshAddedCallback;
 
-			var instantiateRoutine = CoroutineHost.Instance.StartCoroutine(
-				new WaitForTask(lodData.Mesh.InstantiateMainSceneAsync(instantiator))
-			);
-			if (instantiateRoutine != null)
-			{
-				yield return instantiateRoutine;
-			}
+			return new WaitForTask(lodData.Mesh.InstantiateMainSceneAsync(instantiator));
 		}
 		
 		protected override void MeshAddedCallback(

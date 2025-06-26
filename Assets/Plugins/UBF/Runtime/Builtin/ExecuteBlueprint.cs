@@ -42,7 +42,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 				if (TryRead(declaredInput, out var dynamic))
 				{
-					blueprint.RegisterVariable(declaredInput, dynamic.AsObject());
+					blueprint.RegisterVariable(declaredInput, dynamic);
 				}
 			}
 

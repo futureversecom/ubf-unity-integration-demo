@@ -12,6 +12,8 @@ namespace Futureverse.UBF.Runtime.Resources
 	[JsonObject]
 	public class Catalog
 	{
+		[JsonProperty(PropertyName = "version")]
+		public string Version;
 		[JsonProperty(PropertyName = "resources")]
 		public List<ResourceData> Entries = new();
 
@@ -37,6 +39,8 @@ namespace Futureverse.UBF.Runtime.Resources
 		[JsonProperty("hash")] private string _hash;
 		[JsonProperty("metadata")] private JObject _importSettings;
 
+		public string StandardVersion { get; set; }
+		
 		public string Id => _resourceId;
 		public string Uri => _uri;
 		public ResourceType Type => _type;

@@ -45,18 +45,18 @@ namespace Futureverse.UBF.Runtime.Execution
 	/// </summary>
 	public class ArtifactProvider : IArtifactProvider
 	{
-		private readonly Dictionary<string, IResourceData> _catalog = new();
-		private readonly ICache _resourceCache;
+		protected readonly Dictionary<string, IResourceData> Catalog = new();
+		protected readonly ICache ResourceCache;
 
 		public ArtifactProvider()
 		{
-			_resourceCache = null;
+			ResourceCache = null;
 		}
 		
 		/// <param name="cache">The cache system you want to use for this provider.</param>
 		public ArtifactProvider(ICache cache)
 		{
-			_resourceCache = cache;
+			ResourceCache = cache;
 		}
 
 		/// <summary>
@@ -67,11 +67,11 @@ namespace Futureverse.UBF.Runtime.Execution
 		{
 			foreach (var entry in data.Entries)
 			{
-				_catalog.TryAdd(entry.Id, entry);
+				Catalog.TryAdd(entry.Id, entry);
 			}
 		}
 
-		public IEnumerator GetTextureResource(
+		public virtual IEnumerator GetTextureResource(
 			ResourceId resourceId,
 			TextureImportSettings settings,
 			Action<Texture2D, TextureAssetImportSettings> onComplete)
@@ -79,55 +79,37 @@ namespace Futureverse.UBF.Runtime.Execution
 			var loader = new TextureLoader();
 			loader.SetSrgb(settings.UseSrgb);
 
-			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<Texture2D, TextureLoader, TextureAssetImportSettings, DefaultDownloader>(
-					resourceId,
-					ResourceType.Texture,
-					onComplete,
-					loader
-				)
+			return GetResource<Texture2D, TextureLoader, TextureAssetImportSettings, DefaultDownloader>(
+				resourceId,
+				ResourceType.Texture,
+				onComplete,
+				loader
 			);
-			if (routine != null)
-			{
-				yield return routine;
-			}
 		}
 
-		public IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint, BlueprintAssetImportSettings> onComplete)
+		public virtual IEnumerator GetBlueprintResource(ResourceId resourceId, string instanceId, Action<Blueprint, BlueprintAssetImportSettings> onComplete)
 		{
 			var loader = new BlueprintLoader();
 			loader.SetInstanceId(instanceId);
 
-			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<Blueprint, BlueprintLoader, BlueprintAssetImportSettings, DefaultDownloader>(
-					resourceId,
-					ResourceType.Blueprint,
-					onComplete,
-					loader
-				)
+			return GetResource<Blueprint, BlueprintLoader, BlueprintAssetImportSettings, DefaultDownloader>(
+				resourceId,
+				ResourceType.Blueprint,
+				onComplete,
+				loader
 			);
-			if (routine != null)
-			{
-				yield return routine;
-			}
 		}
 
-		public IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport, MeshAssetImportSettings> onComplete)
+		public virtual IEnumerator GetMeshResource(ResourceId resourceId, Action<GltfImport, MeshAssetImportSettings> onComplete)
 		{
-			var routine = CoroutineHost.Instance.StartCoroutine(
-				GetResource<GltfImport, GltfLoader, MeshAssetImportSettings, DefaultDownloader>(
-					resourceId,
-					ResourceType.Mesh,
-					onComplete
-				)
+			return GetResource<GltfImport, GltfLoader, MeshAssetImportSettings, DefaultDownloader>(
+				resourceId,
+				ResourceType.Mesh,
+				onComplete
 			);
-			if (routine != null)
-			{
-				yield return routine;
-			}
 		}
 
-		private IEnumerator GetResource<TResource, TLoader, TImportSettings, TDownloader>(
+		protected IEnumerator GetResource<TResource, TLoader, TImportSettings, TDownloader>(
 			ResourceId resourceId,
 			ResourceType type,
 			Action<TResource, TImportSettings> onComplete,
@@ -135,31 +117,30 @@ namespace Futureverse.UBF.Runtime.Execution
 			TDownloader downloader = null)
 			where TResource : class
 			where TLoader : class, IDataLoader<TResource, TImportSettings>, new()
-			where TImportSettings : class, IAssetImportSettings<TResource>
+			where TImportSettings : AAssetImportSettings<TResource>
 			where TDownloader : class, IDownloader, new()
 		{
-			if (!_catalog.TryGetValue(resourceId.Value, out var resource))
+			if (!Catalog.TryGetValue(resourceId.Value, out var resource))
 			{
 				UbfLogger.LogWarn($"No resource found with Id \"{resourceId.Value}\"");
 				onComplete?.Invoke(null, null);
 				yield break;
 			}
 
-			
-			if (resource.Type != ResourceType.Unspecified && resource.Type != type)
-			{
-				UbfLogger.LogWarn(
-					$"Resource found with Id \"{resourceId.Value}\", but had type {resource.Type} (Expected {type})"
-				);
-				//onComplete?.Invoke(null, null);
-				//yield break;
-			}
+			// if (resource.Type != ResourceType.Unspecified && resource.Type != type)
+			// {
+			// 	UbfLogger.LogWarn(
+			// 		$"Resource found with ID \"{resourceId.Value}\", but had type {resource.Type} (Expected {type})"
+			// 	);
+			// 	onComplete?.Invoke(null, null);
+			// 	yield break;
+			// }
 
 			var resourceLoader = new ResourceLoader<TResource, TImportSettings>(
 				resource,
 				downloader ?? new TDownloader(),
 				loader ?? new TLoader(),
-				_resourceCache
+				ResourceCache
 			);
 			
 			var routine = CoroutineHost.Instance.StartCoroutine(resourceLoader.Get(onComplete));

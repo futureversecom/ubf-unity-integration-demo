@@ -77,7 +77,7 @@ namespace Futureverse.UBF.Runtime
 		}
 
 		[MonoPInvokeCallback(typeof(Calls.graph_iter_outputs_iterator_delegate))]
-		private bool IterateOutputsCallback(
+		private static bool IterateOutputsCallback(
 			nint context,
 			byte* idUtf8,
 			int idLen,
@@ -100,7 +100,7 @@ namespace Futureverse.UBF.Runtime
 		}
 
 		[MonoPInvokeCallback(typeof(Calls.graph_iter_inputs_iterator_delegate))]
-		private bool IterateInputsCallback(
+		private static bool IterateInputsCallback(
 			nint context,
 			byte* idUtf8,
 			int idLen,
