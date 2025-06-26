@@ -11,12 +11,20 @@ using AssetRegister.Runtime.Schema.Queries;
 using AssetRegister.Runtime.Schema.Unions;
 using Futureverse.Sylo;
 using Futureverse.UBF.Runtime.Execution;
+using Futureverse.UBF.Runtime.Resources;
 using Plugins.AssetRegister.Runtime;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Futureverse.UBF.UBFExecutionController.Runtime
 {
+	public enum CacheType
+	{
+		None = 0,
+		InMemory = 1,
+		OnDisk = 2,
+	}
+	
 	public class ExecutionController : MonoBehaviour
 	{
 		[SerializeField] private MonoClient _arClient;
@@ -31,15 +39,29 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 		[SerializeField, Tooltip("If false, supported variants are dictated by the Execution Controller settings")]
 		private bool _overrideSupportedVariants;
 		[SerializeField] private string[] _variantOverrides;
+		[SerializeField] private CacheType _caching = CacheType.None;
+		[SerializeField] private string _cachePathOverride;
 		
 		[SerializeField, Header("Events")] private UnityEvent<Asset[]> _onFetchAssetsSuccess;
 		[SerializeField] private UnityEvent<string> _onFetchAssetsFailure;
 
 		private readonly Dictionary<string, Asset> _loadedAssets = new();
+		private ICache _cache;
 
 		private void Start()
 		{
 			SyloUtilities.SetResolverUri(_syloResolverUri);
+			
+			_cache = _caching switch
+			{
+				CacheType.OnDisk => new ReadThroughCache(
+					string.IsNullOrEmpty(_cachePathOverride) ?
+						Application.temporaryCachePath :
+						_cachePathOverride
+				),
+				CacheType.InMemory => new InMemoryCache(),
+				_ => null,
+			};
 		}
 
 		public void ClearFetchedAssets()
@@ -130,7 +152,7 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 		/// <returns></returns>
 		public IEnumerator LoadUBFAsset(Asset asset)
 		{
-			var artifactProvider = new FutureverseArtifactProvider();
+			var artifactProvider = new FutureverseArtifactProvider(_cache);
 			var blueprints = new List<IBlueprintInstanceData>();
 
 			string rootId = null;

@@ -54,6 +54,8 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
     {
 	    private readonly SyloDownloader _downloader = new();
 
+		public FutureverseArtifactProvider(ICache cache) : base(cache) { }
+
 		public override IEnumerator GetTextureResource(
        		ResourceId resourceId,
        		TextureImportSettings settings,

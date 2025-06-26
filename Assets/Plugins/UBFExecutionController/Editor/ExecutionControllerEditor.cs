@@ -31,6 +31,13 @@ namespace Plugins.UBFExecutionController.Editor
 				EditorGUILayout.PropertyField(serializedObject.FindProperty("_variantOverrides"));
 			}
 			
+			var caching = serializedObject.FindProperty("_caching");
+			EditorGUILayout.PropertyField(caching);
+			if (caching.intValue == 2)
+			{
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("_cachePathOverride"));
+			}
+			
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("_onFetchAssetsSuccess"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("_onFetchAssetsFailure"));
 
