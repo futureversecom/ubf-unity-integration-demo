@@ -7,10 +7,10 @@ This includes implementing authentication with Futurepass, data retrieval with S
 
 ## ✨ Features
 
-- 🔐 **End-to-end UBF integration**
-- 💾 **Examples of Futureverse SDK's such as Futurepass, Sylo and Asset Registry SDK's**
-- 💾 **Character controller pipeline showcasing runtime animation config**
-- 💾 **Runtime environment switching across multiple services**
+- ⚡ **End-to-end UBF integration**
+- 🔗 **Examples of Futureverse SDK usage including Futurepass, Sylo and Asset Registry**
+- 🏃 **Character controller showcasing UBF runtime animation config**
+- 🌏 **Runtime environment switching across multiple services**
   
 ---
 
@@ -22,17 +22,20 @@ This includes implementing authentication with Futurepass, data retrieval with S
 4. Navigate to the root of the cloned repository, and open
 ---
 
-## 📄 Scene Layout - Main Scene
+## 🏡 Scene Layout - Main Scene
 The "Main Scene" scene is the primary touchpoint for using the UBF Integration Demo. It contains all the functionality needed to render a game ready UBF asset. 
 The "Main Scene" can be found in the Assets/Scenes folder. 
 
-To start, lets go over the key objects and components in the scene. 
+To start, lets go over the key objects and components in the scene: 
+<br><br>
 
+<ul>
+  
 ### Environment / Main Camera
 Includes the 3D models and colliders for the level geometry.
 
 ---
-### Player Objects
+### Player Objects 
 Contains a cinemachine camera target for the player, and also a 'Player Armature'. The armature contains an animator, character controller and UBF Runtime Controller; everything we need to render an animated character.
 
 ---
@@ -46,6 +49,9 @@ This component is the scene object used for retrieving and executing Asset Regis
 ---
 ### UI
 This object tree contains all the UI needed for scene interaction, including authentication / wallet entry, an asset grid for object selection and version information text.
+</ul>
+
+<br>
 
 ---
 ## 🛠️ Getting Started: Runtime Animation via Futurepass Wallet
