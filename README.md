@@ -72,21 +72,31 @@ This object tree contains all the UI needed for scene interaction, including aut
 <br>
 
 ---
-## 🛠️ Getting Started: Rendering an Asset
+## 🛠️ Getting Started: Rendering an Asset via Futurepass Wallet
+
+// TODO sort staging wallet
+// TODO progress pictures
 
 UBF is designed to allow users to render any compatible blueprint across a variety of engines and platforms. 
 So, to begin, lets render a simple jacket asset. 
 
 First, ensure you have the "Main Scene" open, as this is where we will run our test. The MonoClient and ExperienceController components should both have their Environment set to Staging.
 
-1. Demostrate run-through of asset render
-   
+Start your scene with the play button at the top of the editor, and when presented with the option, select "Enter Pass Address". This allows us to load assets from a specific wallet without the full custodial login process. Enter the wallet as follows: 
+`0xFffffFFF00000000000000000000000000043d70`
+
+Press 'Enter' when you have finished entering the wallet and you will now see our program load the wallets assets. 
+On the left, you will see a grid begin to populate. Many, if not all, assets have images associated with them for easy viewing. However, some of these are in the .webp format, which will render as white (a known unity issue). 
+
+Using the wallet above, you will see a 'jacket' item. If you click on this the UBF controller will begin to load that jacket for us to see. It will take a variable amount of time to appear depending on your internet connection: the blueprint and its resources are being downloaded from the Asset Registry and pieced together right in front of us. 
+
+
 ```cs
 // todo
 ```
 
 ---
-## 🛠️ Getting Started: Runtime Animation via Futurepass Wallet
+## 🛠️ Getting Started: Runtime Animation
 
 One of the great features of UBF is the ability to render and animate humanoid models out of the box. 
 To showcase this, we are going to look at rendering an asset from an existing UBF collection inside our demo. 
