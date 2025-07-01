@@ -101,7 +101,28 @@ Using the wallet above, you will see a 'jacket' item. If you click on this the U
 One of the great features of UBF is the ability to render and animate humanoid models out of the box. 
 To showcase this, we are going to look at rendering an asset from an existing UBF collection inside our demo. 
 
-First, navigate to the "Main Scene".
+We are going to follow a very similar process to the above 'Rendering an Asset' tutorial. 
+Navigate to the main scene, and play. Enter the wallet: `0xFffffFFF00000000000000000000000000043d70`
+Once the assets have loaded in the grid, you will see some are humanoid: bears, rabbits (flufs) and goblins. 
+For this demonstration, select one the bear assets to render. 
+
+Once it has loaded, you will notice that it is using an idle animation! Using your mouse and keyboard, you can run around with your bear, showcasing the different animations being blended.
+
+Now that we have seen the end result, lets go over the process. 
+
+The bear belongs to a collection of assets named 'Partybears'. The body of a partybear is a GLB model with a UBF fur shader applied, and that is what you see being rendered. The GLB model of that bear is 'rigged' to a skeleton. This skeleton is made in a fashion to be compatible with unity humanoid systems. However, Unity cannot just detect this out of the box. This is why we use the UBF 'Mesh Config' system. 
+
+Mesh Configs allow us to setup a pre-existing data object in the project that can provide Unity with all the details it needs to animate the incoming GLB. It takes two variables: a runtime prefab, and a humanoid avatar. 
+
+The runtime prefab is a Unity prefab that contains the skeleton to animate. An advantage of using the prefab architecture is that should you wish to add sockets or game logic, this is an easy place to do so. In the test case for our Partybears, the rig prefab just contains our basic bear skeleton. 
+
+A humanoid avatar, or Unity avatar, contains the details of what bones from the bear skeleton should be matched up to the associated Unity humanoid bone. This allows the animator to translate a standard humanoid animation onto our spawned GLB model. 
+
+These elements combined allow a procedurally spawned GLB object to be animated using the Unity humanoid animation system.
+
+To view the MeshConfig for the Partybear collection, navigate to Assets/Collections/Data in the Project panel. Selecting the MC_Partybear asset, you will be able to locate what assets were used for its rig prefab, and humanoid avatar. 
+
+To create a new MeshConfig, you can duplicate an existing one, or right-click in the project panel, /Create/
 
 1. Reference above asset render process
 2. Look at player armature (setup of animator, position of runtime controller
