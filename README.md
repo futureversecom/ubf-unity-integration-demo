@@ -71,12 +71,10 @@ Steps:
    ```
    0xFffffFFF00000000000000000000000000043d70
    ```
-5. Press Enter. The program will load the wallet’s assets into a grid.
-   - Note: Some images may be in `.webp` format (Unity 2022 may require a plugin to view).
-6. Click a 'jacket' item to load and render it.
-
-> _Replace with screenshots or a short video walkthrough for clarity._
-
+5. Press Enter. The program will load the wallet’s assets into a grid on the screen.
+   - Note: Some images may be in `.webp` format, which is not supported by Unity 2022.3.
+6. Click a 'jacket' item to load and render it. After the jacket has been downloaded, you will see it render in front of the camera.
+   
 ---
 
 ### Runtime Animation
@@ -86,41 +84,41 @@ UBF supports runtime animation for humanoid models.
 Steps:
 1. Open the main scene, press Play.
 2. Enter wallet: `0xFffffFFF00000000000000000000000000043d70`
-3. In the asset grid, select a bear asset (humanoid).
-4. The bear will appear and animate (idle/run/jump, etc).
+3. In the asset grid, select a humanoid asset (bear, fluf, goblin, etc).
+4. The asset will appear and animate (idle/run/jump, etc).
 
-**How it works:**
+**How it works: (Partybear)**
 - The bear’s model comes from the 'Partybears' collection.
-- **Mesh Configs**: Set up data objects to animate GLB models.
+- A **Mesh Config** data asset contains a 'rig prefab' and a humanoid avatar compatible with the Partybear GLB
+- The **Mesh Config** is registered in `ProjectSettings/UBF -> "MeshConfigs"` with a 'key'
+- When a graph is run with a `CreateMeshConfig` node that has a matching key, all meshes/models spawned with that config are retargeted to point at the instantiated rig prefab.
+- Finally, the avatar from the **Mesh Config** is applied to an animator parented to the `UBFRuntimeController` used to execute the blueprint.
 - **Runtime prefab**: Contains skeleton and sockets/game logic.
 - **Unity Avatar**: Maps model skeleton to Unity’s humanoid bones.
 
-To create a new MeshConfig:
-- Duplicate an existing one or right-click in the Project panel: `/Create/UBF/Mesh Config`.
-- Register your MeshConfig in Unity Project Settings under UBF.
-
-> _Add example images or annotated screenshots here._
+This demonstration project has mesh configs setup for both Partybears and Gods&Goblins collections
 
 ---
 
 ### Authentication Pipeline
 
-You can retrieve a user's wallet by:
+Our demonstration retrieves a users wallet by one of two methods:
 - Entering the wallet address directly
 - Using the custodial authentication pipeline
 
-**Example implementation:**
+The demo implementation (found in `ExperienceController.cs`) initiates the custodial pipeline like so: 
 ```csharp
 private void OnLoginClicked()
 {
-    loginText.text = "Connecting...\n";
-    Auth.StartLogin(() =>
-    {
-        loginText.text += "Logged in!";
-        wallet = Auth.LoadedAuthenticationDetails.DecodedToken.Futurepass;
-        Debug.Log("Logged in with wallet: " + wallet);
-        loggedIn = true;
-    }, exception =>
+    // Prompt FuturepassAuthentication to begin custodial login
+    Auth.StartLogin(
+    () => // Register success callback where we store the retrieved wallet
+      {
+          loginText.text += "Logged in!";
+          wallet = Auth.LoadedAuthenticationDetails.DecodedToken.Futurepass;
+          loggedIn = true;
+      },
+    exception => // Register a failure callback
     {
         loginText.text += "Failed to login!\n";
         loginText.text += exception.Message + '\n';
@@ -133,12 +131,7 @@ Further details: [Futurepass SDK Documentation](https://github.com/futureverseco
 
 ### Asset Registry Queries
 
-> _Add example code and screenshots for performing asset registry queries once implementation is complete._
-
-```csharp
-// Example: Query asset registry for available assets
-// (Implement and document here)
-```
+> _TODO add details of experience implementation of AR SDK_
 
 ---
 
@@ -147,4 +140,4 @@ Further details: [Futurepass SDK Documentation](https://github.com/futureverseco
 - [UBF Studio](#)
 - [Asset Registry SDK]
 - [Sylo SDK]
-- [Futurepass SDK]
+- [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)
