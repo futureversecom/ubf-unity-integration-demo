@@ -11,16 +11,13 @@
   - [Runtime Animation](#runtime-animation)
   - [Authentication Pipeline](#authentication-pipeline)
   - [Asset Registry Queries](#asset-registry-queries)
-- [Further Resources](#further-resources)
-- [Contributing](#contributing)
-- [License](#license)
-
+    
 ---
 
 ## Overview
 
 The UBF Integration Demo (Unity) demonstrates an end-to-end implementation of all the tools and systems required to utilize UBF for your project.  
-It includes authentication with Futurepass, data retrieval with Sylo, and asset queries with the Asset Registry.
+It includes authentication with [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass), data retrieval with [Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo), and asset queries with the [Asset Registry SDK](https://github.com/futureversecom/sdk-unity-asset-register).
 
 ---
 
@@ -49,7 +46,7 @@ It includes authentication with Futurepass, data retrieval with Sylo, and asset 
 
 **UBF (Universal Blueprint Framework)** is a set of tools for rendering objects across different engines and platforms.
 
-- Blueprints are created using the **UBF Studio** tool.
+- Blueprints are created using the [UBF Studio](https://github.com/futureversecom/fv-ubf-studio) tool.
 - Blueprints are stored with their required resources (models/textures).
 - Experiences (like this demo) download a blueprint and its resources, parse them, and render them.
 
@@ -132,12 +129,3 @@ Further details: [Futurepass SDK Documentation](https://github.com/futureverseco
 ### Asset Registry Queries
 
 > _TODO add details of experience implementation of AR SDK_
-
----
-
-## Further Resources
-
-- [UBF Studio](#)
-- [Asset Registry SDK]
-- [Sylo SDK]
-- [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)
