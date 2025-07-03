@@ -9,8 +9,7 @@
 - [Getting Started](#getting-started)
   - [Rendering an Asset via Futurepass Wallet](#rendering-an-asset-via-futurepass-wallet)
   - [Runtime Animation](#runtime-animation)
-  - [Authentication Pipeline](#authentication-pipeline)
-  - [Asset Registry Queries](#asset-registry-queries)
+  - [Blueprint Execution](#blueprint-execution)
     
 ---
 
@@ -97,7 +96,7 @@ This demonstration project has mesh configs setup for both Partybears and Gods&G
 
 ---
 
-### Asset Registry & Blueprint Execution
+### Blueprint Execution
 
 The `ExperienceController` implements a pipeline of requesting assets from the Asset Registry via the Asset Registry SDK, and then executing this. 
 
