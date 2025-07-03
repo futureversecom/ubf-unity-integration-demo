@@ -1,17 +1,5 @@
 # UBF Unity Integration Demo
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [What is UBF?](#what-is-ubf-what-does-it-mean-to-run-a-blueprint)
-- [Getting Started](#getting-started)
-  - [Rendering an Asset via Futurepass Wallet](#rendering-an-asset-via-futurepass-wallet)
-  - [Runtime Animation](#runtime-animation)
-  - [Blueprint Execution](#blueprint-execution)
-    
----
 
 ## 🔍 Overview
 
@@ -98,12 +86,14 @@ This demonstration project has mesh configs setup for both Partybears and Gods&G
 
 ### Blueprint Execution
 
-The `ExperienceController` implements a pipeline of requesting assets from the Asset Registry via the Asset Registry SDK, and then executing this. 
+The `ExperienceController` implements a pipeline of requesting assets from the Asset Registry via the Asset Registry SDK, and then executing them on UI selection. 
 
 The basic experience flow: 
 1. Prompt login flow to get user wallet
 2. Use wallet to retrieve assets, and show assets in UI
 3. Render the asset on selection
+
+<br>
 
 #### 1. Login Flow
 
@@ -134,6 +124,8 @@ private void OnLoginClicked()
 Here we see a simple call to the Futurepass SDK with a `StartLogin()` method. The wallet is then extracted from the returned token packet. 
 Further details: [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)
 
+<br>
+
 #### 2. Use wallet to retrieve assets, and show assets in UI
 
 Once the wallet is retrieved, it can be used to fetch the users assets using the `ExecutionController` class. 
@@ -155,6 +147,8 @@ private void OnAssetsLoaded(Asset[] assets)
         }
     }
 ```
+
+<br>
 
 #### 3. Render the asset on selection
 
