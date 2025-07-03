@@ -13,14 +13,14 @@
     
 ---
 
-## Overview
+## 🔍 Overview
 
 The UBF Integration Demo (Unity) demonstrates an end-to-end implementation of all the tools and systems required to utilize UBF for your project.  
 It includes authentication with [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass), data retrieval with [Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo), and asset queries with the [Asset Registry SDK](https://github.com/futureversecom/sdk-unity-asset-register).
 
 ---
 
-## Features
+## ✨ Features
 
 - ⚡ **End-to-end UBF integration**
 - 🔗 **Examples of Futureverse SDK usage**: including Futurepass, Sylo, and Asset Registry
@@ -29,7 +29,7 @@ It includes authentication with [Futurepass SDK](https://github.com/futureversec
 
 ---
 
-## Installation
+## 🧩 Installation
 
 1. **Clone** the `main` branch of this repository:
    ```sh
@@ -41,7 +41,7 @@ It includes authentication with [Futurepass SDK](https://github.com/futureversec
 
 ---
 
-## What is UBF? What does it mean to 'run a blueprint'?
+## ❔ What is UBF? What does it mean to 'run a blueprint'?
 
 **UBF (Universal Blueprint Framework)** is a set of tools for rendering objects across different engines and platforms.
 
@@ -53,7 +53,7 @@ This demo shows an example of how to implement UBF in an experience to consume t
 
 ---
 
-## Getting Started
+## 🛠️ Getting Started
 
 ### Rendering an Asset via Futurepass Wallet
 
