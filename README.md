@@ -97,7 +97,16 @@ This demonstration project has mesh configs setup for both Partybears and Gods&G
 
 ---
 
-### Authentication Pipeline
+### Asset Registry & Blueprint Execution
+
+The `ExperienceController` implements a pipeline of requesting assets from the Asset Registry via the Asset Registry SDK, and then executing this. 
+
+The basic experience flow: 
+1. Prompt login flow to get user wallet
+2. Use wallet to retrieve assets, and show assets in UI
+3. Render the asset on selection
+
+#### 1. Login Flow
 
 Our demonstration retrieves a users wallet by one of two methods:
 - Entering the wallet address directly
@@ -122,10 +131,44 @@ private void OnLoginClicked()
     });
 }
 ```
-Further details: [Futurepass SDK Documentation](https://github.com/futureversecom/sdk-unity-futurepass)
 
----
+Here we see a simple call to the Futurepass SDK with a `StartLogin()` method. The wallet is then extracted from the returned token packet. 
+Further details: [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)
 
-### Asset Registry Queries
+#### 2. Use wallet to retrieve assets, and show assets in UI
 
-> _TODO add details of experience implementation of AR SDK_
+Once the wallet is retrieved, it can be used to fetch the users assets using the `ExecutionController` class. 
+
+```cs
+    StartCoroutine(executionController.FetchAssetsFromWallet(wallet, OnAssetsLoaded, OnFailure));
+```
+
+The onSuccess callback for this method (filled with `OnAssetsLoaded` in this example) is called with an `Asset[]` structure. These Assets contain information provided from the Asset Registry for each entry.
+In our case, we are going to use that asset data to populate a grid showing each asset, its tokenID and a profile picture (if one is available and valid)
+
+```cs
+private void OnAssetsLoaded(Asset[] assets)
+    {
+        foreach (var asset in assets)
+        {
+            var ui = Instantiate(assetUI, assetsGrid);
+            ui.Load(asset, () => LoadAsset(asset));
+        }
+    }
+```
+
+#### 3. Render the asset on selection
+
+Previously we created a hook for `LoadAsset(asset)` in the UI grid population, so that an asset may be selected by clicking on its UI element. 
+
+`LoadAsset` is a simple call: 
+
+```
+private void LoadAsset(Asset asset)
+    {
+        StartCoroutine(executionController.LoadUBFAsset(asset));
+    }
+```
+
+For this we are taking advantage of the UBF Execution Controller package. This allows us access to useful methods, such as rendering a graph from Asset Registry data. 
+The Execution Controller will fetch data on the entire tree relating to our asset (clothes, accessories, parts, etc), create an `ArtifactProvider` and use the `UBFRuntimeController` to execute it in the scene. 
