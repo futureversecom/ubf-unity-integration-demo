@@ -228,22 +228,24 @@ namespace Futureverse.FuturePass
         /// Load and decrypt a cached refresh token with a user-defined password
         /// </summary>
         /// <param name="passKey">Key used for decryption, defaults to SDK standard</param>
-        public static void LoginFromCachedRefreshToken(string passKey = encKey)
+        public static void LoginFromCachedRefreshToken(string passKey = encKey, Action onSuccess = null, Action<Exception> onFailure = null)
         {
             string encryptedToken = PlayerPrefs.GetString(CacheKey);
             if (string.IsNullOrEmpty(encryptedToken))
             {
                 Debug.LogError("No cached token found");
+                onFailure?.Invoke(new Exception("No cached token found"));
                 return;
             }
             
             if (EncryptionHandler.TryDecrypt(encryptedToken, passKey, out var decryptedToken))
             {
-                CoroutineSceneObject.Instance.StartCoroutine(RefreshTokenRoutine(BaseUrl+"/", ClientID, decryptedToken));
+                CoroutineSceneObject.Instance.StartCoroutine(RefreshTokenRoutine(BaseUrl+"/", ClientID, decryptedToken, onSuccess, onFailure));
             }
             else
             {
                 Debug.LogError("Unable to decrypt refresh token");
+                onFailure?.Invoke(new Exception("Unable to decrypt refresh token"));
             }
         }
         

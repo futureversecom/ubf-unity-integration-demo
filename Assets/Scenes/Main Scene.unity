@@ -1457,7 +1457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3a2a317e232aae41b23ce3fb98c4048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  authEnvironment: 1
+  authEnvironment: 0
   backgroundFader: {fileID: 258803334}
   loginRoot: {fileID: 1356449090}
   loginButton: {fileID: 818006319}
@@ -1903,7 +1903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4691c9b666f4144bb5bf52699d85471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _environment: 1
+  _environment: 0
 --- !u!1 &1028513131
 GameObject:
   m_ObjectHideFlags: 0
@@ -3739,6 +3739,8 @@ MonoBehaviour:
   _supportedCollectionIds: []
   _overrideSupportedVariants: 0
   _variantOverrides: []
+  _caching: 0
+  _cachePathOverride: 
   _onFetchAssetsSuccess:
     m_PersistentCalls:
       m_Calls: []

@@ -44,7 +44,14 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 		/// <returns>The URL pointing to the profile image for this asset</returns>
 		public static string GetProfileImageUrl(this Asset asset)
 		{
-			return asset?.Metadata?.Properties?["image"]?.ToString() ?? "";
+			try
+			{
+				return asset?.Metadata?.Properties?["image"]?.ToString() ?? "";
+			}
+			catch
+			{
+				return "";
+			}
 		}
 
 		public static string GetFullIdentifier(this Asset asset)
