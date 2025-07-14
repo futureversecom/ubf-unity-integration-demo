@@ -9,11 +9,11 @@ namespace Plugins.UBF.Runtime.Utils
 {
 	public static class RigUtils
 	{
-		public static void RetargetRig(SkinnedMeshRenderer source, SkinnedMeshRenderer target)
+        // In these, source refers to the rig that the target rig will point to, aka the rig that will be animated
+        // translation used like translating one word to another (e.g translate target bone name into matching bone name)
+
+		public static void RetargetRig(SkinnedMeshRenderer source, SkinnedMeshRenderer target, Dictionary<string,string> translation = null)
         {
-            // This function requires both rigs to have the same bone names
-            // It is designed to facilitate retargeting where those bones are in a different order on another mesh
-            // Retargeting to different bone names will require a different map
             var boneMap = new Dictionary<string, Transform>();
             foreach (var bone in source.bones)
             {
@@ -24,6 +24,10 @@ namespace Plugins.UBF.Runtime.Utils
             for (var idx = 0; idx < boneArray.Length; ++idx)
             {
                 var boneName = boneArray[idx].name;
+                if (translation != null && translation.TryGetValue(boneName, out var translationValue))
+                {
+                    boneName = translationValue;
+                }
                 if (!boneMap.TryGetValue(boneName, out boneArray[idx]))
                 {
                     UbfLogger.LogError($"Failed to get bone \"{boneName}\"");
@@ -34,7 +38,7 @@ namespace Plugins.UBF.Runtime.Utils
             target.rootBone = source.rootBone;
         }
 
-        public static void RetargetRig(IEnumerable<Transform> source, SkinnedMeshRenderer target)
+        public static void RetargetRig(IEnumerable<Transform> source, SkinnedMeshRenderer target, Dictionary<string,string> translation = null) 
         {
             Dictionary<string, Transform> boneMap = new Dictionary<string, Transform>();
             foreach (var bone in source)
@@ -42,24 +46,31 @@ namespace Plugins.UBF.Runtime.Utils
                 boneMap[bone.name] = bone;
             }
 
-            var boneArray = target.bones;
+            // iterate over the bones to be retargeted
+            // if a matching bone exists on the anim rig, then retarget to point at that
+            // if translation map exists, convert the name of the bone on the target rig to the one used in the source rig
+            var boneArray = target.bones; 
             for (var idx = 0; idx < boneArray.Length; ++idx)
             {
                 var boneName = boneArray[idx].name;
+                if (translation != null && translation.TryGetValue(boneName, out var translationValue))
+                {
+                    boneName = translationValue;
+                }
                 if (!boneMap.TryGetValue(boneName, out boneArray[idx]))
                 {
                     UbfLogger.LogError($"Failed to get bone \"{boneName}\"");
                 }
             }
 
-            target.bones = boneArray; //take effect
+            target.bones = boneArray; // take effect
         }
 
-        public static void RetargetRig(Transform sourceRoot, SkinnedMeshRenderer target)
+        public static void RetargetRig(Transform sourceRoot, SkinnedMeshRenderer target, Dictionary<string,string> translation = null)
         {
             var boneList = new List<Transform>();
             GetAllChildren(sourceRoot, boneList);
-            RetargetRig(boneList, target);
+            RetargetRig(boneList, target, translation);
             target.rootBone = sourceRoot;
         }
 

@@ -1164,6 +1164,85 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+--- !u!1001 &1486253492
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_Name
+      value: SK_Goblins_Scaled-T-Pose
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a731d7d468bc76e4b932e1759b1b22e9, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+--- !u!4 &1486253493 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7233275574977783399, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+  m_PrefabInstance: {fileID: 1486253492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1486253494 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1206874426333947015, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+  m_PrefabInstance: {fileID: 1486253492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1507590198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,6 +1474,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8345070699079395522, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
   m_PrefabInstance: {fileID: 8345070700268369567}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1716339416 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+  m_PrefabInstance: {fileID: 1486253492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1716339417 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+  m_PrefabInstance: {fileID: 1486253492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1762682258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1541,6 +1630,168 @@ ReflectionProbe:
   m_UseOcclusionCulling: 1
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
+--- !u!1 &1858206722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858206724}
+  - component: {fileID: 1858206723}
+  m_Layer: 0
+  m_Name: Retarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1858206723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858206722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5e0605e6f49ec43b8979fb7671fa00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tPoseRenderer: {fileID: 1486253494}
+  targetRenderer: {fileID: 0}
+  tPoseSceneRoot: {fileID: 1486253493}
+  prebuiltAvatar: {fileID: 9000000, guid: 258aa6db5b401e141834af00f88df843, type: 3}
+  avatarOutput:
+  - targetBoneName: Hip
+    sourceBoneName: Hips
+  - targetBoneName: L_Thigh
+    sourceBoneName: LeftUpperLeg
+  - targetBoneName: R_Thigh
+    sourceBoneName: RightUpperLeg
+  - targetBoneName: L_Calf
+    sourceBoneName: LeftLowerLeg
+  - targetBoneName: R_Calf
+    sourceBoneName: RightLowerLeg
+  - targetBoneName: L_Foot
+    sourceBoneName: LeftFoot
+  - targetBoneName: R_Foot
+    sourceBoneName: RightFoot
+  - targetBoneName: Waist
+    sourceBoneName: Spine
+  - targetBoneName: Spine01
+    sourceBoneName: Chest
+  - targetBoneName: NeckTwist01
+    sourceBoneName: Neck
+  - targetBoneName: Head
+    sourceBoneName: Head
+  - targetBoneName: L_Clavicle
+    sourceBoneName: LeftShoulder
+  - targetBoneName: R_Clavicle
+    sourceBoneName: RightShoulder
+  - targetBoneName: L_Upperarm
+    sourceBoneName: LeftUpperArm
+  - targetBoneName: R_Upperarm
+    sourceBoneName: RightUpperArm
+  - targetBoneName: L_Forearm
+    sourceBoneName: LeftLowerArm
+  - targetBoneName: R_Forearm
+    sourceBoneName: RightLowerArm
+  - targetBoneName: L_Hand
+    sourceBoneName: LeftHand
+  - targetBoneName: R_Hand
+    sourceBoneName: RightHand
+  - targetBoneName: L_ToeBase
+    sourceBoneName: LeftToes
+  - targetBoneName: R_ToeBase
+    sourceBoneName: RightToes
+  - targetBoneName: L_Ear01
+    sourceBoneName: LeftEye
+  - targetBoneName: R_Ear01
+    sourceBoneName: RightEye
+  - targetBoneName: JawRoot
+    sourceBoneName: Jaw
+  - targetBoneName: L_Thumb1
+    sourceBoneName: Left Thumb Proximal
+  - targetBoneName: L_Thumb2
+    sourceBoneName: Left Thumb Intermediate
+  - targetBoneName: L_Thumb3
+    sourceBoneName: Left Thumb Distal
+  - targetBoneName: L_Index1
+    sourceBoneName: Left Index Proximal
+  - targetBoneName: L_Index2
+    sourceBoneName: Left Index Intermediate
+  - targetBoneName: L_Index3
+    sourceBoneName: Left Index Distal
+  - targetBoneName: L_Mid1
+    sourceBoneName: Left Middle Proximal
+  - targetBoneName: L_Mid2
+    sourceBoneName: Left Middle Intermediate
+  - targetBoneName: L_Mid3
+    sourceBoneName: Left Middle Distal
+  - targetBoneName: L_Ring1
+    sourceBoneName: Left Ring Proximal
+  - targetBoneName: L_Ring2
+    sourceBoneName: Left Ring Intermediate
+  - targetBoneName: L_Ring3
+    sourceBoneName: Left Ring Distal
+  - targetBoneName: L_Pinky1
+    sourceBoneName: Left Little Proximal
+  - targetBoneName: L_Pinky2
+    sourceBoneName: Left Little Intermediate
+  - targetBoneName: L_Pinky3
+    sourceBoneName: Left Little Distal
+  - targetBoneName: R_Thumb1
+    sourceBoneName: Right Thumb Proximal
+  - targetBoneName: R_Thumb2
+    sourceBoneName: Right Thumb Intermediate
+  - targetBoneName: R_Thumb3
+    sourceBoneName: Right Thumb Distal
+  - targetBoneName: R_Index1
+    sourceBoneName: Right Index Proximal
+  - targetBoneName: R_Index2
+    sourceBoneName: Right Index Intermediate
+  - targetBoneName: R_Index3
+    sourceBoneName: Right Index Distal
+  - targetBoneName: R_Mid1
+    sourceBoneName: Right Middle Proximal
+  - targetBoneName: R_Mid2
+    sourceBoneName: Right Middle Intermediate
+  - targetBoneName: R_Mid3
+    sourceBoneName: Right Middle Distal
+  - targetBoneName: R_Ring1
+    sourceBoneName: Right Ring Proximal
+  - targetBoneName: R_Ring2
+    sourceBoneName: Right Ring Intermediate
+  - targetBoneName: R_Ring3
+    sourceBoneName: Right Ring Distal
+  - targetBoneName: R_Pinky1
+    sourceBoneName: Right Little Proximal
+  - targetBoneName: R_Pinky2
+    sourceBoneName: Right Little Intermediate
+  - targetBoneName: R_Pinky3
+    sourceBoneName: Right Little Distal
+  - targetBoneName: Spine02
+    sourceBoneName: UpperChest
+  runtimeAvatar: {fileID: 0}
+  runtimeAnimator: {fileID: 1716339417}
+  avatarBoneSource: {fileID: 1716339416}
+--- !u!4 &1858206724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858206722}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.172041, y: -3.8123813, z: -8.396558}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1888887023
 GameObject:
   m_ObjectHideFlags: 0
@@ -2177,3 +2428,5 @@ SceneRoots:
   - {fileID: 746329221}
   - {fileID: 105750130}
   - {fileID: 1112661953}
+  - {fileID: 1858206724}
+  - {fileID: 1486253492}
