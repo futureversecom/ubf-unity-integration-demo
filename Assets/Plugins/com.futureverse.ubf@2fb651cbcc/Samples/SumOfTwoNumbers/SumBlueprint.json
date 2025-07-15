@@ -1,0 +1,152 @@
+{
+  "version": "0.2.0",
+  "nodes": [
+    {
+      "id": "yYg6COPRYxpbnumO3EpGJ",
+      "type": "Entry",
+      "inputs": [],
+      "outputs": [
+        {
+          "id": "Exec",
+          "value": null,
+          "type": "exec"
+        }
+      ]
+    },
+    {
+      "id": "RGN02pDJ8CQiWKgoU4gHJ",
+      "type": "Add",
+      "inputs": [
+        {
+          "id": "A",
+          "value": null,
+          "type": "int"
+        },
+        {
+          "id": "B",
+          "value": null,
+          "type": "int"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "Value",
+          "value": null,
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "id": "L9a4UfZPrDqfdVBErrfkq",
+      "type": "Set",
+      "inputs": [
+        {
+          "id": "Input",
+          "value": "Result",
+          "type": "unknown"
+        },
+        {
+          "id": "Exec",
+          "value": null,
+          "type": "exec"
+        },
+        {
+          "id": "Value",
+          "value": 0,
+          "type": "int"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "Exec",
+          "value": null,
+          "type": "exec"
+        }
+      ]
+    },
+    {
+      "id": "iHu4rK2zfMviMYZ8C6afy",
+      "type": "Input",
+      "inputs": [
+        {
+          "id": "Input",
+          "value": "A",
+          "type": "unknown"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "Value",
+          "value": 0,
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "id": "BOTPiZRGhyQ2Ec9YlH7sc",
+      "type": "Input",
+      "inputs": [
+        {
+          "id": "Input",
+          "value": "B",
+          "type": "unknown"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "Value",
+          "value": 0,
+          "type": "int"
+        }
+      ]
+    }
+  ],
+  "resources": [],
+  "connections": [
+    {
+      "source": "yYg6COPRYxpbnumO3EpGJ",
+      "target": "L9a4UfZPrDqfdVBErrfkq",
+      "sourceKey": "Exec",
+      "targetKey": "Exec"
+    },
+    {
+      "source": "iHu4rK2zfMviMYZ8C6afy",
+      "target": "RGN02pDJ8CQiWKgoU4gHJ",
+      "sourceKey": "Value",
+      "targetKey": "A"
+    },
+    {
+      "source": "BOTPiZRGhyQ2Ec9YlH7sc",
+      "target": "RGN02pDJ8CQiWKgoU4gHJ",
+      "sourceKey": "Value",
+      "targetKey": "B"
+    },
+    {
+      "source": "RGN02pDJ8CQiWKgoU4gHJ",
+      "target": "L9a4UfZPrDqfdVBErrfkq",
+      "sourceKey": "Value",
+      "targetKey": "Value"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "A",
+      "scope": "input",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "id": "B",
+      "scope": "input",
+      "type": "int",
+      "value": 0
+    },
+    {
+      "id": "Result",
+      "scope": "output",
+      "type": "int",
+      "value": 0
+    }
+  ],
+  "fns": {}
+}

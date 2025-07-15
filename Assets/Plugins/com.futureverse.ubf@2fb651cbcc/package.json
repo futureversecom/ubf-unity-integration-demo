@@ -1,0 +1,24 @@
+{
+  "name": "com.futureverse.ubf",
+  "version": "0.4.0",
+  "displayName": "Universal Blueprint Framework",
+  "unity": "2021.3",
+  "author": {
+    "name": "Futureverse"
+  },
+  "documentationUrl": "https://github.com/futureversecom/sdk-unity-ubf/blob/main/README.md",
+  "changelogUrl": "https://github.com/futureversecom/sdk-unity-ubf/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/futureversecom/sdk-unity-ubf/blob/main/LICENSE",
+  "dependencies": {
+    "com.unity.cloud.gltfast": "6.12.1",
+    "com.unity.shadergraph": "14.0.10",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  },
+  "samples": [
+    {
+      "displayName": "Sum Of Two Numbers",
+      "description": "Shows how to Execute a simple UBF Blueprint.",
+      "path": "Samples/SumOfTwoNumbers"
+    }
+  ]
+}

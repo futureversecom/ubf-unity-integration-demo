@@ -1,0 +1,25 @@
+{
+  "name": "com.futureverse.ubf-execution-controller",
+  "version": "0.4.0",
+  "displayName": "Execution Controller",
+  "unity": "2021.3",
+  "author": {
+    "name": "Futureverse"
+  },
+  "documentationUrl": "https://github.com/futureversecom/sdk-unity-execution-controller/blob/main/README.md",
+  "changelogUrl": "https://github.com/futureversecom/sdk-unity-execution-controller/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/futureversecom/sdk-unity-execution-controller/blob/main/LICENSE",
+  "dependencies": {
+    "com.futureverse.sdk-unity-asset-register": "0.8.2",
+    "com.futureverse.sdk-unity-futurepass": "0.3.1",
+    "com.futureverse.sdk-unity-sylo": "0.3.1",
+    "com.futureverse.ubf": "0.4.0"
+  },
+  "samples": [
+    {
+      "displayName": "Load From Asset Profile",
+      "description": "Shows how to use the ExecutionController to load a UBF Blueprint from an Asset Profile",
+      "path": "Samples/LoadFromAssetProfile"
+    }
+  ]
+}

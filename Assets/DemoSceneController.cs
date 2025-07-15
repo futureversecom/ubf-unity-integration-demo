@@ -33,8 +33,6 @@ public class DemoSceneController : MonoBehaviour
     public Button fileBtn;
     public TMP_Text renderText;
     
-    private DemoArtifactProvider _artifactProvider;
-
     private void OnEnable()
     {
         fileBtn.onClick.AddListener(SelectGraphFile);
@@ -50,7 +48,7 @@ public class DemoSceneController : MonoBehaviour
     [ContextMenu("Select instance")]
     private void SelectGraphFile()
     {
-        _artifactProvider = new DemoArtifactProvider();
+        DemoArtifactProvider.Reset();
         
         var paths = StandaloneFileBrowser.OpenFilePanel("Select Blueprint", "", "ubp.json", false);
         if (paths == null || paths.Length == 0)
@@ -65,14 +63,14 @@ public class DemoSceneController : MonoBehaviour
     private void SelectGraphFile(string path)
     {
         artifactPath = path;
-
+        
         if (string.IsNullOrEmpty(artifactPath) || !File.Exists(artifactPath))
         {
             Debug.LogError("No file at path " + artifactPath);
             return;
         }
 
-        if (!_artifactProvider.TryRegisterBlueprint(File.ReadAllText(artifactPath)))
+        if (!DemoArtifactProvider.Instance.TryRegisterBlueprint(File.ReadAllText(artifactPath)))
         {
             Debug.LogError("Failed to register blueprint " + artifactPath);
             return;
@@ -105,7 +103,7 @@ public class DemoSceneController : MonoBehaviour
             Debug.LogError(".export folder does not contain catalog folder");
             return;
         }
-        _artifactProvider.PopulateCatalog(catalogDir);
+        DemoArtifactProvider.Instance.PopulateCatalog(catalogDir);
         
         Run();
     }
@@ -114,7 +112,7 @@ public class DemoSceneController : MonoBehaviour
     private void Run()
     {
         renderText.text = $"Rendering artifact {Path.GetFileName(artifactPath)}";
-        StartCoroutine(runtimeController.Execute("root", _artifactProvider, new List<IBlueprintInstanceData>(),
+        StartCoroutine(runtimeController.Execute("root", new DemoExecutionData(runtimeController.transform, (executionResult) => { Debug.Log("AA - Execution Complete");}, new List<IBlueprintInstanceData>()),
             onComplete: Debug.Log));
     }
 
@@ -156,7 +154,7 @@ public class DemoSceneController : MonoBehaviour
         var newHash = CreateMd5ForFolder(currentDir.FullName);
         if (newHash != folderHash)
         {
-            Debug.Log("Change detected, rerendering");
+            Debug.Log("Change detected, re-rendering");
             SelectGraphFile(artifactPath);
         }
     }
@@ -227,11 +225,133 @@ public class ExportCatalog
     }
 }
 
-public class DemoArtifactProvider : IArtifactProvider
+public class DemoExecutionData : IExecutionData
 {
+    public Action<ExecutionResult> OnComplete { get; set; }
+		
+    private readonly Transform _root;
+    private readonly List<IBlueprintInstanceData> _blueprints;
+		
+    /// <param name="root">All objects spawned by a UBF execution with this config will be parented to this transform.</param>
+    /// <param name="onComplete">Callback containing the Execution Result.</param>
+    /// <param name="blueprints">List of data for Blueprints that should be preloaded.</param>
+    public DemoExecutionData(
+        Transform root,
+        Action<ExecutionResult> onComplete,
+        List<IBlueprintInstanceData> blueprints
+    )
+    {
+        _root = root;
+        OnComplete = onComplete;
+        _blueprints = blueprints;
+    }
+
+    public IEnumerator CreateExecutionConfig(Action<IExecutionConfig> callback)
+    {
+        Dictionary<string, Blueprint> loadedGraphs = new();
+
+        foreach (var blueprint in _blueprints)
+        {
+            var resourceId = ResourceId.UnsafeFromString(blueprint.ResourceId);
+            yield return DemoArtifactProvider.Instance.GetBlueprintResource(
+                resourceId,
+                blueprint.InstanceId,
+                (graph, _) =>
+                {
+                    if (graph == null)
+                    {
+                        return;
+                    }
+						
+                    foreach (var input in blueprint.Inputs)
+                    {
+                        graph.RegisterVariable(input.Key, input.Value);
+                    }
+
+                    loadedGraphs.Add(graph.InstanceId, graph);
+                }
+            );
+        }
+
+        callback?.Invoke(new DemoExecutionConfig(_root, loadedGraphs));
+    }
+}
+
+public class DemoExecutionConfig : IExecutionConfig
+{
+    public Transform GetRootTransform { get; }
+
+    private readonly Dictionary<string, Blueprint> _loadedBlueprints;
+
+    public void RegisterRuntimeResource(ResourceData resourceData)
+    {
+        DemoArtifactProvider.Instance.RegisterRuntimeResource(resourceData.Id, resourceData);
+    }
+
+    public IEnumerator GetBlueprintInstance(ResourceId id, Action<Blueprint, BlueprintAssetImportSettings> callback)
+    {
+        if (_loadedBlueprints.TryGetValue(id.Value, out var loadedGraph))
+        {
+            callback?.Invoke(loadedGraph, null);
+            yield break;
+        }
+
+        // instance ID could also be a resource id - check for a graph resource and create instance from it
+        var guid = Guid.NewGuid().ToString();
+        yield return DemoArtifactProvider.Instance.GetBlueprintResource(id, guid,
+            (graph, importSettings) =>
+            {
+                _loadedBlueprints.Add(guid, graph);
+                callback?.Invoke(graph, importSettings);
+            });
+    }
+
+    public IEnumerator GetMeshInstance(ResourceId id, Action<GltfImport, MeshAssetImportSettings> callback)
+    {
+        return DemoArtifactProvider.Instance.GetMeshResource(id, callback);
+    }
+
+    public IEnumerator GetTextureInstance(ResourceId id, TextureImportSettings settings, Action<Texture2D, TextureAssetImportSettings> callback)
+    {
+        return DemoArtifactProvider.Instance.GetTextureResource(id, settings, callback);
+    }
+		
+    /// <param name="rootTransform">The transform to which all objects spawned from this UBF execution will be parented.</param>
+    /// <param name="loadedBlueprints">A map of Instance IDs to loaded Blueprints.</param>
+    public DemoExecutionConfig(
+        Transform rootTransform,
+        Dictionary<string, Blueprint> loadedBlueprints)
+    {
+        GetRootTransform = rootTransform;
+        _loadedBlueprints = loadedBlueprints;
+    }
+}
+
+public class DemoArtifactProvider
+{
+    private static DemoArtifactProvider _instance;
+    public static DemoArtifactProvider Instance => _instance ??= new DemoArtifactProvider();
+    
     private Blueprint _blueprint;
     private ExportCatalog _catalog;
 
+    public static void Reset()
+    {
+        _instance = new DemoArtifactProvider();
+    }
+    
+    public void RegisterRuntimeResource(string resourceId, IResourceData resource)
+    {
+        var exResource = new ExportCatalog.ExportResource()
+        {
+            Hash = resource.Hash,
+            Id = resourceId,
+            ImportSettings = resource.ImportSettings,
+            Uri = resource.Uri
+        };
+        _catalog.Resources.Add(exResource);
+    }
+    
     public bool TryRegisterBlueprint(string json)
     {
         if (Blueprint.TryLoad("root", json, out var blueprint))
@@ -261,7 +381,7 @@ public class DemoArtifactProvider : IArtifactProvider
                 var catalog = JsonConvert.DeserializeObject<ExportCatalog>(text);
                 foreach (var resource in catalog.Resources)
                 {
-                    if (!_catalog.Resources.Any(x => x.Id == resource.Id)) // Only add resource if it doesnt exist
+                    if (!_catalog.Resources.Any(x => x.Id == resource.Id)) // Only add resource if it doesn't exist
                     {
                         _catalog.Resources.Add(resource);
                     }
