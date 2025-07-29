@@ -1479,11 +1479,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 258aa6db5b401e141834af00f88df843, type: 3}
   m_PrefabInstance: {fileID: 1486253492}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1716339417 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 258aa6db5b401e141834af00f88df843, type: 3}
-  m_PrefabInstance: {fileID: 1486253492}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1762682258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1563,6 +1558,11 @@ PrefabInstance:
 --- !u!4 &1762682262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  m_PrefabInstance: {fileID: 1762682258}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1762682268 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6982812146204527121, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
   m_PrefabInstance: {fileID: 1762682258}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1764214107
@@ -1775,7 +1775,7 @@ MonoBehaviour:
   - targetBoneName: Spine02
     sourceBoneName: UpperChest
   runtimeAvatar: {fileID: 0}
-  runtimeAnimator: {fileID: 1716339417}
+  runtimeAnimator: {fileID: 1762682268}
   avatarBoneSource: {fileID: 1716339416}
 --- !u!4 &1858206724
 Transform:

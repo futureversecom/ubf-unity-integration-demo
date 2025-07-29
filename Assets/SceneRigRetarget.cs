@@ -87,26 +87,31 @@ public class SceneRigRetarget : MonoBehaviour
     [ContextMenu("Create avatar")]
     public void CreateAvatar()
     {
+        CreateAvatar(avatarBoneSource, avatarOutput);
+    }
+
+    public void CreateAvatar(Transform boneSource, List<Item> map)
+    {
         var desc = new HumanDescription();
-        var human = new HumanBone[avatarOutput.Count];
-        var skeleton = new SkeletonBone[avatarOutput.Count];
+        var human = new HumanBone[map.Count];
+        var skeleton = new SkeletonBone[map.Count];
 
         for (int i = 0; i < human.Length; i++)
         {
             var bone = new HumanBone();
-            bone.humanName = avatarOutput[i].sourceBoneName;
-            bone.boneName = avatarOutput[i].targetBoneName;
+            bone.humanName = map[i].sourceBoneName;
+            bone.boneName = map[i].targetBoneName;
             bone.limit = new HumanLimit() { useDefaultValues = true };
             human[i] = bone;
             
-            var t = avatarBoneSource.FindRecursive(avatarOutput[i].targetBoneName);
+            var t = boneSource.FindRecursive(map[i].targetBoneName);
             if (t == null)
             {
-                Debug.LogError($"Cannot find avatar bone for {avatarOutput[i].targetBoneName}");
+                Debug.LogError($"Cannot find avatar bone for {map[i].targetBoneName}");
             }
             skeleton[i] = new SkeletonBone()
             {
-                name = avatarOutput[i].sourceBoneName,
+                name = map[i].sourceBoneName,
                 position = t.position,
                 rotation = t.rotation,
                 scale = t.localScale
@@ -116,7 +121,7 @@ public class SceneRigRetarget : MonoBehaviour
 
         desc.human = human;
         //desc.skeleton = skeleton;
-        desc.skeleton = CreateSkeleton(avatarBoneSource.gameObject);
+        desc.skeleton = CreateSkeleton(boneSource.gameObject);
         desc.upperArmTwist = 0.5f;
         desc.lowerArmTwist = 0.5f;
         desc.upperLegTwist = 0.5f;
@@ -125,15 +130,15 @@ public class SceneRigRetarget : MonoBehaviour
         desc.legStretch = 0.05f;
         desc.feetSpacing = 0f;
         desc.hasTranslationDoF = false;
-        runtimeAvatar = AvatarBuilder.BuildHumanAvatar(avatarBoneSource.gameObject, desc);
-        runtimeAvatar.name = prebuiltAvatar.name;
+        runtimeAvatar = AvatarBuilder.BuildHumanAvatar(boneSource.gameObject, desc);
+        //runtimeAvatar.name = prebuiltAvatar.name;
         var prebuiltDebug = GetAvatarDebug(prebuiltAvatar);
         var runtimeDebug = GetAvatarDebug(runtimeAvatar);
         
         Debug.Log($"PB Avatar: \n{prebuiltDebug}");
         Debug.Log($"RT Avatar: \n{runtimeDebug}");
     }
-
+    
     [ContextMenu("Set avatar")]
     public void SetAvatar()
     {

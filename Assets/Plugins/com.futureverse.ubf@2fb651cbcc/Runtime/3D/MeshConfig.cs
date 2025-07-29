@@ -1,5 +1,8 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime
@@ -14,6 +17,20 @@ namespace Futureverse.UBF.Runtime
         private GameObject _rigPrefab;
         [SerializeField]
         private Avatar _avatar;
+        
+        public List<ConfigMapItem> avatarMap = new();
+
+        [Serializable]
+        public class ConfigMapItem
+        {
+            public string targetBoneName;
+            public string sourceBoneName;
+
+            public static Dictionary<string, string> ToDictionary(IEnumerable<ConfigMapItem> items)
+            {
+                return items.ToDictionary(item => item.targetBoneName, item => item.sourceBoneName);
+            }
+        }
     }
 
     public class RuntimeMeshConfig
