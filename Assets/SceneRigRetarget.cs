@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Futureverse.UBF.Runtime;
 using Plugins.UBF.Runtime.Utils;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -44,20 +45,8 @@ public class SceneRigRetarget : MonoBehaviour
     public SkinnedMeshRenderer targetRenderer;
     public Transform tPoseSceneRoot;
     
-    [Serializable]
-    public class Item
-    {
-        public string targetBoneName;
-        public string sourceBoneName;
-
-        public static Dictionary<string, string> ToDictionary(IEnumerable<Item> items)
-        {
-            return items.ToDictionary(item => item.targetBoneName, item => item.sourceBoneName);
-        }
-    }
-    
     public Avatar prebuiltAvatar;
-    public List<Item> avatarOutput = new();
+    public List<MeshConfig.ConfigMapItem> avatarOutput = new();
     public Avatar runtimeAvatar;
     public Animator runtimeAnimator;
     public Transform avatarBoneSource;
@@ -69,7 +58,7 @@ public class SceneRigRetarget : MonoBehaviour
             avatarOutput = new();
             foreach (var bone in prebuiltAvatar.humanDescription.human)
             {
-                avatarOutput.Add(new Item(){sourceBoneName = bone.humanName, targetBoneName = bone.boneName});
+                avatarOutput.Add(new MeshConfig.ConfigMapItem(){sourceBoneName = bone.humanName, targetBoneName = bone.boneName});
             }
         }
     }
@@ -87,10 +76,10 @@ public class SceneRigRetarget : MonoBehaviour
     [ContextMenu("Create avatar")]
     public void CreateAvatar()
     {
-        CreateAvatar(avatarBoneSource, avatarOutput);
+        runtimeAvatar = CreateAvatar(avatarBoneSource, avatarOutput);
     }
 
-    public void CreateAvatar(Transform boneSource, List<Item> map)
+    public static Avatar CreateAvatar(Transform boneSource, List<MeshConfig.ConfigMapItem> map)
     {
         var desc = new HumanDescription();
         var human = new HumanBone[map.Count];
@@ -130,13 +119,14 @@ public class SceneRigRetarget : MonoBehaviour
         desc.legStretch = 0.05f;
         desc.feetSpacing = 0f;
         desc.hasTranslationDoF = false;
-        runtimeAvatar = AvatarBuilder.BuildHumanAvatar(boneSource.gameObject, desc);
+        var rtAvatar = AvatarBuilder.BuildHumanAvatar(boneSource.gameObject, desc);
         //runtimeAvatar.name = prebuiltAvatar.name;
-        var prebuiltDebug = GetAvatarDebug(prebuiltAvatar);
-        var runtimeDebug = GetAvatarDebug(runtimeAvatar);
+        //var prebuiltDebug = GetAvatarDebug(prebuiltAvatar);
+        //var runtimeDebug = GetAvatarDebug(rtAvatar);
         
-        Debug.Log($"PB Avatar: \n{prebuiltDebug}");
-        Debug.Log($"RT Avatar: \n{runtimeDebug}");
+        //Debug.Log($"PB Avatar: \n{prebuiltDebug}");
+        //Debug.Log($"RT Avatar: \n{runtimeDebug}");
+        return rtAvatar;
     }
     
     [ContextMenu("Set avatar")]
@@ -194,7 +184,6 @@ public class SceneRigRetarget : MonoBehaviour
         Debug.Log(string.Join('\n', names));
         return skeleton.ToArray();
     }
-    
 }
 
 public static class RetargetExtensions

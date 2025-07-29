@@ -11,12 +11,10 @@ namespace Futureverse.UBF.Runtime
     public class MeshConfig : ScriptableObject
     {
         public GameObject RigPrefab => _rigPrefab;
-        public Avatar Avatar => _avatar;
+        public Avatar Avatar;
 
         [SerializeField]
         private GameObject _rigPrefab;
-        [SerializeField]
-        private Avatar _avatar;
         
         public List<ConfigMapItem> avatarMap = new();
 
@@ -31,6 +29,8 @@ namespace Futureverse.UBF.Runtime
                 return items.ToDictionary(item => item.targetBoneName, item => item.sourceBoneName);
             }
         }
+        
+        
     }
 
     public class RuntimeMeshConfig

@@ -27,7 +27,7 @@ MonoBehaviour:
   - Key: Goblins_MC
     Config: {fileID: 11400000, guid: a22931afa5bc6e7459b5dda14e853298, type: 2}
   - Key: Default
-    Config: {fileID: 11400000, guid: a22931afa5bc6e7459b5dda14e853298, type: 2}
+    Config: {fileID: 11400000, guid: a8f33dade5f85ca4494a5c9d58a36fbc, type: 2}
   _lodFalloffCurve:
     serializedVersion: 2
     m_Curve:

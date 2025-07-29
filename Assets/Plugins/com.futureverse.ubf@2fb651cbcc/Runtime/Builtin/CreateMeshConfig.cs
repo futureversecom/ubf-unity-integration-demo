@@ -5,6 +5,7 @@ using System.Linq;
 using Futureverse.UBF.Runtime.Settings;
 using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
+using Plugins.UBF.Runtime.Utils;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -80,6 +81,10 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield return instantiateRoutine;
 			}
 
+			runtimeConfig.Config.Avatar =
+				RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap);
+			
+			Object.Destroy(instantiator.SceneTransform.gameObject);
 			WriteOutput("MeshConfig", runtimeConfig);
 		}
 	}

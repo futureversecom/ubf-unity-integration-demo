@@ -75,7 +75,12 @@ namespace Futureverse.UBF.Runtime.Builtin
 			// Extra yield here as we can't be sure that the mesh will be instantiated fully after the above task finishes
 			yield return null;
 			
-			ApplyRuntimeConfig(runtimeConfig, animator);
+			//ApplyRuntimeConfig(runtimeConfig, animator);
+			if (runtimeConfig != null)
+			{
+				animator.avatar = runtimeConfig.Config.Avatar;
+
+			}
 			
 			WriteOutput("Renderers", Renderers);
 			WriteOutput("Scene Nodes", Transforms);
