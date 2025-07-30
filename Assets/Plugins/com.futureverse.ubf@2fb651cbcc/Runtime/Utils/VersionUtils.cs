@@ -10,7 +10,7 @@ namespace Futureverse.UBF.Runtime
 	public static class VersionUtils
 	{
 		public static readonly Version MinSupportedStandardVersion = Version.Parse("0.2.0");
-		public static readonly Version MaxSupportedStandardVersion = Version.Parse("0.3.0");
+		public static readonly Version MaxSupportedStandardVersion = Version.Parse("1.0.0");
 		
 		public static bool IsSupported(this Version version)
 			=> version >= MinSupportedStandardVersion &&
