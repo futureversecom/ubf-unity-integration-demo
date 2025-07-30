@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Futureverse.UBF.Runtime
@@ -29,8 +30,12 @@ namespace Futureverse.UBF.Runtime
                 return items.ToDictionary(item => item.targetBoneName, item => item.sourceBoneName);
             }
         }
-        
-        
+
+        [ContextMenu("Copy Map Json")]
+        public void CopyMapJson()
+        {
+            GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(avatarMap, Formatting.Indented);
+        }
     }
 
     public class RuntimeMeshConfig
