@@ -36,6 +36,21 @@ namespace Futureverse.UBF.Runtime
         {
             GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(avatarMap, Formatting.Indented);
         }
+
+        [ContextMenu("Generate avatar map")]
+        public void GenerateAvatarMap()
+        {
+            avatarMap.Clear();
+            foreach (var bone in Avatar.humanDescription.human)
+            {
+                var mapItem = new ConfigMapItem()
+                {
+                    sourceBoneName = bone.humanName,
+                    targetBoneName = bone.boneName
+                };
+                avatarMap.Add(mapItem);
+            }
+        }
     }
 
     public class RuntimeMeshConfig

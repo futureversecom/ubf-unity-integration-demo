@@ -45,6 +45,7 @@ namespace Plugins.UBF.Runtime.Utils
             }
 
             var boneArray = target.bones;
+            
             for (var idx = 0; idx < boneArray.Length; ++idx)
             {
                 var boneName = boneArray[idx].name;

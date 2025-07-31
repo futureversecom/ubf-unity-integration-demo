@@ -76,10 +76,10 @@ namespace Futureverse.UBF.Runtime.Builtin
 			yield return null;
 			
 			//ApplyRuntimeConfig(runtimeConfig, animator);
+			
 			if (runtimeConfig != null)
 			{
 				animator.avatar = runtimeConfig.Config.Avatar;
-
 			}
 			
 			WriteOutput("Renderers", Renderers);

@@ -42,14 +42,34 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				configEntry = settings.MeshConfigs?.FirstOrDefault(x => x.Key == "Default");
 			}
-
-
+			
+			
 			RuntimeMeshConfig runtimeConfig = new RuntimeMeshConfig
 			{
 				Config = ScriptableObject.CreateInstance<MeshConfig>()
 			};
 			
+
+			/*
+			RuntimeMeshConfig runtimeConfig = null;
 			
+			if (configEntry != null && configEntry.Config != null && configEntry.Config.RigPrefab != null)
+			{
+				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
+				runtimeConfig = new RuntimeMeshConfig()
+				{
+					Config = configEntry.Config,
+					RuntimeObject = spawnedRig,
+				};
+			}
+			*/
+			yield return CreateAvatar(resourceId, runtimeConfig, configEntry);
+			
+			WriteOutput("MeshConfig", runtimeConfig);
+		}
+
+		private IEnumerator CreateAvatar(ResourceId resourceId, RuntimeMeshConfig config, UBFSettings.MeshConfigEntry configEntry)
+		{
 			GltfImport gltfResource = null;
 			var routine = CoroutineHost.Instance.StartCoroutine(
 				NodeContext.ExecutionContext.Config.GetMeshInstance(
@@ -81,11 +101,10 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield return instantiateRoutine;
 			}
 
-			runtimeConfig.Config.Avatar =
+			config.Config.Avatar =
 				RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap);
 			
 			Object.Destroy(instantiator.SceneTransform.gameObject);
-			WriteOutput("MeshConfig", runtimeConfig);
 		}
 	}
 }

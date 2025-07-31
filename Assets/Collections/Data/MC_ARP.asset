@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73932d3d27b79af4ba9134813fa862e8, type: 3}
-  m_Name: MC_Partybear
+  m_Name: MC_ARP
   m_EditorClassIdentifier: 
-  Avatar: {fileID: 9000000, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
-  _rigPrefab: {fileID: 919132149155446097, guid: be5c3efa74937ee4fbe82f9d47be062a, type: 3}
+  Avatar: {fileID: 9000000, guid: 223b0349c637854448359bc70ead0a3c, type: 3}
+  _rigPrefab: {fileID: 919132149155446097, guid: 223b0349c637854448359bc70ead0a3c, type: 3}
   avatarMap:
   - targetBoneName: root.x
     sourceBoneName: Hips
@@ -57,12 +57,6 @@ MonoBehaviour:
     sourceBoneName: LeftToes
   - targetBoneName: toes_01.r
     sourceBoneName: RightToes
-  - targetBoneName: c_eye_offset.l
-    sourceBoneName: LeftEye
-  - targetBoneName: c_eye_offset.r
-    sourceBoneName: RightEye
-  - targetBoneName: c_jawbone.x
-    sourceBoneName: Jaw
   - targetBoneName: c_thumb1.l
     sourceBoneName: Left Thumb Proximal
   - targetBoneName: c_thumb2.l
