@@ -70,17 +70,11 @@ namespace Futureverse.UBF.Runtime.Builtin
 			
 			var glbReference = parent.gameObject.AddComponent<GLBReference>();
 			glbReference.GLTFImport = gltfResource;
-			var animator = parent.gameObject.GetComponentInParent<Animator>(includeInactive: true);
 			
 			// Extra yield here as we can't be sure that the mesh will be instantiated fully after the above task finishes
 			yield return null;
 			
-			//ApplyRuntimeConfig(runtimeConfig, animator);
-			
-			if (runtimeConfig != null)
-			{
-				animator.avatar = runtimeConfig.Config.Avatar;
-			}
+			ApplyRuntimeConfig(runtimeConfig);
 			
 			WriteOutput("Renderers", Renderers);
 			WriteOutput("Scene Nodes", Transforms);
@@ -110,9 +104,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 		}
 
-		protected void ApplyRuntimeConfig(RuntimeMeshConfig runtimeConfig, Animator animator)
+		protected void ApplyRuntimeConfig(RuntimeMeshConfig runtimeConfig)
 		{
-			if (runtimeConfig == null || runtimeConfig.RuntimeObject == null || SkinnedMeshRenderers.Count <= 0)
+			if (runtimeConfig == null || runtimeConfig.AnimationObject == null || SkinnedMeshRenderers.Count <= 0)
 			{
 				return;
 			}
@@ -122,12 +116,15 @@ namespace Futureverse.UBF.Runtime.Builtin
 				UbfLogger.LogInfo(
 					$"[{GetType().Name}] Retargeting \"{renderer.name}\" with spawned config \"{runtimeConfig.Config.name}\""
 				);
-				RigUtils.RetargetRig(runtimeConfig.RuntimeObject.transform, renderer);
-			}
-				
-			if (animator != null && runtimeConfig.Config.Avatar != null)
-			{
-				animator.avatar = runtimeConfig.Config.Avatar;
+				var runtimeSMR = runtimeConfig.AnimationObject.GetComponentInChildren<SkinnedMeshRenderer>();
+				if (runtimeSMR != null)
+				{
+					RigUtils.RetargetRig(runtimeSMR, renderer);
+				}
+				else
+				{
+					RigUtils.RetargetRig(runtimeConfig.AnimationObject.transform, renderer);
+				}
 			}
 		}
 	}

@@ -63,12 +63,21 @@ namespace Futureverse.UBF.Runtime.Builtin
 				};
 			}
 			*/
-			yield return CreateAvatar(resourceId, runtimeConfig, configEntry);
-			
+			yield return SetupAnimationObject(NodeContext.ExecutionContext.Config.GetRootTransform, resourceId, runtimeConfig, configEntry);
+			if (configEntry != null && runtimeConfig.Config != null && configEntry.Config.RigPrefab != null)
+			{
+				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
+				runtimeConfig.GameLogicObject = spawnedRig;
+				var mirror = spawnedRig.GetComponent<RigMirror>();
+				if (mirror != null)
+				{
+					mirror.Assign(runtimeConfig.AnimationObject.transform);
+				}
+			}
 			WriteOutput("MeshConfig", runtimeConfig);
 		}
 
-		private IEnumerator CreateAvatar(ResourceId resourceId, RuntimeMeshConfig config, UBFSettings.MeshConfigEntry configEntry)
+		private IEnumerator SetupAnimationObject(Transform rootTransform, ResourceId resourceId, RuntimeMeshConfig config, UBFSettings.MeshConfigEntry configEntry)
 		{
 			GltfImport gltfResource = null;
 			var routine = CoroutineHost.Instance.StartCoroutine(
@@ -91,7 +100,11 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 			
-			var instantiator = new GameObjectInstantiator(gltfResource, new GameObject("Temp_GLTF_Config").transform);
+			//var instantiator = new GameObjectInstantiator(gltfResource, new GameObject("Temp_GLTF_Config").transform);
+			var root = new GameObject("Avatar Root").transform;
+			root.SetParent(rootTransform);
+			root.SetSiblingIndex(0);
+			var instantiator = new GameObjectInstantiator(gltfResource, root);
 
 			var instantiateRoutine = CoroutineHost.Instance.StartCoroutine(
 				new WaitForTask(gltfResource.InstantiateMainSceneAsync(instantiator))
@@ -103,8 +116,12 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			config.Config.Avatar =
 				RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap);
+
+			config.AnimationObject = instantiator.SceneTransform.gameObject;
+			//Object.Destroy(instantiator.SceneTransform.gameObject);
 			
-			Object.Destroy(instantiator.SceneTransform.gameObject);
+			var animator = instantiator.SceneTransform.GetComponentInParent<Animator>(includeInactive: true);
+			animator.avatar = config.Config.Avatar;
 		}
 	}
 }

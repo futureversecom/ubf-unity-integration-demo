@@ -15,113 +15,95 @@ MonoBehaviour:
   Avatar: {fileID: 0}
   _rigPrefab: {fileID: 0}
   avatarMap:
-  - targetBoneName: Hip
+  - targetBoneName: root.x
     sourceBoneName: Hips
-  - targetBoneName: L_Thigh
+  - targetBoneName: thigh_stretch.l
     sourceBoneName: LeftUpperLeg
-  - targetBoneName: R_Thigh
+  - targetBoneName: thigh_stretch.r
     sourceBoneName: RightUpperLeg
-  - targetBoneName: L_Calf
+  - targetBoneName: leg_stretch.l
     sourceBoneName: LeftLowerLeg
-  - targetBoneName: R_Calf
+  - targetBoneName: leg_stretch.r
     sourceBoneName: RightLowerLeg
-  - targetBoneName: L_Foot
+  - targetBoneName: foot.l
     sourceBoneName: LeftFoot
-  - targetBoneName: R_Foot
+  - targetBoneName: foot.r
     sourceBoneName: RightFoot
-  - targetBoneName: Waist
+  - targetBoneName: spine_01.x
     sourceBoneName: Spine
-  - targetBoneName: Spine01
+  - targetBoneName: spine_02.x
     sourceBoneName: Chest
-  - targetBoneName: NeckTwist01
+  - targetBoneName: neck.x
     sourceBoneName: Neck
-  - targetBoneName: Head
+  - targetBoneName: head.x
     sourceBoneName: Head
-  - targetBoneName: L_Clavicle
+  - targetBoneName: shoulder.l
     sourceBoneName: LeftShoulder
-  - targetBoneName: R_Clavicle
+  - targetBoneName: shoulder.r
     sourceBoneName: RightShoulder
-  - targetBoneName: L_Upperarm
+  - targetBoneName: arm_stretch.l
     sourceBoneName: LeftUpperArm
-  - targetBoneName: R_Upperarm
+  - targetBoneName: arm_stretch.r
     sourceBoneName: RightUpperArm
-  - targetBoneName: L_Forearm
+  - targetBoneName: forearm_stretch.l
     sourceBoneName: LeftLowerArm
-  - targetBoneName: R_Forearm
+  - targetBoneName: forearm_stretch.r
     sourceBoneName: RightLowerArm
-  - targetBoneName: L_Hand
+  - targetBoneName: hand.l
     sourceBoneName: LeftHand
-  - targetBoneName: R_Hand
+  - targetBoneName: hand.r
     sourceBoneName: RightHand
-  - targetBoneName: L_ToeBase
+  - targetBoneName: toes_01.l
     sourceBoneName: LeftToes
-  - targetBoneName: R_ToeBase
+  - targetBoneName: toes_01.r
     sourceBoneName: RightToes
-  - targetBoneName: L_Ear01
-    sourceBoneName: LeftEye
-  - targetBoneName: R_Ear01
-    sourceBoneName: RightEye
-  - targetBoneName: JawRoot
-    sourceBoneName: Jaw
-  - targetBoneName: L_Thumb1
+  - targetBoneName: c_thumb1.l
     sourceBoneName: Left Thumb Proximal
-  - targetBoneName: L_Thumb2
+  - targetBoneName: c_thumb2.l
     sourceBoneName: Left Thumb Intermediate
-  - targetBoneName: L_Thumb3
+  - targetBoneName: c_thumb3.l
     sourceBoneName: Left Thumb Distal
-  - targetBoneName: L_Index1
+  - targetBoneName: c_index1.l
     sourceBoneName: Left Index Proximal
-  - targetBoneName: L_Index2
+  - targetBoneName: c_index2.l
     sourceBoneName: Left Index Intermediate
-  - targetBoneName: L_Index3
+  - targetBoneName: c_index3.l
     sourceBoneName: Left Index Distal
-  - targetBoneName: L_Mid1
+  - targetBoneName: c_middle1.l
     sourceBoneName: Left Middle Proximal
-  - targetBoneName: L_Mid2
+  - targetBoneName: c_middle2.l
     sourceBoneName: Left Middle Intermediate
-  - targetBoneName: L_Mid3
+  - targetBoneName: c_middle3.l
     sourceBoneName: Left Middle Distal
-  - targetBoneName: L_Ring1
+  - targetBoneName: c_ring1.l
     sourceBoneName: Left Ring Proximal
-  - targetBoneName: L_Ring2
+  - targetBoneName: c_ring2.l
     sourceBoneName: Left Ring Intermediate
-  - targetBoneName: L_Ring3
+  - targetBoneName: c_ring3.l
     sourceBoneName: Left Ring Distal
-  - targetBoneName: L_Pinky1
-    sourceBoneName: Left Little Proximal
-  - targetBoneName: L_Pinky2
-    sourceBoneName: Left Little Intermediate
-  - targetBoneName: L_Pinky3
-    sourceBoneName: Left Little Distal
-  - targetBoneName: R_Thumb1
+  - targetBoneName: c_thumb1.r
     sourceBoneName: Right Thumb Proximal
-  - targetBoneName: R_Thumb2
+  - targetBoneName: c_thumb2.r
     sourceBoneName: Right Thumb Intermediate
-  - targetBoneName: R_Thumb3
+  - targetBoneName: c_thumb3.r
     sourceBoneName: Right Thumb Distal
-  - targetBoneName: R_Index1
+  - targetBoneName: c_index1.r
     sourceBoneName: Right Index Proximal
-  - targetBoneName: R_Index2
+  - targetBoneName: c_index2.r
     sourceBoneName: Right Index Intermediate
-  - targetBoneName: R_Index3
+  - targetBoneName: c_index3.r
     sourceBoneName: Right Index Distal
-  - targetBoneName: R_Mid1
+  - targetBoneName: c_middle1.r
     sourceBoneName: Right Middle Proximal
-  - targetBoneName: R_Mid2
+  - targetBoneName: c_middle2.r
     sourceBoneName: Right Middle Intermediate
-  - targetBoneName: R_Mid3
+  - targetBoneName: c_middle3.r
     sourceBoneName: Right Middle Distal
-  - targetBoneName: R_Ring1
+  - targetBoneName: c_ring1.r
     sourceBoneName: Right Ring Proximal
-  - targetBoneName: R_Ring2
+  - targetBoneName: c_ring2.r
     sourceBoneName: Right Ring Intermediate
-  - targetBoneName: R_Ring3
+  - targetBoneName: c_ring3.r
     sourceBoneName: Right Ring Distal
-  - targetBoneName: R_Pinky1
-    sourceBoneName: Right Little Proximal
-  - targetBoneName: R_Pinky2
-    sourceBoneName: Right Little Intermediate
-  - targetBoneName: R_Pinky3
-    sourceBoneName: Right Little Distal
-  - targetBoneName: Spine02
+  - targetBoneName: spine_03.x
     sourceBoneName: UpperChest

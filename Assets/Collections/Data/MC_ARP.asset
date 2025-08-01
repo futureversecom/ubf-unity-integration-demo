@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73932d3d27b79af4ba9134813fa862e8, type: 3}
   m_Name: MC_ARP
   m_EditorClassIdentifier: 
-  Avatar: {fileID: 9000000, guid: 223b0349c637854448359bc70ead0a3c, type: 3}
-  _rigPrefab: {fileID: 919132149155446097, guid: 223b0349c637854448359bc70ead0a3c, type: 3}
+  Avatar: {fileID: 9000000, guid: a741e8cb2235a7f4cba11daf7991c6b3, type: 3}
+  _rigPrefab: {fileID: 7919699185871141835, guid: d888ea26c9f82b14a9131869d1c6bac9, type: 3}
   avatarMap:
   - targetBoneName: root.x
     sourceBoneName: Hips

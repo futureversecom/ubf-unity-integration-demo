@@ -56,6 +56,7 @@ namespace Futureverse.UBF.Runtime
     public class RuntimeMeshConfig
     {
         public MeshConfig Config;
-        public GameObject RuntimeObject;
+        public GameObject AnimationObject;
+        public GameObject GameLogicObject;
     }
 }
