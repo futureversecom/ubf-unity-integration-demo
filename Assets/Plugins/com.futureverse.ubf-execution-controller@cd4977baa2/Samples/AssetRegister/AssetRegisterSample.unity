@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -650,9 +650,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _arClient: {fileID: 1193912752}
   _ubfController: {fileID: 1555705600}
-  _syloResolverUri: https://sylo-resolver.data.storage-sylo.futureverse.cloud
-  _caching: 1
-  _cachePathOverride: 
 --- !u!4 &1870787401
 Transform:
   m_ObjectHideFlags: 0
@@ -717,8 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _executionController: {fileID: 1870787400}
   _arClient: {fileID: 1193912752}
-  _supportedCollectionIds:
-  - 7668:root:17508
+  _supportedCollectionIds: []
   _assetUI: {fileID: 5074754524229657676, guid: 272b3b646cce9f6459ee1335a0b61601, type: 3}
   _walletInput: {fileID: 938989254}
   _searchButton: {fileID: 1730067026}
