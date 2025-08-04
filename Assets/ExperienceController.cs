@@ -13,7 +13,6 @@ using Plugins.AssetRegister.Runtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Auth = Futureverse.FuturePass.FuturePassAuthentication;
 

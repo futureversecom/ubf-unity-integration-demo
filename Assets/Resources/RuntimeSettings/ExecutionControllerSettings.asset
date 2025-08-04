@@ -16,3 +16,18 @@ MonoBehaviour:
   _assetProfilesPath: https://dq7a7vxun94d0.cloudfront.net/Genesis/Profiles/1.0
   _supportedVariants:
   - Default
+  _downloaders:
+  - rid: 7930366244790206465
+  - rid: 7930366244790206464
+  _cacheType: 0
+  _cachePathOverride: 
+  _syloResolverUri: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 7930366244790206464
+      type: {class: SyloDownloader, ns: Futureverse.UBF.UBFExecutionController.Runtime, asm: com.futureverse.ubf-execution-controller.runtime}
+      data: 
+    - rid: 7930366244790206465
+      type: {class: DefaultDownloader, ns: Futureverse.UBF.Runtime.Resources, asm: com.futureverse.ubf.runtime}
+      data: 

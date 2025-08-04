@@ -9,8 +9,6 @@ namespace Futureverse.UBF.UBFExecutionController.Runtime
 	{
 		string Id { get; }
 		string Name { get; }
-		string CollectionId { get; }
-		string TokenId { get; }
 		AssetProfile AssetProfile { get; }
 		JObject Metadata { get; }
 		Dictionary<string, IInventoryItem> Children { get; }
