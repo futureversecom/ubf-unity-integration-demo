@@ -1,5 +1,6 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
+using System;
 using System.Collections;
 using System.Linq;
 using Futureverse.UBF.Runtime.Settings;
@@ -7,6 +8,7 @@ using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
 using Plugins.UBF.Runtime.Utils;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
@@ -118,8 +120,12 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			config.AnimationObject = instantiator.SceneTransform.gameObject;
 			//Object.Destroy(instantiator.SceneTransform.gameObject);
-			
-			var animator = instantiator.SceneTransform.GetComponentInParent<Animator>(includeInactive: true);
+
+			foreach (var renderer in config.AnimationObject.GetComponentsInChildren<Renderer>())
+			{
+				renderer.materials = Array.Empty<Material>();
+			}
+			var animator = instantiator.SceneTransform.GetComponentInParent<Animator>(includeInactive: true); // TODO make this a variable in the graph execution data?
 			animator.avatar = config.Config.Avatar;
 		}
 	}
