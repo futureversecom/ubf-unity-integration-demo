@@ -24,6 +24,7 @@ public class RigMirror : MonoBehaviour
         // Populate bone dictionaries
         foreach (var bone in sourceRoot.GetComponentsInChildren<Transform>())
             sourceBones[bone.name] = bone;
+        
         foreach (var bone in targetRoot.GetComponentsInChildren<Transform>())
         {
             if (sourceBones.ContainsKey(bone.name))
@@ -32,7 +33,7 @@ public class RigMirror : MonoBehaviour
             }
             else
             {
-                bone.gameObject.SetActive(false);
+                //bone.gameObject.SetActive(false);
             }
         }
         assigned = true;
@@ -46,8 +47,8 @@ public class RigMirror : MonoBehaviour
         {
             if (sourceBones.TryGetValue(kv.Key, out var sourceBone))
             {
-                kv.Value.localPosition = sourceBone.localPosition;
-                kv.Value.localRotation = sourceBone.localRotation;
+                kv.Value.position = sourceBone.position;
+                kv.Value.rotation = sourceBone.rotation;
                 kv.Value.localScale    = sourceBone.localScale;
             }
         }

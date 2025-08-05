@@ -100,7 +100,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 			
-			//var instantiator = new GameObjectInstantiator(gltfResource, new GameObject("Temp_GLTF_Config").transform);
 			var root = new GameObject("Avatar Root").transform;
 			root.SetParent(rootTransform);
 			root.SetSiblingIndex(0);
