@@ -44,29 +44,26 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				configEntry = settings.MeshConfigs?.FirstOrDefault(x => x.Key == "Default");
 			}
-			
+
+			if (configEntry == null)
+			{
+				UbfLogger.LogError("[CreateMeshConfig] Could not find config entry \"Default\"");
+				WriteOutput("MeshConfig", null);
+				yield break;
+			}
 			
 			RuntimeMeshConfig runtimeConfig = new RuntimeMeshConfig
 			{
 				Config = ScriptableObject.CreateInstance<MeshConfig>()
 			};
 			
-
-			/*
-			RuntimeMeshConfig runtimeConfig = null;
-			
-			if (configEntry != null && configEntry.Config != null && configEntry.Config.RigPrefab != null)
-			{
-				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
-				runtimeConfig = new RuntimeMeshConfig()
-				{
-					Config = configEntry.Config,
-					RuntimeObject = spawnedRig,
-				};
-			}
-			*/
+			// Instantiate the resource provided to the CreateMeshConfig node. 
+			// Use it to create an avatar, and serve as the core animation reference
+			// Both game rig and any models spawned with this config will retarget to follow the animation rig
 			yield return SetupAnimationObject(NodeContext.ExecutionContext.Config.GetRootTransform, resourceId, runtimeConfig, configEntry);
-			if (configEntry != null && runtimeConfig.Config != null && configEntry.Config.RigPrefab != null)
+			
+			// If a game rig is present, spawn and point at anim rig
+			if (configEntry.Config.RigPrefab != null)
 			{
 				var spawnedRig = Object.Instantiate(configEntry.Config.RigPrefab, NodeContext.ExecutionContext.Config.GetRootTransform);
 				runtimeConfig.GameLogicObject = spawnedRig;
@@ -81,6 +78,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		private IEnumerator SetupAnimationObject(Transform rootTransform, ResourceId resourceId, RuntimeMeshConfig config, UBFSettings.MeshConfigEntry configEntry)
 		{
+			// Instantiate the resource
 			GltfImport gltfResource = null;
 			var routine = CoroutineHost.Instance.StartCoroutine(
 				NodeContext.ExecutionContext.Config.GetMeshInstance(
@@ -102,6 +100,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 			
+			// Once spawned, move it to the top of the sibling tree so that it is the object that gets targeted by the parent animator component
 			var root = new GameObject("Avatar Root").transform;
 			root.SetParent(rootTransform);
 			root.SetSiblingIndex(0);
@@ -115,16 +114,19 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield return instantiateRoutine;
 			}
 
+			// Use the 'avatar' map to create a T-Pose avatar. Only compatible with ARP models
 			config.Config.Avatar =
 				RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap);
 
 			config.AnimationObject = instantiator.SceneTransform.gameObject;
-			//Object.Destroy(instantiator.SceneTransform.gameObject);
 
+			// Remove any materials from the animation object renderers
+			// Need to keep the components present / enabled so they can process skeletol animation
 			foreach (var renderer in config.AnimationObject.GetComponentsInChildren<Renderer>())
 			{
 				renderer.materials = Array.Empty<Material>();
 			}
+			// Set the avatar to the animator
 			var animator = instantiator.SceneTransform.GetComponentInParent<Animator>(includeInactive: true); // TODO make this a variable in the graph execution data?
 			animator.avatar = config.Config.Avatar;
 		}
