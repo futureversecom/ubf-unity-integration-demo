@@ -1,17 +1,31 @@
-# UBF Unity Integration Demo
+# Futureverse UBF Integration Demo – Unity
 
+The **Futureverse UBF Integration Demo (Unity)** showcases the integration of the [**Unity UBF Runtime**](https://github.com/futureversecom/sdk-unity-ubf) with the [**Futureverse UBF Execution Controller**](https://github.com/futureversecom/sdk-unity-execution-controller), within a third-person Unity project and demonstrates an end-to-end implementation of all the tools and systems required to utilize UBF for your project. 
 
-## 🔍 Overview
+This demo features:
+- **Dynamic avatar rendering** based on wallet inventory items retrieved from Futureverse’s **Asset Register** (using the [Unity Asset Register SDK](https://github.com/futureversecom/sdk-unity-asset-register)).
+- **Custodial authentication** using **Futurepass** to perform logins and retrieve associated wallet addresses (using the [Unity Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)).
+- **Asset management** via **Sylo** to download and manage supported avatar assets (using the [Unity Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo)).  
 
-The UBF Integration Demo (Unity) demonstrates an end-to-end implementation of all the tools and systems required to utilize UBF for your project.  
-It includes authentication with [Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass), data retrieval with [Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo), and asset queries with the [Asset Registry SDK](https://github.com/futureversecom/sdk-unity-asset-register).
+> For more information about the Universal Blueprint Framework, its authoring tools, and the full ecosystem, visit the [UBF Open Standard](https://ubfstandard.com/) and the [Futureverse Developer Documentation](https://docs.futureverse.com/build-an-asset/asset-creation).
+
+---
+
+## 🔗 Related Links
+
+- [UBF Open Standard](https://ubfstandard.com/)  
+- [Unity UBF Runtime](https://github.com/futureversecom/sdk-unity-ubf-runtime)  
+- [Unity UBF Execution Controller](https://github.com/futureversecom/sdk-unity-ubf-execution-controller)  
+- [Unity Asset Register SDK](https://github.com/futureversecom/sdk-unity-asset-register)  
+- [Unity Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)  
+- [Unity Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo)  
 
 ---
 
 ## ✨ Features
 
 - ⚡ **End-to-end UBF integration**
-- 🔗 **Examples of Futureverse SDK usage**: including Futurepass, Sylo, and Asset Registry
+- 🔗 **Examples of Futureverse SDK usage**: including Futurepass, Sylo, and Asset Register
 - 🏃 **Character controller**: showcasing UBF runtime animation config
 - 🌏 **Runtime environment switching**: across multiple services
 
@@ -86,7 +100,7 @@ This demonstration project has mesh configs setup for both Partybears and Gods&G
 
 ### Blueprint Execution
 
-The `ExperienceController` implements a pipeline of requesting assets from the Asset Registry via the Asset Registry SDK, and then executing them on UI selection. 
+The `ExperienceController` implements a pipeline of requesting assets from the Asset Register via the Asset Register SDK, and then executing them on UI selection. 
 
 The basic experience flow: 
 1. Prompt login flow to get user wallet
@@ -134,7 +148,7 @@ Once the wallet is retrieved, it can be used to fetch the users assets using the
     StartCoroutine(executionController.FetchAssetsFromWallet(wallet, OnAssetsLoaded, OnFailure));
 ```
 
-The onSuccess callback for this method (filled with `OnAssetsLoaded` in this example) is called with an `Asset[]` structure. These Assets contain information provided from the Asset Registry for each entry.
+The onSuccess callback for this method (filled with `OnAssetsLoaded` in this example) is called with an `Asset[]` structure. These Assets contain information provided from the Asset Register for each entry.
 In our case, we are going to use that asset data to populate a grid showing each asset, its tokenID and a profile picture (if one is available and valid)
 
 ```cs
@@ -163,5 +177,5 @@ private void LoadAsset(Asset asset)
     }
 ```
 
-For this we are taking advantage of the UBF Execution Controller package. This allows us access to useful methods, such as rendering a graph from Asset Registry data. 
+For this we are taking advantage of the UBF Execution Controller package. This allows us access to useful methods, such as rendering a graph from Asset Register data. 
 The Execution Controller will fetch data on the entire tree relating to our asset (clothes, accessories, parts, etc), create an `ArtifactProvider` and use the `UBFRuntimeController` to execute it in the scene. 
