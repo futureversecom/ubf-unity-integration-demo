@@ -14,8 +14,8 @@ This demo features:
 ## 🔗 Related Links
 
 - [UBF Open Standard](https://ubfstandard.com/)  
-- [Unity UBF Runtime](https://github.com/futureversecom/sdk-unity-ubf-runtime)  
-- [Unity UBF Execution Controller](https://github.com/futureversecom/sdk-unity-ubf-execution-controller)  
+- [Unity UBF Interpreter](https://github.com/futureversecom/sdk-unity-ubf)  
+- [Unity Futurevere UBF Controller](https://github.com/futureversecom/sdk-unity-execution-controller)  
 - [Unity Asset Register SDK](https://github.com/futureversecom/sdk-unity-asset-register)  
 - [Unity Futurepass SDK](https://github.com/futureversecom/sdk-unity-futurepass)  
 - [Unity Sylo SDK](https://github.com/futureversecom/sdk-unity-sylo)  
@@ -47,7 +47,7 @@ This demo features:
 
 **UBF (Universal Blueprint Framework)** is a set of tools for rendering objects across different engines and platforms.
 
-- Blueprints are created using the [UBF Studio](https://github.com/futureversecom/fv-ubf-studio) tool.
+- Blueprints are created using the [UBF Studio](https://docs.futureverse.com/build-an-asset/asset-creation/blueprint-creation/getting-started-with-ubf-studio) tool.
 - Blueprints are stored with their required resources (models/textures).
 - Experiences (like this demo) download a blueprint and its resources, parse them, and render them.
 
