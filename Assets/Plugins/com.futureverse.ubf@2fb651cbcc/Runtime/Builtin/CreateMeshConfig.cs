@@ -115,8 +115,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 
 			// Use the 'avatar' map to create a T-Pose avatar. Only compatible with ARP models
-			config.Config.Avatar =
-				RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap);
+			config.Config.SetAvatar(RigUtils.CreateAvatar(instantiator.SceneTransform, configEntry.Config.avatarMap));
 
 			config.AnimationObject = instantiator.SceneTransform.gameObject;
 

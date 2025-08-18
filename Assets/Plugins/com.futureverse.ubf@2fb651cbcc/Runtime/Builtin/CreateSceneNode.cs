@@ -17,10 +17,16 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 
 			var gameObject = new GameObject(nodeName);
-
-			if (TryRead<Transform>("Parent", out var parent) && parent != null)
+			var node = new SceneNode
 			{
-				gameObject.transform.SetParent(parent);
+				TargetSceneObject = gameObject,
+				Name = nodeName
+			};
+
+			if (TryRead<SceneNode>("Parent", out var parent) && parent != null)
+			{
+				gameObject.transform.SetParent(parent.TargetSceneObject.transform);
+				parent.AddChild(node);
 			}
 			else
 			{
@@ -31,7 +37,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 			gameObject.transform.localRotation = Quaternion.identity;
 			gameObject.transform.localScale = Vector3.one;
 
-			WriteOutput("Node", gameObject.transform);
+			
+			
+			WriteOutput("Node", node);
 		}
 	}
 }

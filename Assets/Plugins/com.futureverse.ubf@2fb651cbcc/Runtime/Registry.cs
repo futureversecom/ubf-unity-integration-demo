@@ -40,7 +40,6 @@ namespace Futureverse.UBF.Runtime
 		private static Registry MakeDefault()
 			=> new Registry()
 				.Register<DebugLog>()
-				.Register<FindSceneNodes>()
 				.Register<SpawnMesh>()
 				.Register<SpawnModel>()
 				.Register<SpawnModelWithLods>("SpawnModelWithLODs")
@@ -50,7 +49,6 @@ namespace Futureverse.UBF.Runtime
 				.Register<SetTextureSettings>()
 				.Register<CreateSceneNode>()
 				.Register<CreateMeshConfig>()
-				.Register<FindRenderer>()
 				.Register<SetSceneNodeEnabled>()
 				.Register<ExecuteBlueprint>()
 				.Register<ExecuteBlueprint>("ExecuteBlueprint2")
@@ -66,7 +64,13 @@ namespace Futureverse.UBF.Runtime
 				.Register<CreateTextureResource>()
 				.Register<CreateBlueprintResource>()
 				.Register<CreateMeshResource>()
-				.Register<CreateGLBResource>();
+				.Register<CreateGLBResource>()
+				.Register<FilterSceneNodes>()
+				.Register<FilterSceneComponents>()
+				.Register<GetSceneComponents>()
+				.Register<GetSceneNode>()
+				.Register<GetParentSceneNode>()
+				.Register<GetChildSceneNodes>();
 
 		/// <summary>
 		/// Adds a new type of node to the Registry.

@@ -1,8 +1,6 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using Futureverse.UBF.Runtime.Utils;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
@@ -12,7 +10,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<Transform>("Node", out var node))
+			if (!TryRead<SceneNode>("Node", out var node))
 			{
 				UbfLogger.LogError("[SetSceneNodeEnabled] Could not find input \"Node\"");
 				return;
@@ -24,7 +22,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				return;
 			}
 
-			node.gameObject.SetActive(enabled);
+			node.TargetSceneObject.gameObject.SetActive(enabled);
 		}
 	}
 }

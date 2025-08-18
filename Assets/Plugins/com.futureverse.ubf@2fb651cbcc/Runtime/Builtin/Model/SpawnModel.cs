@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Futureverse.UBF.Runtime.Utils;
 using GLTFast;
 using Plugins.UBF.Runtime.Utils;
@@ -11,9 +12,8 @@ namespace Futureverse.UBF.Runtime.Builtin
 {
 	public class SpawnModel : ACustomExecNode
 	{
-		protected readonly List<Renderer> Renderers = new();
-		protected readonly List<Transform> Transforms = new();
-		protected readonly List<SkinnedMeshRenderer> SkinnedMeshRenderers = new();
+		protected readonly List<MeshRendererSceneComponent> Renderers = new();
+		protected readonly List<MeshRendererSceneComponent> SkinnedMeshRenderers = new();
 		
 		public SpawnModel(Context context) : base(context) { }
 
@@ -25,7 +25,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 
-			if (!TryRead<Transform>("Parent", out var parent))
+			if (!TryRead<SceneNode>("Parent", out var parent))
 			{
 				UbfLogger.LogError("[SpawnModel] Could not find input \"Parent\"");
 				yield break;
@@ -35,7 +35,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				UbfLogger.LogWarn("[SpawnModel] Failed to get input \"Config\"");
 			}
-
+			
 			GltfImport gltfResource = null;
 			var routine = CoroutineHost.Instance.StartCoroutine(
 				NodeContext.ExecutionContext.Config.GetMeshInstance(
@@ -56,8 +56,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 				UbfLogger.LogError($"[SpawnModel] Could not load GLB resource with Id \"{resourceId.Value}\"");
 				yield break;
 			}
+
+			var settings = new InstantiationSettings()
+			{
+				SceneObjectCreation = SceneObjectCreation.Always
+			};
+			var instantiator = new GameObjectInstantiator(gltfResource, parent.TargetSceneObject.transform, settings: settings);
 			
-			var instantiator = new GameObjectInstantiator(gltfResource, parent);
 			instantiator.MeshAdded += MeshAddedCallback;
 
 			var instantiateRoutine = CoroutineHost.Instance.StartCoroutine(
@@ -67,8 +72,43 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				yield return instantiateRoutine;
 			}
+
+			// Get root spawned node
+			var root = instantiator.SceneTransform; 
+			var rootNode = new SceneNode()
+			{
+				TargetSceneObject = root.gameObject
+			};
+
+			rootNode.AddComponents(Renderers);
+
+			if (Renderers.Count > 0)
+			{
+				rootNode.Name = Renderers[0].TargetMeshRenderers[0].gameObject.name;
+			}
 			
-			var glbReference = parent.gameObject.AddComponent<GLBReference>();
+			// If theres a rig, register it
+			if (Renderers.Any(x => x.skinned))
+			{
+				var skR = Renderers.First(x => x.skinned);
+				//var rigRoot = (skR.TargetMeshRenderers[0] as SkinnedMeshRenderer);
+				var rig = RigSceneComponent.CreateFromSMR(skR.TargetMeshRenderers[0] as SkinnedMeshRenderer);
+				/*
+				var rigRootNode = SceneNode.BuildSceneTree(rigRoot, out var boneNodes);
+				var rig = new RigSceneComponent
+				{
+					Node = rootNode,
+					Bones = boneNodes,
+					Root = rigRootNode
+				};
+				*/
+
+				rootNode.AddComponent(rig);
+			}
+			
+			parent.AddChild(rootNode);
+			
+			var glbReference = parent.TargetSceneObject.AddComponent<GLBReference>(); // Maybe place this on the instantiator scene transform? For later
 			glbReference.GLTFImport = gltfResource;
 			
 			// Extra yield here as we can't be sure that the mesh will be instantiated fully after the above task finishes
@@ -77,7 +117,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			ApplyRuntimeConfig(runtimeConfig);
 			
 			WriteOutput("Renderers", Renderers);
-			WriteOutput("Scene Nodes", Transforms);
+			WriteOutput("Scene Node", rootNode);
 		}
 		
 		protected virtual void MeshAddedCallback(
@@ -90,17 +130,21 @@ namespace Futureverse.UBF.Runtime.Builtin
 			float[] morphTargetWeights,
 			int meshNumeration)
 		{
-			Transforms.Add(gameObject.transform);
 			var renderer = gameObject.GetComponent<Renderer>();
 			if (renderer == null)
 			{
 				return;
 			}
 
-			Renderers.Add(renderer);
-			if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
+			var renderComponent = new MeshRendererSceneComponent()
 			{
-				SkinnedMeshRenderers.Add(skinnedMeshRenderer);
+				TargetMeshRenderers = new List<Renderer>() { renderer },
+				skinned = (renderer is SkinnedMeshRenderer)
+			};
+			Renderers.Add(renderComponent);
+			if (renderComponent.skinned)
+			{
+				SkinnedMeshRenderers.Add(renderComponent);
 			}
 		}
 
@@ -110,20 +154,23 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				return;
 			}
+			var runtimeSMR = runtimeConfig.AnimationObject.GetComponentInChildren<SkinnedMeshRenderer>();
 
-			foreach (var renderer in SkinnedMeshRenderers)
+			foreach (var renderComponents in SkinnedMeshRenderers)
 			{
-				UbfLogger.LogInfo(
-					$"[{GetType().Name}] Retargeting \"{renderer.name}\" with spawned config \"{runtimeConfig.Config.name}\""
-				);
-				var runtimeSMR = runtimeConfig.AnimationObject.GetComponentInChildren<SkinnedMeshRenderer>();
-				if (runtimeSMR != null)
+				foreach (var mRender in renderComponents.TargetMeshRenderers)
 				{
-					RigUtils.RetargetRig(runtimeSMR, renderer);
-				}
-				else
-				{
-					RigUtils.RetargetRig(runtimeConfig.AnimationObject.transform, renderer);
+					UbfLogger.LogInfo(
+						$"[{GetType().Name}] Retargeting \"{mRender.name}\" with spawned config \"{runtimeConfig.Config.name}\""
+					);
+					if (runtimeSMR != null)
+					{
+						RigUtils.RetargetRig(runtimeSMR, mRender as SkinnedMeshRenderer); // Assume if it lives in SkinnedMeshRenderers that it fits the type
+					}
+					else
+					{
+						RigUtils.RetargetRig(runtimeConfig.AnimationObject.transform, mRender as SkinnedMeshRenderer);
+					}
 				}
 			}
 		}

@@ -18,7 +18,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 
-			if (!TryRead<Renderer>("Renderer", out var renderer))
+			if (!TryRead<MeshRendererSceneComponent>("Renderer", out var renderer))
 			{
 				UbfLogger.LogError("[ApplyMaterial] Could not find input \"Renderer\"");
 				yield break;
@@ -97,9 +97,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 				}
 			}
 
-			var rMats = renderer.materials;
-			rMats[matIndex] = material;
-			renderer.materials = rMats;
+			foreach (var mRender in renderer.TargetMeshRenderers)
+			{
+				var rMats = mRender.materials;
+				rMats[matIndex] = material;
+				mRender.materials = rMats;
+			}
+			
 		}
 	}
 }

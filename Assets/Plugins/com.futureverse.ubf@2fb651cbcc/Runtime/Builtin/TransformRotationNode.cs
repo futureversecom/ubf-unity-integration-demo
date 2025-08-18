@@ -11,7 +11,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<Transform>("Transform Object", out var transformObject))
+			if (!TryRead<SceneNode>("Transform Object", out var transformObject))
 			{
 				UbfLogger.LogError("[TransformRotationNode] Could not find input \"Transform Object\"");
 				return;
@@ -29,22 +29,22 @@ namespace Futureverse.UBF.Runtime.Builtin
 			{
 				if (isAdditive)
 				{
-					transformObject.rotation = rotation * transformObject.rotation;
+					transformObject.TargetSceneObject.transform.rotation = rotation * transformObject.TargetSceneObject.transform.rotation;
 				}
 				else
 				{
-					transformObject.rotation = rotation;
+					transformObject.TargetSceneObject.transform.rotation = rotation;
 				}
 			}
 			else
 			{
 				if (isAdditive)
 				{
-					transformObject.localRotation *= rotation;
+					transformObject.TargetSceneObject.transform.localRotation *= rotation;
 				}
 				else
 				{
-					transformObject.localRotation = rotation;
+					transformObject.TargetSceneObject.transform.localRotation = rotation;
 				}
 			}
 		}

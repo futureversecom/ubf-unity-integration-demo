@@ -16,11 +16,15 @@ using GLTFast.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TMPro;
+using Unity.Profiling;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.Profiling;
 
 public class DemoSceneController : MonoBehaviour
 {
+    static readonly ProfilerMarker k_MyCustomMarker = new ProfilerMarker("MyCustomCodeSection");
+
     public UBFRuntimeController runtimeController;
 
     public float updateFrequency = 0.5f;
@@ -112,8 +116,21 @@ public class DemoSceneController : MonoBehaviour
     private void Run()
     {
         renderText.text = $"Rendering artifact {Path.GetFileName(artifactPath)}";
-        StartCoroutine(runtimeController.Execute("root", new DemoExecutionData(runtimeController.transform, (executionResult) => { Debug.Log("AA - Execution Complete");}, new List<IBlueprintInstanceData>()),
-            onComplete: Debug.Log));
+        StartCoroutine(runtimeController.Execute("root", new DemoExecutionData(runtimeController.transform,
+            (executionResult) =>
+            {
+                Debug.Log("<color=green>Execution complete. Debugging</color>");
+                Debug.Log($"{executionResult.BlueprintOutputs.Count} blueprint outputs");
+                foreach (var kvp in executionResult.BlueprintOutputs)
+                {
+                    if (kvp.Value is SceneNode node)
+                    {
+                        node.PrintDebug();
+                    }
+                }
+                
+            }, new List<IBlueprintInstanceData>()),
+            onComplete: (result => { })));
     }
 
     private IEnumerator CheckForUpdateRoutine()
@@ -151,12 +168,14 @@ public class DemoSceneController : MonoBehaviour
             return;
         }
 
+        k_MyCustomMarker.Begin();
         var newHash = CreateMd5ForFolder(currentDir.FullName);
         if (newHash != folderHash)
         {
             Debug.Log("Change detected, re-rendering");
             SelectGraphFile(artifactPath);
         }
+        k_MyCustomMarker.End();
     }
     
     private static string CreateMd5ForFolder(string path)

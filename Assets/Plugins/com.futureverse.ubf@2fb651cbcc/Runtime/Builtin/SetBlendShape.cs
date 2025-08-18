@@ -11,7 +11,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<Renderer>("Target", out var targetRenderer) || targetRenderer == null)
+			if (!TryRead<MeshRendererSceneComponent>("Target", out var rendererComponent) || rendererComponent == null)
 			{
 				UbfLogger.LogError("[SetBlendShape] Could not find input \"Target\"");
 				return;
@@ -29,21 +29,31 @@ namespace Futureverse.UBF.Runtime.Builtin
 				return;
 			}
 
-			var smr = targetRenderer as SkinnedMeshRenderer;
-			if (smr == null)
+			if (!rendererComponent.skinned)
 			{
-				UbfLogger.LogError("[SetBlendShape] No Skinned Mesh Renderer on target transform");
+				UbfLogger.LogError("[SetBlendShape] Target renderer is not skinned");
 				return;
 			}
 
-			var index = smr.sharedMesh.GetBlendShapeIndex(blendShapeId);
-			if (index == -1)
+			foreach (var mRender in rendererComponent.TargetMeshRenderers)
 			{
-				UbfLogger.LogError($"[SetBlendShape] Invalid blend shape ID: {blendShapeId}");
-				return;
-			}
+				var smr = mRender as SkinnedMeshRenderer;
+				if (smr == null)
+				{
+					UbfLogger.LogError("[SetBlendShape] Mesh Renderer component is not skinned");
+					continue;
+				}
 
-			smr.SetBlendShapeWeight(index, blendShapeValue);
+				var index = smr.sharedMesh.GetBlendShapeIndex(blendShapeId);
+				if (index == -1)
+				{
+					UbfLogger.LogError($"[SetBlendShape] Cannot find blend-shape on renderer. Blend ID: {blendShapeId}");
+					continue;
+				}
+
+				smr.SetBlendShapeWeight(index, blendShapeValue);
+			}
+			
 		}
 	}
 }

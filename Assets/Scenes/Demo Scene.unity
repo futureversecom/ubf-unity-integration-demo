@@ -2168,7 +2168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runtimeController: {fileID: 1507590201}
-  updateFrequency: 0.5
+  updateFrequency: 2
   artifactPath: 
   folderHash: 
   fileBtn: {fileID: 345165759}

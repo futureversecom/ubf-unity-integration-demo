@@ -43,7 +43,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 				yield break;
 			}
 
-			if (!TryRead<Transform>("Parent", out var parent))
+			if (!TryRead<SceneNode>("Parent", out var parent))
 			{
 				UbfLogger.LogError("[SpawnModelWithLODs] Could not find input \"Parent\"");
 				yield break;
@@ -55,11 +55,16 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 			
 			var lodParent = new GameObject("LODGroup");
-			lodParent.transform.SetParent(parent);
+			lodParent.transform.SetParent(parent.TargetSceneObject.transform);
 			_lodGroup = lodParent.AddComponent<LODGroup>();
 			
 			_numLods = resources.Count;
 			_lods = new LOD[_numLods];
+
+			var rootNode = new SceneNode()
+			{
+				TargetSceneObject = lodParent
+			};
 			
 			foreach (var resource in resources)
 			{
@@ -72,15 +77,37 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 			
 			_lodGroup.SetLODs(_lods);
-			var animator = parent.gameObject.GetComponentInParent<Animator>(includeInactive: true);
+			var animator = parent.TargetSceneObject.GetComponentInParent<Animator>(includeInactive: true);
 			
 			// Extra yield here as we can't be sure that the mesh will be instantiated fully after the above task finishes
 			yield return null;
 			
+			if (Renderers.Count > 0) // There will be one renderer component with all meshes in it
+			{
+				rootNode.AddComponent(Renderers[0]);
+				rootNode.Name = Renderers[0].TargetMeshRenderers[0].gameObject.name;
+
+				if (Renderers[0].skinned)
+				{
+					var rigRoot = (Renderers[0].TargetMeshRenderers[0] as SkinnedMeshRenderer).rootBone;
+					var rigRootNode = SceneNode.BuildSceneTree(rigRoot, out var boneNodes);
+					var rig = new RigSceneComponent
+					{
+						Node = rootNode,
+						Bones = boneNodes,
+						Root = rigRootNode
+					};
+
+					rootNode.AddComponent(rig);
+				}
+			}
+			
+			parent.AddChild(rootNode);
+			
 			ApplyRuntimeConfig(runtimeConfig);
 			
-			WriteOutput("Renderers", Renderers);
-			WriteOutput("Scene Nodes", Transforms);
+			WriteOutput("Renderer", Renderers.FirstOrDefault());
+			WriteOutput("Scene Node", rootNode);
 		}
 
 		private IEnumerator LoadLodResource(ResourceId resourceId)
@@ -136,19 +163,22 @@ namespace Futureverse.UBF.Runtime.Builtin
 			float[] morphTargetWeights,
 			int meshNumeration)
 		{
-			Transforms.Add(gameObject.transform);
 			var renderer = gameObject.GetComponent<Renderer>();
 			if (renderer == null)
 			{
 				return;
 			}
 
-			Renderers.Add(renderer);
-			if (renderer is SkinnedMeshRenderer skinnedMeshRenderer)
+			if (Renderers.Count == 0) // Only one mesh renderer on an lod spawn, that contains all the lod meshes within it
 			{
-				SkinnedMeshRenderers.Add(skinnedMeshRenderer);
+				Renderers.Add(new MeshRendererSceneComponent()
+				{
+					skinned = renderer is SkinnedMeshRenderer
+				});
 			}
 
+			Renderers[0].TargetMeshRenderers.Add(renderer);
+			
 			var lodSample = (_currentLodNum + 1) / (float)_numLods;
 			var lodDistanceFactor = UBFSettings.GetOrCreateSettings()
 				.LodFalloffCurve.Evaluate(lodSample);

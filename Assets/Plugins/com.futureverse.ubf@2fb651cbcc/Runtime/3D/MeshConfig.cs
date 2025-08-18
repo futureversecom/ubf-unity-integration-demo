@@ -12,7 +12,7 @@ namespace Futureverse.UBF.Runtime
     public class MeshConfig : ScriptableObject
     {
         public GameObject RigPrefab => _rigPrefab;
-        public Avatar Avatar;
+        public Avatar Avatar { get; private set; }
 
         [SerializeField]
         private GameObject _rigPrefab;
@@ -50,6 +50,11 @@ namespace Futureverse.UBF.Runtime
                 };
                 avatarMap.Add(mapItem);
             }
+        }
+
+        public void SetAvatar(Avatar newAvatar)
+        {
+            Avatar = newAvatar;
         }
     }
 
