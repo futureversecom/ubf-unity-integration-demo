@@ -11,13 +11,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<MeshRendererSceneComponent>("Target", out var rendererComponent) || rendererComponent == null)
+			if (!TryRead<MeshRendererSceneComponent>("Renderer", out var rendererComponent) || rendererComponent == null)
 			{
 				UbfLogger.LogError("[SetBlendShape] Could not find input \"Target\"");
 				return;
 			}
 			
-			if (!TryRead<string>("ID", out var blendShapeId))
+			if (!TryRead<string>("BlendShapeID", out var blendShapeId))
 			{
 				UbfLogger.LogError("[SetBlendShape] Could not find input \"ID\"");
 				return;

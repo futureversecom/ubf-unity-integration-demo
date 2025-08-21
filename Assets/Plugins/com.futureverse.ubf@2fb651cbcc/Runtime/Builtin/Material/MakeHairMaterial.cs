@@ -12,25 +12,25 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void AddProperties(Dictionary<string, object> properties)
 		{
-			AddRenderMode(properties, "Render Mode", "_RenderMode");
-			AddTexture(properties, "Diffuse Texture", "_DiffuseTex");
-			AddColor(properties, "Base Color", "_Tint");
-			AddBool(properties, "Use Alpha", "_UseAlpha");
-			AddFloat(properties, "Fresnel_IOR", "_Fresnel_IOR");
+			AddRenderMode(properties, "RenderMode", "_RenderMode");
+			AddTexture(properties, "DiffuseTexture", "_DiffuseTex");
+			AddColor(properties, "BaseColor", "_Tint");
+			AddBool(properties, "UseAlpha", "_UseAlpha");
+			AddFloat(properties, "FresnelIOR", "_Fresnel_IOR");
 			AddFloat(properties, "Opacity", "_Opacity");
-			AddTexture(properties, "AlphaTex", "_AlphaTex");
-			AddBool(properties, "UseAlphaTex", "_UseAlphaTex");
+			AddTexture(properties, "AlphaTexture", "_AlphaTex");
+			AddBool(properties, "UseAlphaTexture", "_UseAlphaTex");
 
-			AddBool(properties, "Use Emission", "_USEEMISSION");
-			AddBool(properties, "Use Emissive Tint", "_UseEmissiveTint");
-			AddTexture(properties, "Emissive Tex", "_EmissiveTex");
-			AddFloat(properties, "Emissive Color Boost", "_EmissiveColorBoost");
-			AddColor(properties, "Emissive Tint", "_EmissiveTint");
-			AddFloat(properties, "Emissive Tint Boost", "_EmissiveTintBoost");
+			AddBool(properties, "UseEmission", "_USEEMISSION");
+			AddBool(properties, "UseEmissiveTint", "_UseEmissiveTint");
+			AddTexture(properties, "EmissiveTexture", "_EmissiveTex");
+			AddFloat(properties, "EmissiveColorBoost", "_EmissiveColorBoost");
+			AddColor(properties, "EmissiveTint", "_EmissiveTint");
+			AddFloat(properties, "EmissiveTintBoost", "_EmissiveTintBoost");
 
-			AddBool(properties, "Use Normal Map", "_USENORMALMAP");
-			AddTexture(properties, "Normal Tex", "_NormalTex");
-			AddBool(properties, "Use ORM", "_USEORM");
+			AddBool(properties, "UseNormalMap", "_USENORMALMAP");
+			AddTexture(properties, "NormalTexture", "_NormalTex");
+			AddBool(properties, "UseORM", "_USEORM");
 			AddTexture(properties, "ORM", "_ORMTex");
 			AddFloat(properties, "Occlusion", "_Occlusion");
 			AddFloat(properties, "Roughness", "_Roughness");

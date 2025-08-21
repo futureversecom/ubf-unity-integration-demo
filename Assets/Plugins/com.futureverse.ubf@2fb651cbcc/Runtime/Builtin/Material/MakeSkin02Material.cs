@@ -12,39 +12,39 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void AddProperties(Dictionary<string, object> properties)
 		{
-			AddTexture(properties, "Base Color Tex", "_BaseColorTex");
-			AddFloat(properties, "Ambient Occlusion", "_AmbientOcclusion");
-			AddColor(properties, "Color Tint", "_ColorTint");
-			AddTexture(properties, "ORM Tex", "_ORMTex");
+			AddTexture(properties, "BaseColorTexture", "_BaseColorTex");
+			AddFloat(properties, "AmbientOcclusion", "_AmbientOcclusion");
+			AddColor(properties, "ColorTint", "_ColorTint");
+			AddTexture(properties, "ORMTexture", "_ORMTex");
 			AddFloat(properties, "Metallic", "_Metallic");
 			AddFloat(properties, "Roughness", "_Roughness");
 			
-			AddTexture(properties, "Normal Tex", "_NormalTex");
-			AddFloat(properties, "Normal Strength", "_NormalStrength");
-			AddBool(properties, "Flip Normal", "_NormalFlip");
+			AddTexture(properties, "NormalTexture", "_NormalTex");
+			AddFloat(properties, "NormalStrength", "_NormalStrength");
+			AddBool(properties, "FlipNormal", "_NormalFlip");
 			
 			AddBool(properties, "Fresnel", "_FRESNEL");
-			AddColor(properties, "Fresnel Color", "_FresnelColor");
-			AddFloat(properties, "Fresnel Power", "_FresnelPower");
+			AddColor(properties, "FresnelColor", "_FresnelColor");
+			AddFloat(properties, "FresnelPower", "_FresnelPower");
 			
-			AddBool(properties, "Use Emission", "_EMISSIVE");
-			AddColor(properties, "Emissive Tint", "_EmissiveTint");
-			AddFloat(properties, "Emissive Strength", "_EmissiveStrength");
-			AddTexture(properties, "Emissive Tex", "_EmissiveTex");
+			AddBool(properties, "UseEmission", "_EMISSIVE");
+			AddColor(properties, "EmissiveTint", "_EmissiveTint");
+			AddFloat(properties, "EmissiveStrength", "_EmissiveStrength");
+			AddTexture(properties, "EmissiveTexture", "_EmissiveTex");
 			
-			AddTexture(properties, "Freckle Tex", "_FreckleTex");
-			AddFloat(properties, "Freckle Opacity", "_FreckleOpacity");
-			AddColor(properties, "Freckle Tint", "_FreckleTint");
+			AddTexture(properties, "FreckleTexture", "_FreckleTex");
+			AddFloat(properties, "FreckleOpacity", "_FreckleOpacity");
+			AddColor(properties, "FreckleTint", "_FreckleTint");
 			
-			AddTexture(properties, "Tattoo Tex", "_TattooTex");
-			AddColor(properties, "Tattoo Tint", "_TattooTint");
+			AddTexture(properties, "TattooTexture", "_TattooTex");
+			AddColor(properties, "TattooTint", "_TattooTint");
 			
-			AddTexture(properties, "Beard Tex", "_BeardTex");
-			AddFloat(properties, "Beard Opacity", "_BeardOpacity");
-			AddColor(properties, "Beard Tint", "_BeardTint");
+			AddTexture(properties, "BeardTexture", "_BeardTex");
+			AddFloat(properties, "BeardOpacity", "_BeardOpacity");
+			AddColor(properties, "BeardTint", "_BeardTint");
 			
-			AddTexture(properties, "Face Paint Tex", "_FacePaintTex");
-			AddFloat(properties, "Face Paint Opacity", "_FacePaintOpacity");
+			AddTexture(properties, "FacePaintTexture", "_FacePaintTex");
+			AddFloat(properties, "FacePaintOpacity", "_FacePaintOpacity");
 		}
 
 		protected override Material GetMaterial

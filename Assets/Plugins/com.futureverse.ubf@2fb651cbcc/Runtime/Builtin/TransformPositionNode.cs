@@ -11,14 +11,14 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryRead<SceneNode>("Transform Object", out var transformObject))
+			if (!TryRead<SceneNode>("SceneNode", out var transformObject))
 			{
 				UbfLogger.LogError("[TransformPositionNode] Could not find input \"Transform Object\"");
 				return;
 			}
 
-			var useWorldSpace = TryRead<bool>("Use World Space", out var outUseWorldSpace) && outUseWorldSpace;
-			var isAdditive = TryRead<bool>("Is Additive", out var outIsAdditive) && outIsAdditive;
+			var useWorldSpace = TryRead<bool>("WorldSpace", out var outUseWorldSpace) && outUseWorldSpace;
+			var isAdditive = TryRead<bool>("Additive", out var outIsAdditive) && outIsAdditive;
 			var x = TryRead<float>("Right", out var outX) ? outX : 0;
 			var y = TryRead<float>("Up", out var outY) ? outY : 0;
 			var z = TryRead<float>("Forward", out var outZ) ? outZ : 0;

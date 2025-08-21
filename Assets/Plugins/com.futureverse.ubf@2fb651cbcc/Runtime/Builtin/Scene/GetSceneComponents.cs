@@ -11,7 +11,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
         protected override void ExecuteSync()
         {
-            if (!TryRead<SceneNode>("Scene Node", out var node))
+            if (!TryRead<SceneNode>("SceneNode", out var node))
             {
                 UbfLogger.LogError("[GetSceneComponents] Could not find input \"Scene Node\"");
                 return;
@@ -33,7 +33,7 @@ namespace Futureverse.UBF.Runtime.Builtin
                     components.AddRange(node.GetComponents<RigSceneComponent>());
                     break;
             }
-            WriteOutput("Filtered Scene Nodes", components.ToArray());
+            WriteOutput("SceneComponents", components.ToArray());
         }
     }
 }

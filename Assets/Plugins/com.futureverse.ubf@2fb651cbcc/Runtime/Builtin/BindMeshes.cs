@@ -13,7 +13,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override void ExecuteSync()
 		{
-			if (!TryReadArray<MeshRendererSceneComponent>("Mesh", out var meshes))
+			if (!TryReadArray<MeshRendererSceneComponent>("Meshes", out var meshes))
 			{
 				UbfLogger.LogError("[BindMeshes] Could not find input \"Mesh\"");
 				return;

@@ -21,7 +21,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			}
 			
 			// Currently unused, but will be added to TextureAssetImportSettings in a future update.
-			if (!TryRead("Use SRGB", out bool srgb))
+			if (!TryRead("SRGB", out bool srgb))
 			{
 				UbfLogger.LogError("[CreateTextureResource] Could not find input \"Use SRGB\"");
 				return;

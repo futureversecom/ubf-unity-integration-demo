@@ -40,7 +40,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 					continue;
 				}
 
-				if (TryRead(declaredInput, out var dynamic))
+				if (TryRead("In." + declaredInput, out var dynamic))
 				{
 					blueprint.RegisterVariable(declaredInput, dynamic);
 				}
@@ -52,7 +52,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			// forward graph outputs to node outputs
 			foreach (var output in blueprint.Outputs)
 			{
-				if (execTask.ExecutionContext.TryReadOutput(output.Id, out var value))
+				if (execTask.ExecutionContext.TryReadOutput("Out." + output.Id, out var value))
 				{
 					WriteOutput(output.Id, value);
 				}

@@ -17,7 +17,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override IEnumerator ExecuteAsync()
 		{
-			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
+			if (!TryReadResourceId("Mesh", out var resourceId) || !resourceId.IsValid)
 			{
 				UbfLogger.LogError("[SpawnMesh] Could not find input \"Resource\"");
 				yield break;
@@ -131,7 +131,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			ApplyRuntimeConfig(runtimeConfig);
 			
 			WriteOutput("Renderer", Renderers.FirstOrDefault());
-			WriteOutput("Scene Node", rootNode);
+			WriteOutput("SceneNode", rootNode);
 		}
 	}
 }

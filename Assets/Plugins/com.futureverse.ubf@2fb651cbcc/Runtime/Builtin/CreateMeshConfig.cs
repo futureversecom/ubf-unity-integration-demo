@@ -18,13 +18,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override IEnumerator ExecuteAsync()
 		{
-			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
+			if (!TryReadResourceId("Mesh", out var resourceId) || !resourceId.IsValid)
 			{
 				UbfLogger.LogError("[CreateMeshConfig] Could not find resource input \"Resource\"");
 				yield break;
 			}
 
-			if (!TryRead("ConfigOverrideKey", out string configKey))
+			if (!TryRead("ConfigKey", out string configKey))
 			{
 				UbfLogger.LogError("[CreateMeshConfig] Could not find input \"ConfigOverrideKey\"");
 				yield break;

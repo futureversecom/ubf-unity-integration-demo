@@ -13,13 +13,13 @@ namespace Futureverse.UBF.Runtime.Builtin
 
         protected override void ExecuteSync()
         {
-            if (!TryRead<SceneComponent>("Scene Component", out var component))
+            if (!TryRead<SceneComponent>("SceneComponent", out var component))
             {
                 UbfLogger.LogError("[GetSceneNode] Could not find input \"Scene Component\"");
                 return;
             }
             
-            WriteOutput("Scene Node", component?.Node);
+            WriteOutput("SceneNode", component?.Node);
         }
     }
 }

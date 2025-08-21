@@ -6,7 +6,12 @@ using UnityEngine;
 
 namespace Futureverse.UBF.Runtime
 {
-    public class SceneNode
+    public interface ISceneObject
+    {
+        string GetName();
+    }
+    
+    public class SceneNode : ISceneObject
     {
         public string Name;
         public GameObject TargetSceneObject;
@@ -145,9 +150,14 @@ namespace Futureverse.UBF.Runtime
                 AppendNode(sb, child, depth + 1);
             }
         }
+
+        public string GetName()
+        {
+            return Name;
+        }
     }
 
-    public class SceneComponent
+    public abstract class SceneComponent : ISceneObject
     {
         public SceneNode Node;
 
@@ -156,9 +166,9 @@ namespace Futureverse.UBF.Runtime
             return String.Empty;
         }
 
-        public virtual string GetFilterString()
+        public virtual string GetName()
         {
-            return String.Empty;
+            return "";
         }
     }
 
@@ -172,9 +182,9 @@ namespace Futureverse.UBF.Runtime
             return $"[{TargetMeshRenderers.Count}]" + (TargetMeshRenderers.Count > 0 ? TargetMeshRenderers[0].name : "-");
         }
 
-        public override string GetFilterString()
+        public override string GetName()
         {
-            return (TargetMeshRenderers.Count > 0 ? TargetMeshRenderers[0].name : "");
+            return TargetMeshRenderers.Count > 0 ? TargetMeshRenderers[0].name : "";
         }
     }
 
@@ -192,11 +202,6 @@ namespace Futureverse.UBF.Runtime
             return Node.Components.Where(x => x is MeshRendererSceneComponent).Cast<MeshRendererSceneComponent>().ToArray();
         }
 
-        public override string GetFilterString()
-        {
-            return Root?.TargetSceneObject?.name;
-        }
-
         public static RigSceneComponent CreateFromSMR(SkinnedMeshRenderer smr)
         {
             var rigRoot = smr.rootBone;
@@ -207,6 +212,11 @@ namespace Futureverse.UBF.Runtime
                 Root = rigRootNode
             };
             return rig;
+        }
+
+        public override string GetName()
+        {
+            return Root?.TargetSceneObject?.name;
         }
     }
 

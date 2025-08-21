@@ -107,7 +107,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			ApplyRuntimeConfig(runtimeConfig);
 			
 			WriteOutput("Renderer", Renderers.FirstOrDefault());
-			WriteOutput("Scene Node", rootNode);
+			WriteOutput("SceneNode", rootNode);
 		}
 
 		private IEnumerator LoadLodResource(ResourceId resourceId)

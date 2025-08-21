@@ -7,19 +7,20 @@ using UnityEngine;
 
 namespace Futureverse.UBF.Runtime.Builtin
 {
-    public class GetChildSceneNodes : ACustomExecNode
+    public class GetSceneObjectName : ACustomExecNode
     {
-        public GetChildSceneNodes(Context context) : base(context) { }
+        public GetSceneObjectName(Context context) : base(context) { }
 
         protected override void ExecuteSync()
         {
-            if (!TryRead<SceneNode>("Scene Node", out var node))
+            if (!TryRead<ISceneObject>("SceneObject", out var obj))
             {
-                UbfLogger.LogError("[GetChildSceneNodes] Could not find input \"Scene Node\"");
+                UbfLogger.LogError("[GetName] Could not find input \"Object\"");
                 return;
             }
+
             
-            WriteOutput("Children", node.Children.ToArray());
+            WriteOutput("Name", obj?.GetName() ?? string.Empty);
         }
     }
 }

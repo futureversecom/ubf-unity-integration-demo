@@ -39,7 +39,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			
 			
-			WriteOutput("Node", node);
+			WriteOutput("SceneNode", node);
 		}
 	}
 }

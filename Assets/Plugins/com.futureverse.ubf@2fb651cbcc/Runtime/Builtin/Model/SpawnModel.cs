@@ -19,7 +19,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override IEnumerator ExecuteAsync()
 		{
-			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
+			if (!TryReadResourceId("GLB", out var resourceId) || !resourceId.IsValid)
 			{
 				UbfLogger.LogError("[SpawnModel] Could not find input \"Resource\"");
 				yield break;
@@ -117,7 +117,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			ApplyRuntimeConfig(runtimeConfig);
 			
 			WriteOutput("Renderers", Renderers);
-			WriteOutput("Scene Node", rootNode);
+			WriteOutput("SceneNode", rootNode);
 		}
 		
 		protected virtual void MeshAddedCallback(
