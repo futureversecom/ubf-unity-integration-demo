@@ -19,7 +19,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 		{
 			if (!TryReadResourceId("Mesh", out var resourceId) || !resourceId.IsValid)
 			{
-				UbfLogger.LogError("[SpawnMesh] Could not find input \"Resource\"");
+				UbfLogger.LogError("[SpawnMesh] Could not find input \"Mesh\"");
 				yield break;
 			}
 

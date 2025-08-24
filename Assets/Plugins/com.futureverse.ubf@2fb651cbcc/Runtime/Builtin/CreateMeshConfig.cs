@@ -18,7 +18,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 		protected override IEnumerator ExecuteAsync()
 		{
-			if (!TryReadResourceId("Mesh", out var resourceId) || !resourceId.IsValid)
+			if (!TryReadResourceId("Resource", out var resourceId) || !resourceId.IsValid)
 			{
 				UbfLogger.LogError("[CreateMeshConfig] Could not find resource input \"Resource\"");
 				yield break;

@@ -22,9 +22,14 @@ namespace Futureverse.UBF.Runtime
         public void AddChild(SceneNode child, bool removeFromParent = true, bool reparentGameObjects = false)
         {
             Children.Add(child);
-            if (removeFromParent && Parent != null)
+            if (removeFromParent && child.Parent != null)
             {
-                Parent.Children.Remove(child);
+                child.Parent.Children.Remove(child);
+            }
+
+            if (Parent != null && Parent == child)
+            {
+                Parent = Parent.Parent ?? null;
             }
 
             if (reparentGameObjects)

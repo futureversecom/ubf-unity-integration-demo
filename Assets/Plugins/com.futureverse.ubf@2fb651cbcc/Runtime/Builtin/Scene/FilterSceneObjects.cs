@@ -19,7 +19,7 @@ namespace Futureverse.UBF.Runtime.Builtin
                 return;
             }
 
-            if (!TryRead<string>("Filtered", out var filter))
+            if (!TryRead<string>("Filter", out var filter))
             {
                 UbfLogger.LogError("[FilterObjects] Could not find input \"Filter\"");
                 return;

@@ -171,14 +171,22 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			if (Renderers.Count == 0) // Only one mesh renderer on an lod spawn, that contains all the lod meshes within it
 			{
-				Renderers.Add(new MeshRendererSceneComponent()
+				var newComponent = new MeshRendererSceneComponent()
 				{
-					skinned = renderer is SkinnedMeshRenderer
-				});
+					skinned = renderer is SkinnedMeshRenderer,
+					TargetMeshRenderers = new()
+				};
+				Renderers.Add(newComponent);
+				if (newComponent.skinned)
+				{
+					SkinnedMeshRenderers.Add(newComponent);
+				}
 			}
 
 			Renderers[0].TargetMeshRenderers.Add(renderer);
-			
+
+
+			// Nothing past here is run
 			var lodSample = (_currentLodNum + 1) / (float)_numLods;
 			var lodDistanceFactor = UBFSettings.GetOrCreateSettings()
 				.LodFalloffCurve.Evaluate(lodSample);

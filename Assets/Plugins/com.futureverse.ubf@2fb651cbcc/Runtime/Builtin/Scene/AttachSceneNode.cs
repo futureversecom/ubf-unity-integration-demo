@@ -13,10 +13,9 @@ namespace Futureverse.UBF.Runtime.Builtin
 
         protected override void ExecuteSync()
         {
-            if (!TryRead<SceneNode>("SceneNode", out var target))
+            if (TryRead<SceneNode>("SceneNode", out var node))
             {
-                UbfLogger.LogError("[AttachSceneNode] Could not find input \"Target\"");
-                return;
+                UbfLogger.LogError("[AttachSceneNode] Could find input \"SceneNode\"");
             }
             
             if (!TryRead<SceneNode>("Parent", out var parent))
@@ -25,7 +24,7 @@ namespace Futureverse.UBF.Runtime.Builtin
                 return;
             }
 
-            parent.AddChild(target, removeFromParent: true, reparentGameObjects: true);
+            parent.AddChild(node, removeFromParent: true, reparentGameObjects: true);
         }
     }
 }

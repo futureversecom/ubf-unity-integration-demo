@@ -22,14 +22,10 @@ MonoBehaviour:
   _skin: {fileID: 2100000, guid: 8bd58b2f69092b8428c72e9ec9733027, type: 2}
   _skin02: {fileID: 0}
   _meshConfigs:
-  - Key: PartyBear_BodyMesh-disabled
+  - Key: Default
     Config: {fileID: 11400000, guid: 856c2fa76fe8efe4c8fdf1286d4ce4e4, type: 2}
   - Key: Goblins_MC
     Config: {fileID: 11400000, guid: a22931afa5bc6e7459b5dda14e853298, type: 2}
-  - Key: Default
-    Config: {fileID: 11400000, guid: 856c2fa76fe8efe4c8fdf1286d4ce4e4, type: 2}
-  - Key: ARP
-    Config: {fileID: 11400000, guid: 856c2fa76fe8efe4c8fdf1286d4ce4e4, type: 2}
   _lodFalloffCurve:
     serializedVersion: 2
     m_Curve:
