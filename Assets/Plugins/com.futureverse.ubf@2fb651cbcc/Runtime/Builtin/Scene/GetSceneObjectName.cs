@@ -19,8 +19,8 @@ namespace Futureverse.UBF.Runtime.Builtin
                 return;
             }
 
-            
-            WriteOutput("Name", obj?.GetName() ?? string.Empty);
+            var name = obj?.GetName() ?? string.Empty;
+            WriteOutput("Name", name);
         }
     }
 }

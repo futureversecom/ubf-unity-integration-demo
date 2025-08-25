@@ -21,7 +21,7 @@ namespace Futureverse.UBF.Runtime.Builtin
 			AddTexture(properties, "AlphaTexture", "_AlphaTex");
 
 			AddBool(properties, "UseEmission", "_USEEMISSION");
-			AddBool(properties, "UseEmissive Tint", "_UseEmissiveTint");
+			AddBool(properties, "UseEmissiveTint", "_UseEmissiveTint");
 			AddTexture(properties, "EmissiveTexture", "_EmissiveTex");
 			AddFloat(properties, "EmissiveColorBoost", "_EmissiveColorBoost");
 			AddColor(properties, "EmissiveTint", "_EmissiveTint");

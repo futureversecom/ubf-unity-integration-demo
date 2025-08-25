@@ -13,9 +13,10 @@ namespace Futureverse.UBF.Runtime.Builtin
 
         protected override void ExecuteSync()
         {
-            if (TryRead<SceneNode>("SceneNode", out var node))
+            if (!TryRead<SceneNode>("SceneNode", out var node))
             {
                 UbfLogger.LogError("[AttachSceneNode] Could find input \"SceneNode\"");
+                return;
             }
             
             if (!TryRead<SceneNode>("Parent", out var parent))

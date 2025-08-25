@@ -1,6 +1,7 @@
 // Copyright (c) 2025, Futureverse Corporation Limited. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 using Futureverse.UBF.Runtime.Utils;
 
 namespace Futureverse.UBF.Runtime.Builtin
@@ -23,17 +24,15 @@ namespace Futureverse.UBF.Runtime.Builtin
                 return;
             }
             
-            var components = new List<SceneComponent>();
             switch (componentType)
             {
                 case "MeshRenderer":
-                    components.AddRange(node.GetComponents<MeshRendererSceneComponent>());
+                    WriteOutput("SceneComponents", node.GetComponents<MeshRendererSceneComponent>().ToArray());
                     break;
                 case "Rig":
-                    components.AddRange(node.GetComponents<RigSceneComponent>());
+                    WriteOutput("SceneComponents", node.GetComponents<RigSceneComponent>().ToArray());
                     break;
             }
-            WriteOutput("SceneComponents", components.ToArray());
         }
     }
 }

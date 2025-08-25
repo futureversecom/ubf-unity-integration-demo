@@ -112,7 +112,8 @@ namespace Futureverse.UBF.Runtime
 
             var node = new SceneNode
             {
-                TargetSceneObject = t.gameObject
+                TargetSceneObject = t.gameObject,
+                Name = t.gameObject.name
             };
             all.Add(node);
 

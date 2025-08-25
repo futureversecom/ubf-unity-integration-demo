@@ -185,8 +185,6 @@ namespace Futureverse.UBF.Runtime.Builtin
 
 			Renderers[0].TargetMeshRenderers.Add(renderer);
 
-
-			// Nothing past here is run
 			var lodSample = (_currentLodNum + 1) / (float)_numLods;
 			var lodDistanceFactor = UBFSettings.GetOrCreateSettings()
 				.LodFalloffCurve.Evaluate(lodSample);

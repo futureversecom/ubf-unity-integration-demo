@@ -20,7 +20,7 @@ namespace Futureverse.UBF.Runtime.Builtin
             }
 
             
-            WriteOutput("Scene Nodes", rig.Bones.ToArray());
+            WriteOutput("Bones", rig.Bones.ToArray());
         }
     }
 }
